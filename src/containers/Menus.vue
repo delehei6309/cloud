@@ -39,14 +39,12 @@
                         path:'/menus/authentication',
                         text:'资质认证',
                         show:false,
-                        divActive:false,
                         child:[]
                     },
                     {
                         path:'',
                         text:'用户管理',
                         show:false,
-                        divActive:false,
                         child:[
                             {
                                 path:'/menus/user-management',
@@ -62,7 +60,6 @@
                         path:'',
                         text:'用户管理',
                         show:false,
-                        divActive:false,
                         child:[
                             {
                                 path:'/menus/product-management',

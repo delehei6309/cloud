@@ -24,14 +24,14 @@ server{
       
        server_name  localhost;
 	    location / {
-			root /ZJ/web-kingold/html;
+			root /ZJ/cloud/html;
             add_header Cache-Control 'no-store';
 			index  index.html index.htm;
 
 			try_files $uri $uri/ /index.html =404;
 		  }
 		   location ~* ^.+\.(css|js|txt|xml|swf|wav|png|jpg|json|woff|ttf)$ {  
-			root  /ZJ/web-kingold;
+			root  /ZJ/cloud;
 			access_log   off;  
 			expires      30d;  
 		} 
@@ -39,7 +39,7 @@ server{
 
 
 ```
-访问 [localhost:8088/login](http://localhost:8088/login) 
+访问 [localhost:8088/menus](http://localhost:8088/menus) 
 
 # 代码规范
 
