@@ -12,6 +12,7 @@ import Authentication from '../containers/Authentication';
 import UserManagement  from '../containers/UserManagement';
 import UserInfor  from '../containers/UserInfor';
 import ProductManagement  from '../containers/ProductManagement';
+import UserInforDetail  from '../containers/UserInforDetail';
 let routes = [
     {
         path:'/',
@@ -64,6 +65,13 @@ let routes = [
                 component:ProductManagement,
                 meta: {
                     title: '产品管理'
+                }
+            }, {
+                path:'user-infor-detail',
+                name:'user-infor-detail',
+                component:UserInforDetail,
+                meta: {
+                    title: '用户信息详情'
                 }
             }
         ]

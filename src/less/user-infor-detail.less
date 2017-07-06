@@ -1,0 +1,89 @@
+@charset "UTF-8";
+@import "variables";
+.user-infor-detail{
+    background: #FFFFFF;
+    box-shadow: 0 3px 7px 0 rgba(194,194,194,0.50);
+    padding-left:30px;
+    overflow-y: auto;
+    width: 80px;
+    margin-bottom: 245px;
+    .title1{
+        padding:15px 0  15px 15px ;
+        font-size: 20px;
+        color: #333333;
+        position: relative;
+        border-bottom:2px solid #D8D8D8;
+        &:before{
+            content:'';
+            position: absolute;
+            width: 6px;
+            height: 24px;
+            top:18px;
+            left:0;
+            background: #4F97EB;
+
+        }
+    }
+    .user-info{
+        margin-right: 30px;
+        padding-top:30px;
+        padding-bottom:30px;
+        border-bottom:1px solid #D8D8D8;
+        h2{
+            font-size: .9rem;
+            color: #333333;
+        }
+        .content{
+            ul{
+                padding-left:40px;
+                border-right:1px solid   #D8D8D8;
+                li{
+                    padding:10px 0 ;
+                    font-size:16px;
+                    .info{
+                        color: #4F97EB;
+                    }
+                }
+            }
+            .right{
+                border:none;
+            }
+        }
+    }
+    .authentication{
+      .content {
+            padding:0 30px;
+          ul {
+              width: 75%;
+              border: none;
+          }
+      }
+    }
+    .bankcar{
+        overflow: hidden;
+        border-bottom: none;
+        table{
+            margin:0 50px;
+            width: 635px;
+            text-align: center;
+            border: 1px solid #D8D8D8;
+            th{
+                text-align: center;
+                background: #4F97EB;
+                color:#fff;
+                font-size: 16px;
+                font-weight:normal;
+                font-style: normal;
+                padding:10px 0;
+                border: 1px solid #D8D8D8;
+            }
+            td{
+                font-size: 14px;
+                padding:10px;
+                border: 1px solid #D8D8D8;
+            }
+
+        }
+    }
+
+}
