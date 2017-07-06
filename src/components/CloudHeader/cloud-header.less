@@ -1,0 +1,35 @@
+@charset "UTF-8";
+@import "../../less/variables";
+
+.cloud-header {
+    position: relative;
+    font-size: 16px;
+    color:@color-text;
+    background-color: @bg-content;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.16);
+    .header-body{
+        width: @warp-width;
+        height:60px;
+        padding:10px 0;
+        .header-left,.header-right{
+            line-height: 40px;
+        }
+        .header-left{
+            .imgs{
+                width:86px;margin-right: 27px;
+            }
+        }
+        .header-right{
+            .head-username{
+                margin:0 50px;
+            }
+            .home{
+                text-decoration: none;
+                color:@color-text;
+            }
+            .quit{
+                cursor: pointer;
+            }
+        }
+    }
+}
