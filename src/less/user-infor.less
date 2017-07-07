@@ -1,0 +1,28 @@
+@charset "UTF-8";
+@import "variables";
+
+.user-infor { padding: 0 30px 84px;
+	.title { font-size: 20px; line-height: 50px; border-bottom: @border-default; color: @color-text;
+		&:before { content: ""; display: inline-block; vertical-align: middle; margin: -2px 10px 0 0; width: 6px; height: 24px; background: @bg-menu-active; }
+	}
+
+	.inquire { margin-top: 30px;
+		select, input, button, p { display: inline-block; height: 30px; line-height: 30px; padding: 0; margin-right: 20px; }
+		select, input { border: 1px solid @bg-menu-active;
+			&:hover { box-shadow: 0 0 10px rgba(79, 151, 235, .8) inset; }
+		}
+		select.form-control-sm { width: 100px; height: 30px; padding-left: 10px; }
+		input { width: 150px; text-align: center; }
+		span { margin: 0 20px 0 30px; }
+		button { width: 90px; background: @bg-menu-active; color: #fff; }
+	}
+
+	table { margin-top: 30px; text-align: center;
+		th, td { height: 38px; line-height: 38px; padding: 0; }
+		&.table-bordered thead th, &.table-bordered thead td { border-bottom-width: 1px; text-align: center; font-weight: normal; }
+		&.table-bordered thead th { background: @bg-menu-active; color: #fff; }
+		.btn { color: @bg-menu-active; border: none; }
+	}
+
+	.pagination { justify-content: center; }
+}
