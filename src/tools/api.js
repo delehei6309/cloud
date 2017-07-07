@@ -2,17 +2,9 @@
  * Created by hekk on 2017/5/28.
  */
 import 'babel-polyfill';
-
-
-// To add to window
-if (!window.Promise) {
-    window.Promise = Promise;
-}
-
-import 'whatwg-fetch';
-import store from '../store';
+import axios from 'axios';
 import {devUrl, testUrl, productionUrl, nodeTestApi, nodeProductionApi} from './config';
-let serverUrl = testUrl;
+let serverUrl = devUrl;
 let nodeUrl = nodeTestApi;
 if (process.env.kingold == 'test') {
     serverUrl = testUrl;
@@ -35,37 +27,31 @@ let $query = (data) => {
     return str.join('&');
 };
 let get = (path, data = {}) => {
-    data.callSystemID = '1003';
-    let t = new Date().getTime();
+    data.callSystemID = '1005';
+    data.t = new Date().getTime();
     let url = '';
-    let credentials = 'include';
     if (/http/.test(path)) {
-        url = `${path}?t=${t}&${$query(data)}`;
-        credentials='same-origin';
-    } else {
-        url = `${serverUrl + path}?t=${t}&${$query(data)}`
-    }
+        url = `${path}`;
 
-    return fetch(url, {
+    } else {
+        url = `${serverUrl + path}`
+    }
+    return axios({
+        url,
         method: 'get',
-        credentials,
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        },
+        params: data,
+        withCredentials: true
     }).then(response => {
         if (response.status == 200) {
-            return response.json()
+            return response.data;
         }
-        if (response.status == 503) {
-            return {};
-        }
-        return {};
-    }).then(data => {
-        return data;
     }).catch(err => {
-        console.error('error,--->', err);
-    });
+        console.log('err--->')
+    })
+
 };
 let getNode = (path, data = {}) => {
     let url = `${nodeUrl + path}`
@@ -73,44 +59,40 @@ let getNode = (path, data = {}) => {
 };
 import  {logout} from './operation';
 let post = (path, data = {}) => {
-    data.callSystemID = '1003';
-    let t = new Date().getTime();
+    data.callSystemID = '1005';
     let url = '';
-    let credentials = 'include';
     if (/http/.test(path)) {
-        url = `${path}?t=${t}`;
-        credentials='same-origin';
+        url = `${path}`;
     } else {
         url = `${serverUrl + path}`;
     }
-    return fetch(url, {
+
+    return axios({
+        url,
         method: 'post',
-        credentials,
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: $query(data)
+        params: {
+            t: new Date().getTime()
+        },
+        withCredentials: true,
+        data: $query(data)
     }).then(response => {
         if (response.status == 200) {
-            return response.json()
-        }
-        if (response.status == 503) {
+            return response.data;
+        } else {
             return {};
         }
-
-        return {};
     }).then(data => {
         if (data.code == 401) {
-            store.dispatch('getAccountBaofoo');
-            store.dispatch('getBankInfo');
-            store.dispatch('getUserInfo');
             logout();
         }
         return data;
     }).catch(err => {
-        console.error('error,--->', err);
-    });
+        console.log('err--->')
+    })
+
 };
 let postNode = (path, data = {}) => {
     let url = `${nodeUrl + path}`;

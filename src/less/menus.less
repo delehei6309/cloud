@@ -4,15 +4,29 @@
 .menu-warp {
     position: relative;
     width: @warp-width;
+    min-height: 720px;
     margin: 20px auto;
     .menus{
         width: 160px;
         background-color: #fff;
-        min-height: 500px;
+        height: 500px;
         box-shadow: 0 3px 7px 0 rgba(194,194,194,0.50);
         .menus-list{
             border-bottom: @border-default;
-            .menus-item,.menus-div{
+            .menus-item .menu,.menus-parent{
+                background-position:20px 13px;
+                background-repeat: no-repeat;
+            }
+            .icon-authentication .menu{
+                background-image: url(../images/menus/icon-safety.png);
+            }
+            .icon-user{
+                background-image: url(../images/menus/icon-user.png);
+            }
+            .icon-product{
+                background-image: url(../images/menus/icon-product.png);
+            }
+            .menus-item{
                 .menu{
                     text-align: center;
                     display: block;
@@ -23,6 +37,7 @@
                     &.menu-active{
                         color: #fff;
                         background-color: @bg-menu-active;
+                        background-position: 20px -37px;
                     }
                 }
             }
@@ -35,6 +50,7 @@
             }
             .div-active{
                 color: @bg-menu-active;
+                background-position: 20px -37px;
             }
             .menus-ul{
                 li{

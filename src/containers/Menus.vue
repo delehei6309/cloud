@@ -5,7 +5,7 @@
             <div class="menus" flex-box="0">
             <div class="menus-list" v-for="(item,index) in menus" :key="index">
                 <div v-if="item.child.length>0">
-                    <div class="menus-div menus-parent" @click.stop="item.show = !item.show" :class="{'div-active':divActiveIndex == index}">{{item.text}}</div>
+                    <div class="menus-parent" @click.stop="item.show = !item.show" :class="[{'div-active':(divActiveIndex == index)},item.class]">{{item.text}}</div>
                     <ul class="menus-ul animate" :style="{'height':item.show?item.child.length*32 + 'px' : 0}">
                         <li v-for="(lis,i) in item.child" :key="i">
                             <router-link class="menu" :to="{path:lis.path}"
@@ -15,7 +15,7 @@
                     </ul>
                 </div>
                 <div v-else>
-                    <div class="menus-item">
+                    <div class="menus-item" :class="item.class">
                         <router-link class="menu" :to="{path:item.path}"
                              active-class="menu-active"
                              replace >{{item.text}}</router-link>
@@ -44,33 +44,40 @@
                 menus:[
                     {
                         path:'/menus/authentication',
+                        class:'icon-authentication',
                         text:'资质认证',
                         show:false,
                         child:[]
                     },
                     {
                         path:'',
+                        class:'icon-user',
                         text:'用户管理',
                         show:false,
                         child:[
                             {
-                                path:'/menus/user-management',
+                                path:'/menus/user-infor',
                                 text:'用户管理'
                             },
                             {
-                                path:'/menus/user-infor',
-                                text:'用户信息'
+                                path:'/menus/user-infor-detail',
+                                text:'用户信息详情'
                             }
                         ]
                     },
                     {
                         path:'',
-                        text:'用户管理',
+                        text:'产品管理',
+                        class:'icon-product',
                         show:false,
                         child:[
                             {
                                 path:'/menus/product-management',
                                 text:'产品管理'
+                            },
+                            {
+                                path:'/menus/product-detail',
+                                text:'定期产品详情'
                             }
                         ]
                     }
