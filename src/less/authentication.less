@@ -1,0 +1,239 @@
+@charset "UTF-8";
+@import "variables";
+@upload-border:1px dashed #909090;
+.authentication {
+    padding-left: 30px;
+    padding-bottom: 80px;
+    background-color: #fff;
+    font-size: 16px;
+    .header-p{
+        font-size: 14px;
+        color:@color-text;
+        padding:30px 0 10px;
+        line-height: 1em;
+        border-bottom:@border-default;
+    }
+    .header-select{
+        padding:30px 0;
+        .select-text{
+            line-height: 37px;
+            width:164px;
+            text-align: right;
+        }
+        .select-btn{
+            button{
+                font-size: 16px;
+                color:@color-text;
+                width:120px;
+                height:37px;
+                border:1px solid #979797;
+                border-radius: 0;
+                margin-left: 20px;
+                outline: none;
+            }
+            .active{
+                background-color: @bg-botton-active;
+                border-color: @bg-botton-active;
+                color:#fff;
+            }
+        }
+    }
+    .authentication-content{
+        .upload-error{
+            font-size: 14px;
+            color: #C72C2C;
+        }
+        .upload-img-box{
+            position: relative;
+            cursor: pointer;
+            border: @upload-border;
+            text-align: center;
+            overflow: hidden;
+            span{
+                position: absolute;
+                display: block;
+                width:100%;
+                bottom:0;
+                left:0;
+            }
+            span.span-bg{
+                height:0;
+                background-color: #B9B9B9;
+                z-index: 9;
+            }
+            span.span-percent{
+                height:100%;
+                line-height: 120px;
+                z-index: 10;
+                font-size: 12px;
+                color:@color-text;
+            }
+
+        }
+        .upload-img-box:after,.upload-img-box:before{
+            content: "";
+            display: block;
+            background: @color-split;
+            border-radius: 2px;
+            left:50%;top:50%;
+            position: absolute;
+        }
+        .upload-img-box:after{
+            width:3px;height:22px;
+            margin:-11px 0 0 -1.5px;
+        }
+        .upload-img-box:before{
+            width:22px;
+            height:3px;
+            margin:-1.5px 0 0 -11px;
+        }
+        div{
+            h6{
+                color:@color-text;
+                line-height: 1em;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #aaa;
+                margin:0;
+                font-size: 18px;
+                span{
+                    font-size: 14px;
+                    color: @color-text-secondary;
+                    line-height: 18px;
+                    padding-right: 10px;
+                }
+            }
+            .common-lists{
+                padding-top:30px;
+                li{
+                    line-height: 44px;
+                    margin-bottom: 14px;
+                    .infor-left{
+                        width:158px;
+                        margin-right: 20px;
+                        text-align: right;
+                    }
+                    .infor-center,.infor-right{
+                        font-size: 14px;
+                    }
+
+                    input{
+                        width:326px;height:42px;
+                        border: 1px solid #9B9C9C;
+                        border-radius: 4px;
+                        padding:0 12px;
+                    }
+                    .infor-right{
+                        margin-left: 10px;
+                        color:#C72C2C;
+                    }
+                }
+            }
+        }
+        .content-upload{
+            margin-top: 25px;
+            .upload{
+                padding-top:30px;
+                .upload-text{
+                    width:158px;
+                    margin-right: 20px;
+                    text-align: right;
+                    line-height: 1em;
+                }
+                .idcard{
+                    margin-bottom: 40px;
+                    .upload-error{
+                        line-height: 132px;margin-left: 10px;
+                    }
+                    .idcard-box{
+                        width:235px;
+                        height:132px;
+                        border-radius: 4px;
+
+                    }
+                }
+                .qualification{
+                    .upload-text{
+                        .text-last{
+                            font-size: 14px;
+                        }
+                    }
+                    .qualification-box{
+                        text-align: center;
+                        .imgs{
+                            div:first-child{
+                                width:163px;height:120px;
+                                margin-right: 20px;
+                                border-radius: 4px;
+                            }
+                            div:last-child{
+                                color:@color-text-gray;
+                                font-size: 14px;
+                                line-height: 20px;
+                                margin-top:10px
+                            }
+                        }
+                    }
+                    .upload-error{
+                        line-height: 1em;
+                        padding-left: 178px;
+                        margin-top:20px;
+                    }
+                }
+                
+            }
+
+        }
+        .bank-card{
+            margin-top:40px;
+        }
+        .contacts{
+            .upload-photo{
+                .upload-text{
+                    width:158px;
+                    margin-right: 20px;
+                    line-height: 1em;
+                    text-align: right;
+                }
+                .front,.contrary{
+                    width:176px;height:120px;
+                    border-radius: 4px;
+                    margin-right: 20px;
+                    i{
+                        font-style: normal;
+                        font-size: 14px;
+                        color:@color-text-gray;
+                        display: block;
+                        width:100%;
+                        top:65px;
+                        position: absolute;
+                    }
+                }
+                .front:after,.contrary:after{
+                    margin-top:0;
+                    top:39px;
+                }
+                .front:before,.contrary:before{
+                    margin-top:0;
+                    top:48.5px;
+                }
+                .upload-error{
+                    line-height: 1em;
+                    padding-left: 178px;
+                    margin-top: 20px;
+                    
+                }
+            }
+        }
+    }
+    .submit-btn{
+        padding-top:60px;
+        button{
+            width:235px;
+            height:44px;
+            background: @bg-menu-active;
+            border-radius: 4px;
+            font-size: 18px;
+            color:#fff;
+        }
+    }
+}
