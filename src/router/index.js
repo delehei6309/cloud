@@ -5,7 +5,7 @@ import {logout} from '../tools/operation';
 Vue.use(Router)
 import {setTitle} from '../tools/operation';
 
-/*import Login from '../containers/Login';*/
+import Login from '../containers/Login';
 import Menus from '../containers/Menus';
 import Home from '../containers/Home';
 import Authentication from '../containers/Authentication';
@@ -13,6 +13,7 @@ import UserManagement  from '../containers/UserManagement';
 import UserInfor  from '../containers/UserInfor';
 import ProductManagement  from '../containers/ProductManagement';
 import UserInforDetail  from '../containers/UserInforDetail';
+import ForgetPassword from '../containers/ForgetPassword'
 let routes = [
     {
         path:'/',
@@ -23,6 +24,20 @@ let routes = [
         component:Home,
         meta: {
             title: '首页',
+        },
+    },
+    {
+        path:'/login',
+        component:Login,
+        meta: {
+            title: '登录',
+        },
+    },
+    {
+        path:'/forget-password',
+        component:ForgetPassword,
+        meta: {
+            title: '忘记密码',
         },
     },
     {
