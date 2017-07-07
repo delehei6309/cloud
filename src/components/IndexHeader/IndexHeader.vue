@@ -13,16 +13,16 @@
                 <div flex-box="0" flex>
                     <img flex-box="0" class="logo" src="../../images/cloud-logo.png"/>
                     <div flex-box="1">
-                        <span>开放金融云K-tech</span>
-                        <span>国内领先的智能大数据提供商</span>
+                        <div class="k-tech">开放金融云K-tech</div>
+                        <div class="sub-k-tech">国内领先的智能大数据提供商</div>
                     </div>
                 </div>
-                <div flex-box="1">
-                    <router-link class="middle-link" :to="{}">首页</router-link>
-                    <router-link class="middle-link" :to="{}">标准产品接入</router-link>
-                    <router-link class="middle-link" :to="{}">场景产品合作</router-link>
-                    <router-link class="middle-link" :to="{}">智能画像大数据服务</router-link>
-                    <router-link class="middle-link" :to="{}">关于我们</router-link>
+                <div flex-box="1" flex="main:justify" class="right-link">
+                    <router-link class="middle-link" active-class="link-active" :to="{path:'/home'}">首页</router-link>
+                    <router-link class="middle-link" active-class="link-active" :to="{path:'/product-access'}">标准产品接入</router-link>
+                    <router-link class="middle-link" active-class="link-active" :to="{path:'/product-cooperation'}">场景产品合作</router-link>
+                    <router-link class="middle-link" active-class="link-active" :to="{path:'/intelligent'}">智能画像大数据服务</router-link>
+                    <router-link class="middle-link" active-class="link-active" :to="{path:'/about-us'}">关于我们</router-link>
                 </div>
 
             </div>
