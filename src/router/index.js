@@ -19,13 +19,6 @@ let routes = [
         redirect:'/home'
     },
     {
-        path:'/home',
-        component:Home,
-        meta: {
-            title: '首页',
-        },
-    },
-    {
         path:'/login',
         component:Login,
         meta: {
@@ -96,7 +89,13 @@ let routes = [
                     title: '用户信息详情'
                 }
             },
-
+            {
+                path:'/home',
+                component:Home,
+                meta: {
+                    title: '首页',
+                },
+            }
         ]
     }
 ];
