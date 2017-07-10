@@ -13,7 +13,7 @@
                 <div class="content-infor">
                     <h6>企业信息</h6>
                     <ul class="common-lists">
-                        <li flex v-for="(item,index) in enterpriseInfor" :key="index">
+                        <li flex v-for="(item,index) in companyInfor" :key="index">
                             <div class="infor-left">{{item.name}}</div>
                             <div class="infor-center">
                                 <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
@@ -37,7 +37,7 @@
                                 <span class="span-percent" v-if="aptitude.legalPersonIdcard.loaded>=100"><img :src="aptitude.legalPersonIdcard.src"></span>
                                 <b-form-file v-model="aptitude.legalPersonIdcard.file" :disabled="aptitude.legalPersonIdcard.loaded>0 && aptitude.legalPersonIdcard.loaded<100" class="form-file" accept="image/*"></b-form-file>
                             </div>
-                            <div class="upload-error">！请上传法人身份证照，大小不超过2M</div>
+                            <div class="upload-error" v-if="aptitude.legalPersonIdcard.loaded<100">！请上传法人身份证照，大小不超过2M</div>
                         </div>
                         <div class="qualification">
                             <div flex>
@@ -57,7 +57,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="upload-error">！请上传营业执照证件照，大小不超过2M</div>
+                            <div class="upload-error" 
+                                v-if="licenseError">！请上传营业执照证件照，大小不超过2M</div>
                         </div>
                     </div>
                 </div>
@@ -149,7 +150,8 @@
                                 <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*" @change.native="conso(item.file)"></b-form-file>
                             </div>
                         </div>
-                        <div class="upload-error">！请上传身份证，大小不超过2M</div>
+                        <div class="upload-error"
+                            v-if="contacts.files[0].loaded<100 || contacts.files[1].loaded<100">！请上传身份证，大小不超过2M</div>
                     </div>
                 </div>
             </div>
@@ -163,14 +165,13 @@
 <script>
     import '../less/authentication.less';
     import {checkPhone,valiIdCard} from '../tools/fun';
+    import Toast from '../components/Toast';
     export default {
         name: 'authentication',
         data(){
             return {
                 tab:1,
-                file:null,
-                loading:'22',
-                enterpriseInfor:[
+                companyInfor:[
                     {
                         name:'公司全称',
                         placeholder:'请输入公司名称',
@@ -221,55 +222,6 @@
                         model:''
                     }
                 ],
-                BankInfor:{
-                    
-                },
-                contacts:{
-                    inputs:[
-                        {
-                            name:'姓名',
-                            maxlength:30,
-                            error:false,
-                            model:''
-                        },
-                        {
-                            name:'手机号',
-                            maxlength:11,
-                            error:false,
-                            model:''
-                        },
-                        {
-                            name:'邮箱',
-                            maxlength:30,
-                            error:false,
-                            model:''
-                        },
-                        {
-                            name:'身份证号',
-                            maxlength:18,
-                            error:false,
-                            model:''
-                        },
-                        {
-                            name:'微信／QQ号',
-                            maxlength:30,
-                            error:false,
-                            model:''
-                        }
-                    ],
-                    files:[
-                        {
-                            text:'正面照',
-                            file:null,
-                            loaded:45
-                        },
-                        {
-                            text:'反面照',
-                            file:null,
-                            loaded:0
-                        }
-                    ]
-                },
                 bank:{
                     type:{
                         error:false,
@@ -374,20 +326,20 @@
                     legalPersonIdcard:{//法人身份证
                         file:null,
                         text:'法人身份证',
-                        loaded:100,
+                        loaded:0,
                         src:'http://imgsrc.baidu.com/image/c0%3Dshijue%2C0%2C0%2C245%2C40/sign=0ead53e9eafe9925df0161135cc134aa/d0c8a786c9177f3e538db7217acf3bc79f3d5664.jpg'
                     },
                     other:[
                         {
                             file:null,
                             text:'营业执照',
-                            loaded:20,
+                            loaded:0,
                             src:null
                         },
                         {
                             file:null,
                             text:'组织机构代码证',
-                            loaded:0,
+                            loaded:10,
                             src:null
                         },
                         {
@@ -397,35 +349,120 @@
                             src:null
                         }
                     ]
+                },
+                //联系人信息
+                contacts:{
+                    inputs:[
+                        {
+                            name:'姓名',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'手机号',
+                            maxlength:11,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'邮箱',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'身份证号',
+                            maxlength:18,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'微信／QQ号',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        }
+                    ],
+                    files:[
+                        {
+                            text:'正面照',
+                            file:null,
+                            loaded:0
+                        },
+                        {
+                            text:'反面照',
+                            file:null,
+                            loaded:0
+                        }
+                    ]
                 }
             }
         },
         created(){
+
         },
-        computed: {},
+        computed: {
+            licenseError:function(){
+                return (this.aptitude.other[0].loaded<100) && (this.aptitude.other[1].loaded<100) && (this.aptitude.other[2].loaded<100)
+            }
+        },
         methods: {
             conso(str){
                 console.log(str)
             },
             submit(){
-                console.log(this.aptitude)
-                /*this.enterpriseInfor.map(el=>{
-                    if(el.model.length<1){
-                        el.error = true;
-                    }
-                })*/
-            },
-            blur(i){
-                let that = this.enterpriseInfor[i];
-                console.log(that.model.length)
-                if(that.model.length<1){
-                    that.error = true;
+                //企业信息
+                if(this.listCheck(this.companyInfor)){
+                    return
                 }
+                if(this.aptitude.legalPersonIdcard.loaded<100){
+                    Toast('请上传法人身份证照！')
+                    return
+                }
+                //上传资质
+                if(this.licenseError){
+                    Toast('请上传营业执照证件照')
+                    return
+                }
+                //银行卡信息
+                if(this.bank.type.selected == 0){
+                    this.bank.type.error = true;
+                    Toast('请选择账户类型');
+                    return 
+                }
+                if(this.bank.bankName.selected == 0){
+                    this.bank.bankName.error = true;
+                    Toast('请选择开户银行');
+                    return 
+                }
+                if((this.bank.address.province.selected == 0) || (this.bank.address.city.selected == 0)){
+                    this.bank.address.error = true;
+                    Toast('请选择开户地址');
+                    return 
+                }
+                if(this.listCheck(this.bank.lists)){
+                    return
+                }
+                //联系人信息
+                if(this.listCheck(this.contacts.inputs)){
+                    return
+                }
+                if((this.contacts.files[0].loaded < 100) || (this.contacts.files[1].loaded < 100)){
+                    Toast('请上传身份证！');
+                    return
+                }
+
+                let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
             },
-            onlyNumber(index){
-                /*if(index!=0){
-                    this.bank.lists[index].model = this.bank.lists[index].model.replace(/\D/g,'');
-                }*/
+            listCheck(arr){
+                for(let obj of arr){
+                    if(obj.model.length < 1){
+                        obj.error = true;
+                        Toast(obj.name+'不能为空！');
+                        return true;
+                    }
+                }
             },
             selectChange(status){
                 if(status == 1){
