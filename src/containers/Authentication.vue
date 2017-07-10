@@ -71,6 +71,7 @@
                                 <div class="select-box">
                                     <b-form-select v-model="bank.type.selected" @change.native="selectChange(1)" :options="bank.type.options" class="mb-3">
                                     </b-form-select>
+                                    <div class="select-view">{{bank.type.options[bank.type.selected].text}}</div>
                                 </div> 
                             </div>
                             <div class="infor-right" v-show="bank.type.error">！请选择账户类型</div>
@@ -81,6 +82,7 @@
                                 <div class="select-box">
                                     <b-form-select v-model="bank.bankName.selected" @change.native="selectChange(2)" :options="bank.bankName.options" class="mb-3">
                                     </b-form-select>
+                                    <div class="select-view">{{bank.bankName.options[bank.bankName.selected].text}}</div>
                                 </div> 
                             </div>
                             <div class="infor-right" v-show="bank.bankName.error">！请选择开户银行</div>
@@ -91,10 +93,12 @@
                                 <div class="select-box selected-address selected-province">
                                     <b-form-select v-model="bank.address.province.selected" @change.native="selectChange(3)" :options="bank.address.province.options" class="mb-3">
                                     </b-form-select>
+                                    <div class="select-view">{{bank.address.province.options[bank.address.province.selected].text}}</div>
                                 </div> 
                                 <div class="select-box selected-address">
                                     <b-form-select v-model="bank.address.city.selected" @change.native="selectChange(3)" :options="bank.address.city.options" class="mb-3">
                                     </b-form-select>
+                                    <div class="select-view">{{bank.address.city.options[bank.address.city.selected].text}}</div>
                                 </div> 
                             </div>
                             <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
@@ -269,7 +273,7 @@
                             selected:0,
                             options:[
                                 {
-                                    text:'请选择',
+                                    text:'省份',
                                     value:0
                                 },
                                 {
@@ -279,6 +283,10 @@
                                 {
                                     text:'石家庄',
                                     value:2
+                                },
+                                {
+                                    text:'衡水',
+                                    value:3
                                 }
                             ]
                         },
@@ -286,7 +294,7 @@
                             selected:0,
                             options:[
                                 {
-                                    text:'请选择',
+                                    text:'城市',
                                     value:0
                                 },
                                 {
