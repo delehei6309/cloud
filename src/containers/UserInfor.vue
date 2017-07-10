@@ -16,7 +16,7 @@
         <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
             <template slot="isAccount" scope="item">{{ item.value ? '是' : '否' }}</template>
             <template slot="action" scope="item">
-                <router-link :to="{path: 'authentication', query: {id: 123, name: 'stone'}}">详情</router-link>
+                <router-link :to="{path: 'user-infor-detail', query: {id: 123, name: 'stone'}}">详情</router-link>
             </template>
         </b-table>
 

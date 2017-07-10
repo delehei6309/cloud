@@ -23,7 +23,7 @@
         name: 'cloud-header',
         data(){
             return {
-                userMobile:'189***6307',
+                userMobile:'189****6307',
             }
         },
         created(){

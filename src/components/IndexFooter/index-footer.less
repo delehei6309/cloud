@@ -1,0 +1,51 @@
+@charset "UTF-8";
+@import "../../less/variables";
+
+.index-footer {
+    position: relative;
+    width: 100%;
+    background: #262b36;
+    .footer-content{
+        width: @warp-width;
+        margin: 0 auto;
+        padding:  30px 0;
+        color: #fff;
+        .footer-left{
+            position: relative;
+            .main-title{
+                font-size: 24px;
+                line-height: 24px;
+            }
+            .sub-title{
+                font-size: 18px;
+                line-height: 24px;
+                padding: 20px 0 ;
+            }
+            .copy-info{
+                font-size: 12px;
+                line-height: 20px;
+            }
+        }
+        .footer-right{
+            position: relative;
+            height: 128px;
+            .qr-image{
+                margin-right: 40px;
+            }
+            .items{
+                position: relative;
+                .item{
+                    position: relative;
+                    padding: 5px 0;
+                    img{
+                        width: 24px;
+                        margin-right: 10px;
+                    }
+                    span{
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+    }
+}

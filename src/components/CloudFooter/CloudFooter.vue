@@ -12,10 +12,6 @@
                             <div class="imgs"><img src="../../images/code-img.jpg" alt=""></div>
                             <div class="text">关注公众微信号</div>
                         </div>
-                        <div class="code">
-                            <div class="imgs"><img src="../../images/code-img.jpg" alt=""></div>
-                            <div class="text">关注新浪微博</div>
-                        </div>
                     </div>
                 </div>
                 <div class="con-right">
