@@ -10,9 +10,8 @@ import Home from '../containers/Home';
 import Authentication from '../containers/Authentication';
 import UserInfor  from '../containers/UserInfor';
 import ProductManagement  from '../containers/ProductManagement';
-import ProductDetail  from '../containers/ProductDetail';
 import UserInforDetail  from '../containers/UserInforDetail';
-import FixiGoodsDetail  from '../containers/FixiGoodsDetail';
+import ProductDetail  from '../containers/ProductDetail';
 import ForgetPassword from '../containers/ForgetPassword'
 let routes = [
     {
@@ -90,9 +89,9 @@ let routes = [
                 }
             },
             {
-                path:'fixi-goods-detail',
-                name:'fixi-goods-detail',
-                component:FixiGoodsDetail,
+                path:'product-detail',
+                name:'product-detail',
+                component:ProductDetail,
                 meta: {
                     title: '用户信息详情'
                 }
