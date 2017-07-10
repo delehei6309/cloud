@@ -54,7 +54,7 @@
                         <span class="info" >*三峰</span>
                     </li>
                     <li>
-                        <span class="info" >112233**********99</span>
+                        <span class="info" >{{id | idCardFormat}}</span>
                     </li>
                     <li>
                         <span class="info" >2017-04-04 12:12:12</span>
@@ -87,7 +87,9 @@
     export default {
         name: 'user-infor-detail',
         data(){
-            return {}
+            return {
+                id:'131181199103081929'
+            }
         },
         created(){
         },

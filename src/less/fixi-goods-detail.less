@@ -1,0 +1,94 @@
+@charset "UTF-8";
+@import "variables";
+.fixi-goods-detail{
+    background: #FFFFFF;
+    box-shadow: 0 3px 7px 0 rgba(194,194,194,0.50);
+    padding-left:30px;
+    overflow-y: auto;
+    width: 80px;
+    .title1{
+        padding:15px 0  15px 15px ;
+        font-size: 20px;
+        color: #333333;
+        position: relative;
+        border-bottom:2px solid #D8D8D8;
+        &:before{
+            content:'';
+            position: absolute;
+            width: 6px;
+            height: 24px;
+            top:18px;
+            left:0;
+            background: #4F97EB;
+        }
+    }
+    .content{
+        margin-right: 30px;
+        padding-top:30px;
+        padding-bottom:30px;
+        border-bottom:1px solid #D8D8D8;
+        h2{
+            font-size: 18px;
+            color: #333333;
+        }
+        .main{
+            ul{
+                padding-left:40px;
+                border-right:1px solid   #D8D8D8;
+                li{
+                    padding:10px 0 ;
+                    font-size:14px;
+                    .info{
+                        color: #4F97EB;
+                    }
+                }
+                &.right{
+                    border:none;
+                }
+            }
+        }
+        &.content2 ul{ border-right:none; }
+        &.content3 .main{
+            ul:first-child {
+                border-right: none;
+                padding-bottom: 30px;
+                border-bottom: 1px solid #D8D8D8;
+            }
+            .tab {
+                padding: 0;
+                font-size: 16px;
+                color: #4F97EB;
+                margin-left: 90px;
+                ul {
+                    border: none;
+                    padding:0;
+                    li {
+                        border: 1px solid #4F97EB;
+                        border-right: none;
+                        width: 120px;
+                        text-align: center;
+                    }
+                }
+            }
+            p {
+                color: #666;
+                padding-top: 14px;
+                margin-bottom: 0;
+            }
+        }
+        &.content4{
+            color: #4F97EB;
+            ul {
+                border-right:none;
+                padding-left: 90px;
+            }
+        }
+        &.content5 {
+            border-bottom: none;
+            padding-bottom: 50px;
+            .main ul {
+                border-right: none;
+            }
+        }
+    }
+}
