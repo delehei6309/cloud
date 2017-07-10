@@ -23,7 +23,22 @@ export let setTitle = (title) => {
 import md5 from 'md5';
 
 
-// 输入框校验,提现和充值
+/*// 输入框校验,提现和充值
+export let currencyInputValidate = (input) => {
+    if (!input) {
+        return '';
+    }
+    let t = input.toString();
+    if (t[0] == '0' || t[0] == '.') {
+        return '';
+    }
+    if (isNaN(input)) {
+        return ''
+    }
+    return t.replace(/\.\d{3,}/, (match) => {
+        return match.substring(0, 3);
+    })
+};*/
 export let currencyInputValidate = (input) => {
     if (!input) {
         return '';

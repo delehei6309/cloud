@@ -9,7 +9,7 @@
                 <div>
                     <router-link class="home" :to="{path:'/home'}"  >首页</router-link>
                 </div>
-                <div class="head-username">用户名{{userMobile}}</div>
+                <div class="head-username">用户名{{userMobile | mobileFormat}}</div>
                 <div class="quit" @click.stop="loginOut">退出</div>
             </div>
         </div>
@@ -23,7 +23,7 @@
         name: 'cloud-header',
         data(){
             return {
-                userMobile:'189****6307',
+                userMobile:'18997296307',
             }
         },
         created(){

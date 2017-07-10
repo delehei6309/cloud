@@ -30,9 +30,12 @@
                     <div class="upload">
                         <div class="idcard" flex>
                             <div class="upload-text">上传法人身份证</div>
-                            <div class="idcard-box upload-img-box">
-                                <span class="span-bg"></span><span class="span-percent"></span>
-                                <b-form-file v-model="aptitude.legalPersonIdcard" class="form-file" accept="image/*"></b-form-file>
+                            <div class="idcard-box upload-img-box" :class="{uploading:aptitude.legalPersonIdcard.loaded<=0}">
+                                <span class="span-bg" :style="{height:aptitude.legalPersonIdcard.loaded+'%'}"></span>
+                                <span class="span-percent" 
+                                    v-if="aptitude.legalPersonIdcard.loaded>0 && aptitude.legalPersonIdcard.loaded<100">上传中{{aptitude.legalPersonIdcard.loaded}}%</span>
+                                <span class="span-percent" v-if="aptitude.legalPersonIdcard.loaded>=100"><img :src="aptitude.legalPersonIdcard.src"></span>
+                                <b-form-file v-model="aptitude.legalPersonIdcard.file" :disabled="aptitude.legalPersonIdcard.loaded>0 && aptitude.legalPersonIdcard.loaded<100" class="form-file" accept="image/*"></b-form-file>
                             </div>
                             <div class="upload-error">！请上传法人身份证照，大小不超过2M</div>
                         </div>
@@ -43,26 +46,14 @@
                                     <p class="text-last">(三证合一只需上传一张)</p>
                                 </div>
                                 <div class="qualification-box" flex>
-                                    <div class="license imgs">
-                                        <div class="upload-img-box">
-                                            <span class="span-bg"></span><span class="span-percent"></span>
-                                            <b-form-file v-model="aptitude.license" class="form-file" accept="image/*"></b-form-file>
+                                    <div class="license imgs" v-for="(item,index) in aptitude.other" :key="index">
+                                        <div class="upload-img-box" :class="{uploading:item.loaded<=0}">
+                                            <span class="span-bg" :style="{height:item.loaded+'%'}"></span>
+                                            <span v-if="item.loaded>0 && item.loaded<100" class="span-percent">上传中{{item.loaded}}%</span>
+                                            <span v-if="item.loaded>=100" class="span-percent"><img :src="item.src"></span>
+                                            <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*"></b-form-file>
                                         </div>
-                                        <div>营业执照</div>
-                                    </div>
-                                    <div class="certificate imgs">
-                                        <div class="upload-img-box">
-                                            <span class="span-bg"></span><span class="span-percent"></span>
-                                            <b-form-file v-model="aptitude.certificate" class="form-file" accept="image/*"></b-form-file>
-                                        </div>
-                                        <div>组织机构代码证</div>
-                                    </div>
-                                    <div class="tax imgs">
-                                        <div class="upload-img-box">
-                                            <span class="span-bg"></span><span class="span-percent"></span>
-                                            <b-form-file v-model="aptitude.tax" class="form-file" accept="image/*"></b-form-file>
-                                        </div>
-                                        <div>税务登记证</div>
+                                        <div>{{item.text}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -77,57 +68,66 @@
                             <div class="infor-left">账户类型</div>
                             <div class="infor-center">
                                 <div class="select-box">
-                                    <b-form-select v-model="bank.type.selected" :options="bank.type.options" class="mb-3">
+                                    <b-form-select v-model="bank.type.selected" @change.native="selectChange(1)" :options="bank.type.options" class="mb-3">
                                     </b-form-select>
                                 </div> 
                             </div>
-                            <div class="infor-right" v-show="">！请选择账户类型</div>
+                            <div class="infor-right" v-show="bank.type.error">！请选择账户类型</div>
                         </li>
                         <li flex>
                             <div class="infor-left">开户银行</div>
                             <div class="infor-center">
                                 <div class="select-box">
-                                    <b-form-select v-model="bank.bankName.selected" :options="bank.bankName.options" class="mb-3">
+                                    <b-form-select v-model="bank.bankName.selected" @change.native="selectChange(2)" :options="bank.bankName.options" class="mb-3">
                                     </b-form-select>
                                 </div> 
                             </div>
-                            <div class="infor-right">！请选择开户银行</div>
+                            <div class="infor-right" v-show="bank.bankName.error">！请选择开户银行</div>
                         </li>
                         <li flex>
                             <div class="infor-left">开户地址</div>
                             <div class="infor-center" flex>
                                 <div class="select-box selected-address selected-province">
-                                    <b-form-select v-model="bank.address.province.selected" :options="bank.address.province.options" class="mb-3">
+                                    <b-form-select v-model="bank.address.province.selected" @change.native="selectChange(3)" :options="bank.address.province.options" class="mb-3">
                                     </b-form-select>
                                 </div> 
                                 <div class="select-box selected-address">
-                                    <b-form-select v-model="bank.address.city.selected" :options="bank.address.city.options" class="mb-3">
+                                    <b-form-select v-model="bank.address.city.selected" @change.native="selectChange(3)" :options="bank.address.city.options" class="mb-3">
                                     </b-form-select>
                                 </div> 
                             </div>
-                            <div class="infor-right">！请选择开户地址</div>
+                            <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
                         </li>
-                        <li flex>
-                            <div class="infor-left">支行名称</div>
-                            <div class="infor-center"><input type="text" placeholder="请输入所在支行" ></div>
-                            <div class="infor-right">！支行名称不能为空</div>
-                        </li>
-                        <li flex>
-                            <div class="infor-left">开户人姓名</div>
-                            <div class="infor-center"><input type="text" placeholder="请输入开户人姓名" ></div>
-                            <div class="infor-right">！开户人姓名不能为空</div>
-                        </li>
-                        <li flex>
-                            <div class="infor-left">银行卡号</div>
-                            <div class="infor-center"><input type="text" placeholder="请输入银行卡号" ></div>
-                            <div class="infor-right">！银行卡号不能为空</div>
+                        <li flex v-for="(item,index) in bank.lists" :key="index">
+                            <div class="infor-left">{{item.name}}</div>
+                            <div class="infor-center">
+                                <input type="text" 
+                                    v-if="index==2"
+                                    :placeholder="'请输入'+item.name" 
+                                    v-model="item.model" 
+                                    :maxlength="item.maxlength" 
+                                    @focus="item.error=false" 
+                                    @blur="item.model.length<1 ? item.error=true : ''"
+                                    @keyup="item.model = item.model.replace(/\D/g,'')" 
+                                    @afterpaste="item.model = item.model.replace(/\D/g,'')"
+                                    />
+                                <input type="text" 
+                                    v-else
+                                    :placeholder="'请输入'+item.name" 
+                                    v-model="item.model" 
+                                    :maxlength="item.maxlength" 
+                                    @focus="item.error=false" 
+                                    @blur="item.model.length<1 ? item.error=true : ''"
+                                    />
+                            </div>
+                            <div class="infor-right" v-show="item.error">！{{item.name}}不能为空</div>
                         </li>
                     </ul>
                 </div>
                 <div class="contacts">
                     <h6>联系人信息</h6>
                     <ul class="common-lists">
-                        <li flex v-for="(item,index) in contacts" :key="index">
+                        <li flex v-for="(item,index) in contacts.inputs" :key="index">
                             <div class="infor-left">{{item.name}}</div>
                             <div class="infor-center">
                                 <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
@@ -141,17 +141,12 @@
                     <div class="upload-photo" >
                         <div flex>
                             <div class="upload-text">上传联系人身份证照</div>
-                            <div class="front upload-img-box">
-                                <span class="span-bg"></span>
-                                <span class="span-percent"></span>
-                                <i>正面照</i>
-                                <b-form-file v-model="aptitude.license" class="form-file" accept="image/*"></b-form-file>
-                            </div>
-                            <div class="contrary upload-img-box">
-                                <span class="span-bg"></span>
-                                <span class="span-percent">上传中22%</span>
-                                <i>反面照</i>
-                                <b-form-file v-model="aptitude.license" class="form-file" accept="image/*"></b-form-file>
+                            <div class="upload-img-box" :class="{front:index==0,contrary:index==1,uploading:item.loaded<=0}" v-for="(item,index) in contacts.files" :key="index">
+                                <span class="span-bg" :style="{height:item.loaded+'%'}"></span>
+                                <span class="span-percent" v-if="item.loaded>0 && item.loaded<100">上传中{{item.loaded}}%</span>
+                                <span class="span-percent" v-if="item.loaded>=100"><img :src="item.src" ></span>
+                                <i>{{item.text}}</i>
+                                <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*" @change.native="conso(item.file)"></b-form-file>
                             </div>
                         </div>
                         <div class="upload-error">！请上传身份证，大小不超过2M</div>
@@ -167,6 +162,7 @@
 
 <script>
     import '../less/authentication.less';
+    import {checkPhone,valiIdCard} from '../tools/fun';
     export default {
         name: 'authentication',
         data(){
@@ -228,38 +224,52 @@
                 BankInfor:{
                     
                 },
-                contacts:[
-                    {
-                        name:'姓名',
-                        maxlength:30,
-                        error:false,
-                        model:''
-                    },
-                    {
-                        name:'手机号',
-                        maxlength:11,
-                        error:false,
-                        model:''
-                    },
-                    {
-                        name:'邮箱',
-                        maxlength:30,
-                        error:false,
-                        model:''
-                    },
-                    {
-                        name:'身份证号',
-                        maxlength:18,
-                        error:false,
-                        model:''
-                    },
-                    {
-                        name:'微信／QQ号',
-                        maxlength:30,
-                        error:false,
-                        model:''
-                    }
-                ],
+                contacts:{
+                    inputs:[
+                        {
+                            name:'姓名',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'手机号',
+                            maxlength:11,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'邮箱',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'身份证号',
+                            maxlength:18,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'微信／QQ号',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        }
+                    ],
+                    files:[
+                        {
+                            text:'正面照',
+                            file:null,
+                            loaded:45
+                        },
+                        {
+                            text:'反面照',
+                            file:null,
+                            loaded:0
+                        }
+                    ]
+                },
                 bank:{
                     type:{
                         error:false,
@@ -302,16 +312,21 @@
                         ]
                     },
                     address:{
+                        error:false,
                         province:{
                             selected:0,
                             options:[
                                 {
-                                    text:'北京',
+                                    text:'请选择',
                                     value:0
                                 },
                                 {
-                                    text:'石家庄',
+                                    text:'北京',
                                     value:1
+                                },
+                                {
+                                    text:'石家庄',
+                                    value:2
                                 }
                             ]
                         },
@@ -319,23 +334,69 @@
                             selected:0,
                             options:[
                                 {
-                                    text:'海淀区',
+                                    text:'请选择',
                                     value:0
                                 },
                                 {
-                                    text:'朝阳区',
+                                    text:'海淀区',
                                     value:1
+                                },
+                                {
+                                    text:'朝阳区',
+                                    value:2
                                 }
                             ]
                         }
-                    }
+                    },
+                    lists:[
+                        {
+                            name:'支行名称',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'开户人姓名',
+                            maxlength:30,
+                            error:false,
+                            model:''
+                        },
+                        {
+                            name:'银行卡号',
+                            maxlength:20,
+                            error:false,
+                            model:''
+                        }
+                    ]
                 },
                 //资质
                 aptitude:{
-                    legalPersonIdcard:null,//法人身份证
-                    license:null,//营业执照
-                    certificate:null,//组织机构代码证
-                    tax:null,//税务登记证
+                    legalPersonIdcard:{//法人身份证
+                        file:null,
+                        text:'法人身份证',
+                        loaded:100,
+                        src:'http://imgsrc.baidu.com/image/c0%3Dshijue%2C0%2C0%2C245%2C40/sign=0ead53e9eafe9925df0161135cc134aa/d0c8a786c9177f3e538db7217acf3bc79f3d5664.jpg'
+                    },
+                    other:[
+                        {
+                            file:null,
+                            text:'营业执照',
+                            loaded:20,
+                            src:null
+                        },
+                        {
+                            file:null,
+                            text:'组织机构代码证',
+                            loaded:0,
+                            src:null
+                        },
+                        {
+                            file:null,
+                            text:'税务登记证',
+                            loaded:0,
+                            src:null
+                        }
+                    ]
                 }
             }
         },
@@ -343,8 +404,11 @@
         },
         computed: {},
         methods: {
+            conso(str){
+                console.log(str)
+            },
             submit(){
-                console.log('eee')
+                console.log(this.aptitude)
                 /*this.enterpriseInfor.map(el=>{
                     if(el.model.length<1){
                         el.error = true;
@@ -357,6 +421,27 @@
                 if(that.model.length<1){
                     that.error = true;
                 }
+            },
+            onlyNumber(index){
+                /*if(index!=0){
+                    this.bank.lists[index].model = this.bank.lists[index].model.replace(/\D/g,'');
+                }*/
+            },
+            selectChange(status){
+                if(status == 1){
+                    setTimeout(()=>{
+                        this.bank.type.error = !this.bank.type.selected
+                    })
+                }else if(status == 2){
+                    setTimeout(()=>{
+                        this.bank.bankName.error = !this.bank.bankName.selected
+                    })
+                }else if(status == 3){
+                    setTimeout(()=>{
+                        this.bank.address.error = !this.bank.address.province.selected || !this.bank.address.city.selected
+                    })
+                }
+                
             }
         },
         destroyed(){

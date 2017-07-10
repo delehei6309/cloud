@@ -1,10 +1,11 @@
 <template>
     <div class="product">
-        product
+        
     </div>
 </template>
 
 <script>
+    import '../less/authentication.less';
     export default {
         name: 'product',
         data(){

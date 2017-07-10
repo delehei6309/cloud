@@ -8,11 +8,12 @@ import './less/base.less';
 import App from './App';
 import router from './router';
 import * as filters from './filters';
+import _ from 'lodash/core';
 import store from './store';
 
-Object.keys(filters,(fun, key) => {
+_.forEach(filters, (fun, key) => {
     Vue.filter(key, fun);
-})
+});
 
 new Vue({
     el: '#app',
@@ -20,4 +21,5 @@ new Vue({
     store,
     render: h => h(App)
 });
+
 
