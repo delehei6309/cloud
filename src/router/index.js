@@ -12,6 +12,7 @@ import UserInfor  from '../containers/UserInfor';
 import ProductManagement  from '../containers/ProductManagement';
 import ProductDetail  from '../containers/ProductDetail';
 import UserInforDetail  from '../containers/UserInforDetail';
+import FixiGoodsDetail  from '../containers/FixiGoodsDetail';
 import ForgetPassword from '../containers/ForgetPassword'
 let routes = [
     {
@@ -79,7 +80,7 @@ let routes = [
                 meta: {
                     title: '定期产品详情'
                 }
-            },  
+            },
             {
                 path:'user-infor-detail',
                 name:'user-infor-detail',
@@ -87,7 +88,16 @@ let routes = [
                 meta: {
                     title: '用户信息详情'
                 }
-            }
+            },
+            {
+                path:'fixi-goods-detail',
+                name:'fixi-goods-detail',
+                component:FixiGoodsDetail,
+                meta: {
+                    title: '用户信息详情'
+                }
+            },
+
         ]
     }
 ];

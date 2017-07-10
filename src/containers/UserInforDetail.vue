@@ -3,33 +3,33 @@
         <div class="title1">用户信息详情</div>
         <div class="user-info">
         <h2>用户信息</h2>
-        <div class="content" flex="dir:left main:justify">
+        <div class="content" flex="dir:left main:justify box:mean">
             <ul class="left"  flex-box="1">
                 <li flex="box:mean">
-                    <span class="title">用户ID</span>
-                    <span class="info" >00001</span>
+                    <span class="title" flex-box="1">用户ID</span>
+                    <span class="info" flex-box="1">00001</span>
                 </li>
                 <li flex="box:mean">
-                    <span class="title" >手机号</span>
-                    <span class="info">184****7676</span>
+                    <span class="title" flex-box="1">手机号</span>
+                    <span class="info" flex-box="1">184****7676</span>
                 </li>
                 <li flex="box:mean">
-                    <span class="title">用户昵称</span>
-                    <span class="info">小细腿</span>
+                    <span class="title" flex-box="1">用户昵称</span>
+                    <span class="info" flex-box="1">小细腿</span>
                 </li>
             </ul>
             <ul class="right" flex-box="1">
                 <li flex="box:mean">
-                    <span class="title">渠道</span>
-                    <span class="info">大众点评</span>
+                    <span class="title" flex-box="1">渠道</span>
+                    <span class="info" flex-box="2">大众点评</span>
                 </li>
                 <li flex="box:mean">
-                    <span class="title">终端设备</span>
-                    <span class="info">评估6P</span>
+                    <span class="title" flex-box="1">终端设备</span>
+                    <span class="info" flex-box="2">评估6P</span>
                 </li>
                 <li flex="box:mean">
-                    <span class="title">注册时间</span>
-                    <span class="info">2017-03-03 12:12:12</span>
+                    <span class="title" flex-box="1">注册时间</span>
+                    <span class="info" flex-box="2">2017-03-03 12:12:12</span>
                 </li>
             </ul>
         </div>
@@ -37,8 +37,8 @@
     </div>
         <div class=" user-info authentication">
             <h2>实名认证</h2>
-            <div class="content" flex="dir:left main:center">
-                <ul flex-box="1" flex="dir:top main:right">
+            <div class="content" flex=" box:mean">
+                <ul flex-box="1" >
                    <li >
                     <span class="title">姓名</span>
                     </li>
@@ -54,7 +54,7 @@
                         <span class="info" >*三峰</span>
                     </li>
                     <li>
-                        <span class="info" >112233**********99</span>
+                        <span class="info" >{{id | idCardFormat}}</span>
                     </li>
                     <li>
                         <span class="info" >2017-04-04 12:12:12</span>
@@ -87,7 +87,9 @@
     export default {
         name: 'user-infor-detail',
         data(){
-            return {}
+            return {
+                id:'131181199103081929'
+            }
         },
         created(){
         },
