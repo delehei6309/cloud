@@ -8,6 +8,7 @@
                     <button :class="{'active':tab == 1}" @click.stop="tab=1">企业</button>
                     <button :class="{'active':tab == 2}" @click.stop="tab=2">个人</button>
                 </div>
+                <input type="file">
             </div>
             <div class="authentication-content">
                 <div class="content-infor">

@@ -14,9 +14,9 @@
 
         <!--显示列表-->
         <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
-            <template slot="isAccount" scope="item">{{ item.value ? '是' : '否' }}</template>
-            <template slot="action" scope="item">
-                <router-link :to="{path: 'user-infor-detail', query: {id: 123, name: 'stone'}}">详情</router-link>
+            <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
+            <template slot="userUuid" scope="item">
+                <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
             </template>
         </b-table>
 
@@ -28,7 +28,9 @@
 </template>
 
 <script>
-    import '../less/user-infor.less'
+    import '../less/user-infor.less';
+    import Toast from '../components/Toast';
+    import $api from '../tools/api';
     export default {
         name: 'user-infor',
         data(){
@@ -42,13 +44,13 @@
                     },{
                         text: '用户ID',
                         value: 'B'
-                    },{
+                    }/*,{
                         text: '姓名',
                         value: 'C'
                     },{
                         text: '身份证号',
                         value: 'D'
-                    },
+                    }*/,
                 ],
                 optionsIsRisk: [
                     {
@@ -62,43 +64,27 @@
                         value: 'C'
                     }
                 ],
-                items: [
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                    { userid: '10002', nickname: 'seven', name: '小七', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'one', name: '小一', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'tow', name: '小二', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'four', name: '小四', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                    { userid: '10002', nickname: 'seven', name: '小七', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'one', name: '小一', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'tow', name: '小二', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'four', name: '小四', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'four', name: '小四', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                    { userid: '10002', nickname: 'seven', name: '小七', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'one', name: '小一', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'tow', name: '小二', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'three', name: '小三', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10002', nickname: 'four', name: '小四', phone: '134****6789', isAccount: false, original: '渠道方' },
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                    { userid: '10001', nickname: 'stone', name: '石头', phone: '123****1234', isAccount: true, original: '金疙瘩' },
-                ],
+                items: [],
                 fields: {
-                    userid: { label: '用户ID' },
-                    nickname: { label: '用户昵称' },
-                    name: { label: '用户名' },
-                    phone: { label: '手机号' },
-                    isAccount: { label: '是否开户' },
-                    original: { label: '注册来源' },
-                    action: { label: '操作' },
+                    userId: { label: '用户ID' },
+                    userLoginName: { label: '用户昵称' },
+                    /*investorRealName: { label: '用户名' },*/
+                    investorMobile: { label: '手机号' },
+                    userVerifyStatus: { label: '是否开户' },
+                    userUuid: { label: '操作',sortable:true },
                 },
                 currentPage: 1,
                 perPage: 10,
             }
         },
         created(){
+            $api.get('/user/investor/list').then(msg => {
+                if(msg.code == 200){
+                    this.items = msg.data
+                }else{
+                    Toast(msg.msg);
+                }
+            });
         },
         computed: {},
         methods: {},

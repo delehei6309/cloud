@@ -27,7 +27,7 @@ let $query = (data) => {
     return str.join('&');
 };
 let get = (path, data = {}) => {
-    data.callSystemID = '1005';
+    //data.callSystemID = '1005';
     data.t = new Date().getTime();
     let url = '';
     if (/http/.test(path)) {

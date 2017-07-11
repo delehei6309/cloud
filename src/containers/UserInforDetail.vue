@@ -7,29 +7,29 @@
             <ul class="left"  flex-box="1">
                 <li flex="box:mean">
                     <span class="title" flex-box="1">用户ID</span>
-                    <span class="info" flex-box="1">00001</span>
+                    <span class="info" flex-box="1">{{userData.userId}}</span>
                 </li>
                 <li flex="box:mean">
                     <span class="title" flex-box="1">手机号</span>
-                    <span class="info" flex-box="1">184****7676</span>
+                    <span class="info" flex-box="1">{{userData.investorMobile}}</span>
                 </li>
                 <li flex="box:mean">
                     <span class="title" flex-box="1">用户昵称</span>
-                    <span class="info" flex-box="1">小细腿</span>
+                    <span class="info" flex-box="1">{{userData.userName}}</span>
                 </li>
             </ul>
             <ul class="right" flex-box="1">
-                <li flex="box:mean">
+                <!-- <li flex="box:mean">
                     <span class="title" flex-box="1">渠道</span>
                     <span class="info" flex-box="2">大众点评</span>
-                </li>
+                </li> -->
                 <li flex="box:mean">
                     <span class="title" flex-box="1">终端设备</span>
-                    <span class="info" flex-box="2">评估6P</span>
+                    <span class="info" flex-box="2">{{userData.userOginDeviceType}}</span>
                 </li>
                 <li flex="box:mean">
                     <span class="title" flex-box="1">注册时间</span>
-                    <span class="info" flex-box="2">2017-03-03 12:12:12</span>
+                    <span class="info" flex-box="2">{{userData.registerTime | timeFormat}}</span>
                 </li>
             </ul>
         </div>
@@ -51,10 +51,10 @@
                 </ul>
                 <ul flex-box="1" >
                     <li>
-                        <span class="info" >*三峰</span>
+                        <span class="info" >{{userData.investorRealName}}</span>
                     </li>
                     <li>
-                        <span class="info" >{{id | idCardFormat}}</span>
+                        <span class="info" >{{userData.investorIdCardNo}}</span>
                     </li>
                     <li>
                         <span class="info" >2017-04-04 12:12:12</span>
@@ -84,14 +84,26 @@
 
 <script>
     import '../less/user-infor-detail.less';
+    import $api from '../tools/api';
     export default {
         name: 'user-infor-detail',
         data(){
             return {
-                id:'131181199103081929'
+                id:'131181199103081929',
+                userData:{
+
+                }
             }
         },
         created(){
+            $api.get('/user/investor/'+this.$route.query.userUuid).then(msg => {
+                if(msg.code == 200){
+                    this.userData = msg.data
+                }else{
+                    console.log(msg)
+                    //Toast(msg.msg);
+                }
+            });
         },
         computed: {},
         methods: {},
