@@ -1,11 +1,37 @@
 @charset "UTF-8";
 @import "variables";
-
 .home {
     position: relative;
     width: 100%;
     min-height: 680px;
-    padding:30px;
+    padding:25px 30px 30px;
+    .information{
+        position: relative;
+        height:22px;
+        .infor-div{
+            padding:0 24px 0 26px;
+            line-height: 22px;
+            font-size: 16px;
+            color:@color-text;
+            background: url(../images/icon/icon-infor.png) no-repeat 0 0;
+            position: relative;
+            .infor-count{
+                display: block;
+                width:24px;
+                height:14px;
+                background-color: #D0011B;
+                border-radius: 2px;
+                font-size: 10px;
+                color:#fff;
+                line-height: 14px;
+                position: absolute;
+                right:0;
+                top:-1px;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
     .content{
         .table{
             ul{

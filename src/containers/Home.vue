@@ -1,13 +1,18 @@
 <template>
     <div class="home">
-        <div class="information"></div>
+        <div class="information" flex="dir:right">
+            <div class="infor-div">
+                <span class="infor-inner">信息</span>
+                <span class="infor-count">2</span>
+            </div>
+        </div>
         <div class="content">
             <div class="table">
                 <ul flex >
                     <li v-for="(item,index) in tableList" flex-box="1" :key="index" :class="{active:tab==index}" @click.stop="tab = index">
                         <div class="table-data">{{item.data}}</div>
                         <div class="table-text">{{item.text}}</div>
-                        <div class="table-rate" :class="{red:true}">{{item.rate}}</div>
+                        <div class="table-rate red" :class="{green:item.rate.substring(0,1)=='-'}">{{item.rate}}</div>
                     </li>
                 </ul>
             </div>
@@ -37,7 +42,7 @@
                     {
                         data:'8',
                         text:'下单笔数（今）',
-                        rate:'+4'
+                        rate:'-4'
                     },
                     {
                         data:'8000',
@@ -56,6 +61,7 @@
             
         },
         created(){
+            console.log(('-6%'.substring(0,1)))
         },
         computed: {},
         methods: {},
