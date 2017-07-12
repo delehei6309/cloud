@@ -45,9 +45,9 @@
                     <li >
                         <span class="title">身份证号</span>
                     </li>
-                    <li >
+                    <!-- <li >
                         <span class="title">认证时间</span>
-                    </li>
+                    </li> -->
                 </ul>
                 <ul flex-box="1" >
                     <li>
@@ -56,9 +56,9 @@
                     <li>
                         <span class="info" >{{userData.investorIdCardNo}}</span>
                     </li>
-                    <li>
-                        <span class="info" >2017-04-04 12:12:12</span>
-                    </li>
+                    <!-- <li>
+                        <span class="info" >{{userData.}}</span>
+                    </li> -->
                 </ul>
             </div>
         </div>

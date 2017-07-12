@@ -7,8 +7,6 @@
         <div class="inquire">
             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
             <b-form-input type="text" placeholder="请输入用户信息" size="sm"></b-form-input>
-            <span>风险测评</span>
-            <b-form-select v-model="selectedIsRisk" :options="optionsIsRisk" size="sm"></b-form-select>
             <b-btn class="btn">查询</b-btn>
         </div>
 
@@ -44,13 +42,7 @@
                     },{
                         text: '用户ID',
                         value: 'B'
-                    }/*,{
-                        text: '姓名',
-                        value: 'C'
-                    },{
-                        text: '身份证号',
-                        value: 'D'
-                    }*/,
+                    }
                 ],
                 optionsIsRisk: [
                     {
@@ -68,10 +60,9 @@
                 fields: {
                     userId: { label: '用户ID' },
                     userLoginName: { label: '用户昵称' },
-                    /*investorRealName: { label: '用户名' },*/
                     investorMobile: { label: '手机号' },
                     userVerifyStatus: { label: '是否开户' },
-                    userUuid: { label: '操作',sortable:true },
+                    userUuid: { label: '操作' },
                 },
                 currentPage: 1,
                 perPage: 10,
