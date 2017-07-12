@@ -106,7 +106,6 @@
                     { code: '10005', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
                     { code: '10006', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
                     { code: '10007', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10008', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
                 ],
                 fields: {
                     code: { label: '产品编号' },
