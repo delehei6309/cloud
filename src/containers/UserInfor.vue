@@ -17,7 +17,6 @@
                 <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
             </template>
         </b-table>
-
         <!--分页-->
         <div class="justify-content-center">
             <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="items.length" :limit=10 :per-page='perPage' v-model="currentPage"></b-pagination>
@@ -33,27 +32,15 @@
         name: 'user-infor',
         data(){
             return {
-                selectedBase: 'A',
-                selectedIsRisk: 'A',
+                selectedBase: 'phone',
+                inputVal: '',
                 optionsBase: [
                     {
                         text: '手机号',
-                        value: 'A'
+                        value: 'phone'
                     },{
                         text: '用户ID',
                         value: 'B'
-                    }
-                ],
-                optionsIsRisk: [
-                    {
-                        text: '全部',
-                        value: 'A'
-                    },{
-                        text: '已测评',
-                        value: 'B'
-                    },{
-                        text: '未测评',
-                        value: 'C'
                     }
                 ],
                 items: [],
@@ -78,7 +65,11 @@
             });
         },
         computed: {},
-        methods: {},
+        methods: {
+            inquire: function() {
+                let sql = this.selectedBase + '=' + this.inputVal + '&isRisk=' + this.selectedIsRisk
+            }
+        },
         destroyed(){
 
         }
