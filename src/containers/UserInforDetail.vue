@@ -72,7 +72,7 @@
                     <th>使用状态</th>
                 </tr>
                 <tr>
-                    <td>6220********3141</td>
+                    <td>{{userData.bankUserCardNo}}</td>
                     <td>招商银行</td>
                     <td>2015-04-30 12:12:12</td>
                     <td>使用中</td>
@@ -85,6 +85,7 @@
 <script>
     import '../less/user-infor-detail.less';
     import $api from '../tools/api';
+    import Toast from '../components/Toast';
     export default {
         name: 'user-infor-detail',
         data(){
@@ -100,8 +101,7 @@
                 if(msg.code == 200){
                     this.userData = msg.data
                 }else{
-                    console.log(msg)
-                    //Toast(msg.msg);
+                    Toast(msg.msg);
                 }
             });
         },

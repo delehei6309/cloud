@@ -7,11 +7,11 @@
                 <ul flex-box="1">
                     <li flex="box:mean">
                         <span class="title" flex-box="1">产品名称</span>
-                        <span class="info" flex-box="1">00001</span>
+                        <span class="info" flex-box="1">{{productData.productName}}</span>
                     </li>
                     <li flex="box:mean">
                         <span class="title" flex-box="1">产品类型</span>
-                        <span class="info" flex-box="1">184****7676</span>
+                        <span class="info" flex-box="1">{{productData.productType}}</span>
                     </li>
                     <li flex="box:mean">
                         <span class="title" flex-box="1">收益方式</span>
@@ -164,14 +164,24 @@
 </template>
 <script>
     import '../less/fixi-goods-detail.less';
+    import $api from '../tools/api';
+    import Toast from '../components/Toast';
     export default {
         name: 'fixi-goods-detail',
         data(){
             return {
-                id:'131181199103081929'
+                id:'131181199103081929',
+                productData:{}
             }
         },
         created(){
+            $api.get('/product/fixedIncome/zyj1352285307413522853074').then(msg => {
+                if(msg.code == 200){
+                    this.productData = msg.data
+                }else{
+                    Toast(msg.msg);
+                }
+            });
         },
         computed: {},
         methods: {},

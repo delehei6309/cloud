@@ -12,6 +12,7 @@ import UserInfor  from '../containers/UserInfor';
 import ProductManagement  from '../containers/ProductManagement';
 import UserInforDetail  from '../containers/UserInforDetail';
 import ProductDetail  from '../containers/ProductDetail';
+import ExchangeManagement  from '../containers/ExchangeManagement';
 import ForgetPassword from '../containers/ForgetPassword'
 let routes = [
     {
@@ -87,6 +88,14 @@ let routes = [
                 component:ProductDetail,
                 meta: {
                     title: '用户信息详情'
+                }
+            },
+            {
+                path:'exchange-management',
+                name:'exchange-management',
+                component:ExchangeManagement,
+                meta: {
+                    title: '定期产品订单管理'
                 }
             },
             {

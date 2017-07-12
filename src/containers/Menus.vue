@@ -47,7 +47,8 @@
                         class:'icon-authentication',
                         text:'资质认证',
                         show:false,
-                        child:[]
+                        child:[],
+                        allPath:[]
                     },
                     {
                         path:'',
@@ -58,12 +59,9 @@
                             {
                                 path:'/menus/user-infor',
                                 text:'用户管理'
-                            },
-                            {
-                                path:'/menus/user-infor-detail',
-                                text:'用户信息详情'
                             }
-                        ]
+                        ],
+                        allPath:['/menus/user-infor','/menus/user-infor-detail']
                     },
                     {
                         path:'',
@@ -74,12 +72,22 @@
                             {
                                 path:'/menus/product-management',
                                 text:'产品管理'
-                            },
-                            {
-                                path:'/menus/product-detail',
-                                text:'定期产品详情'
                             }
-                        ]
+                        ],
+                        allPath:['/menus/product-management','/menus/product-detail']
+                    },
+                    {
+                        path:'',
+                        text:'交易管理',
+                        class:'icon-exchange',
+                        show:false,
+                        child:[
+                            {
+                                path:'/menus/exchange-management',
+                                text:'定期订单管理'
+                            }
+                        ],
+                        allPath:['/menus/exchange-management']
                     }
                 ]
             }
@@ -95,9 +103,10 @@
             divActiveIndex:function(){
                 let index ;
                 this.menus.forEach((item,i)=>{
-                    item.child.forEach((m,n)=>{
-                        if(m.path == this.route){
+                    item.allPath.forEach((m,n)=>{
+                        if(m == this.route){
                             index = i;
+                    
                         }
                     })
                 })

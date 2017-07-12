@@ -163,18 +163,22 @@
         </div>
         <div class="submit-btn" flex="main:center">
             <button @click.stop="submit">提交</button>
+
         </div>
+        <datepicker v-model="date"></datepicker>
     </div>
 </template>
 
 <script>
     import '../less/authentication.less';
+    import datepicker from 'vue-date';
     import {checkPhone,valiIdCard} from '../tools/fun';
     import Toast from '../components/Toast';
     export default {
         name: 'authentication',
         data(){
             return {
+                date:null,
                 tab:1,
                 companyInfor:[
                     {
@@ -416,6 +420,7 @@
                 return (this.aptitude.other[0].loaded<100) && (this.aptitude.other[1].loaded<100) && (this.aptitude.other[2].loaded<100)
             }
         },
+        components: { datepicker },
         methods: {
             conso(str){
                 console.log(str)
