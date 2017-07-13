@@ -7,16 +7,19 @@
         <div class="inquire">
             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
             <b-form-input type="text" placeholder="请输入用户信息" size="sm"></b-form-input>
-            <b-btn class="btn">查询</b-btn>
+            <b-btn class="btn" @click="itemsFilter(items)">查询</b-btn>
         </div>
 
         <!--显示列表-->
-        <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
-            <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
-            <template slot="userUuid" scope="item">
-                <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
-            </template>
-        </b-table>
+        <div class="table-wrap">
+            <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
+                <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
+                <template slot="userUuid" scope="item">
+                    <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
+                </template>
+            </b-table>
+        </div>
+
         <!--分页-->
         <div class="justify-content-center">
             <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="items.length" :limit=10 :per-page='perPage' v-model="currentPage"></b-pagination>
@@ -66,12 +69,12 @@
         },
         computed: {},
         methods: {
-            inquire: function() {
-                let sql = this.selectedBase + '=' + this.inputVal + '&isRisk=' + this.selectedIsRisk
+            itemsFilter: function(items) {
+                return items.filter( function(item) {
+                    return item.userUuid == '18e328b8914443c899edc03b06c4eff5'
+                })
             }
         },
-        destroyed(){
-
-        }
+        destroyed(){}
     }
 </script>

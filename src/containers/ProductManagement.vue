@@ -24,9 +24,10 @@
         <div class="table-wrap">
             <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
                 <template slot="isAccount" scope="item">{{ item.value ? '是' : '否' }}</template>
-                <template slot="action" scope="item">
-                    <router-link :to="{path: 'user-infor-detail', query: {id: 123, name: 'stone'}}">详情</router-link>
+                <template slot="productUuid" scope="item">
+                    <router-link :to="{path: 'product-detail', query: {userUuid: item.value}}">详情</router-link>
                 </template>
+
             </b-table>
         </div>
 
@@ -38,7 +39,9 @@
 </template>
 
 <script>
-    import '../less/user-infor.less'
+    import '../less/user-infor.less';
+    import Toast from '../components/Toast';
+    import $api from '../tools/api';
     export default {
         name: 'user-infor',
         data(){
@@ -98,34 +101,34 @@
                         value: false,
                     },
                 ],
-                items: [
-                    { code: '10001', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10002', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10003', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10004', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10005', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10006', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10007', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                ],
+                items: [],
                 fields: {
-                    code: { label: '产品编号' },
-                    abbrName: { label: '产品简称' },
-                    type: { label: '产品类型' },
-                    scale: { label: '产品规模（元）' },
+                    productCode: { label: '产品编号' },
+                    productAbbrName: { label: '产品简称' },
+                    productType: { label: '产品类型' },
+                    productScale: { label: '产品规模（元）' },
                     annualInterestRate: { label: '预期年化收益率' },
-                    period: { label: '产品期限（天）' },
-                    onStatus: { label: '上架状态' },
+                    productPeriod: { label: '产品期限（天）' },
+                    productOnStatus: { label: '上架状态' },
                     productStatus: { label: '产品状态' },
-                    createDate: { label: '创建时间' },
-                    accumulation: { label: '已募集金额（元）' },
-                    action: { label: '操作' },
+                    productOpenTimeFrom: { label: '创建时间' },
+                    productAccumulation: { label: '已募集金额（元）' },
+                    productUuid: { label: '操作' },
                 },
                 currentPage: 1,
                 perPage: 10,
             }
         },
         components: {},
-        created(){},
+        created(){
+          $api.get('/product/fixedIncome/list').then(msg => {
+            if(msg.code == 200){
+              this.items = msg.data
+            }else{
+              Toast(msg.msg)
+            }
+          })
+        },
         computed: {},
         methods: {},
         destroyed(){}
