@@ -25,7 +25,7 @@
                 </li> -->
                 <li flex="box:mean">
                     <span class="title" flex-box="1">终端设备</span>
-                    <span class="info" flex-box="2">{{userData.userOginDeviceType}}</span>
+                    <span class="info" flex-box="2">{{userData.userOginDeviceType || '——'}}</span>
                 </li>
                 <li flex="box:mean">
                     <span class="title" flex-box="1">注册时间</span>

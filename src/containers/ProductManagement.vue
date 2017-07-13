@@ -25,7 +25,7 @@
             <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
                 <template slot="isAccount" scope="item">{{ item.value ? '是' : '否' }}</template>
                 <template slot="action" scope="item">
-                    <router-link :to="{path: 'user-infor-detail', query: {id: 123, name: 'stone'}}">详情</router-link>
+                    <router-link :to="{path: 'product-detail', query: {userId: 123}}">详情</router-link>
                 </template>
             </b-table>
         </div>
@@ -99,13 +99,7 @@
                     },
                 ],
                 items: [
-                    { code: '10001', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10002', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10003', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10004', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10005', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10006', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
-                    { code: '10007', abbrName: 'stone', type: '石头', scale: 1000000, annualInterestRate: '12.5%', period: 366, onStatus: 0, productStatus: -1, createDate: '2017-04-12 16:32:21', accumulation: 10000 },
+                    
                 ],
                 fields: {
                     code: { label: '产品编号' },
