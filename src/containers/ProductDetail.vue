@@ -226,7 +226,7 @@
             }
         },
         created(){
-            $api.get('/product/fixedIncome/41552f8251d34da8b2ae80e4513d2791').then(msg => {
+            $api.get('/product/fixedIncome/'+this.$route.query.productUuid).then(msg => {
                 if(msg.code == 200){
                     this.productData = msg.data
                 }else{
