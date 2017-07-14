@@ -5,25 +5,28 @@
             <div class="title">定期产品管理</div>
             <!--查询条件-->
             <div class="inquire">
-                <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                <b-form-input type="text" v-model="inputVal" placeholder="请输入用户信息"></b-form-input>
-                <span>产品状态</span>
-                <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
-                <span>推荐至首页</span>
-                <b-form-select v-model="selectedIsRecommend" :options="optionsIsRecommend" size="sm"></b-form-select>
+                <div flex="main:justify">
+                    <div>
+                        <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
+                        <b-form-input type="text" v-model="inputVal" placeholder="请输入用户信息"></b-form-input>
+                        <span>产品状态</span>
+                        <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
+                    </div>
+                    <b-btn class="btn">查询</b-btn>
+                </div>
+                <!-- <span>推荐至首页</span>
+                <b-form-select v-model="selectedIsRecommend" :options="optionsIsRecommend" size="sm"></b-form-select> -->
                 <div class="input-wrap" flex>
                   <div class="date-text">创建时间：</div>
                   <div class="input-date"><datepicker v-model="dateStart"></datepicker></div>
                   <div class="date-text">到</div>
                   <div class="input-date"><datepicker v-model="dateEnd"></datepicker></div>
-
-                  <div><b-btn class="btn">查询</b-btn></div>
                 </div>
             </div>
 
             <!--显示列表-->
             <div class="table-wrap">
-                <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
+                <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered >
                     <template slot="productPeriod" scope="item">
                         <template>{{item.value}}</template><template v-if="item.item.productPeriodType == 'D'">天</template><template v-if="item.item.productPeriodType == 'W'">周</template><template v-if="item.item.productPeriodType == 'M'">月</template><template v-if="item.item.productPeriodType == 'Y'">天</template>
                     </template>
@@ -40,7 +43,7 @@
                         <template v-if="item.value == 0">其它</template>
                     </template>
                     <template slot="organization" scope="item">
-                        {{item.value || '——'}}
+                        {{item.value || '--'}}
                     </template>
                     <template slot="orderStatus" scope="item">
                         <template v-if="item.value == 1">待支付</template>
@@ -49,9 +52,9 @@
                         <template v-if="item.value == 4">已到期</template>
                         <template v-if="item.value == 4">已兑付</template>
                     </template>
-                    <template slot="userUuid" scope="item">
+                    <!-- <template slot="userUuid" scope="item">
                         <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>
-                    </template>
+                    </template> -->
                 </b-table>
             </div>
 
@@ -88,8 +91,8 @@
                 dateStart:null,
                 dateEnd:null,
                 selectedBase: 'all',
-                selectedProductStatus: 'all',
-                selectedIsRecommend: 'all',
+                selectedProductStatus: 0,
+                //selectedIsRecommend: 'all',
                 inputVal: '',
                 optionsBase: [
                     {
@@ -106,31 +109,25 @@
                 optionsProductStatus: [
                     {
                         text: '全部',
-                        value: 'all',
+                        value: 0,
                     },{
-                        text: '预热中',
-                        value: 'preheating',
+                        text: '待支付',
+                        value: 1,
                     },{
-                        text: '募集中',
-                        value: 'raising',
+                        text: '已支付',
+                        value: 2,
                     },{
-                        text: '已售罄',
-                        value: 'sold',
+                        text: '计息中',
+                        value: 3,
                     },{
-                        text: '已成立',
-                        value: 'formed',
+                        text: '已到期',
+                        value: 4,
                     },{
-                        text: '封存期',
-                        value: 'storaged',
-                    },{
-                        text: '存续期',
-                        value: 'duration',
-                    },{
-                        text: '已结束',
-                        value: 'end',
+                        text: '已兑付',
+                        value: 5,
                     }
                 ],
-                optionsIsRecommend: [
+                /*optionsIsRecommend: [
                     {
                         text: '全部',
                         value: 'all',
@@ -141,7 +138,7 @@
                         text: '否',
                         value: false,
                     },
-                ],
+                ],*/
                 items: [],
                 fields: {
                     orderBillCode: { label: '订单号' },
@@ -157,7 +154,7 @@
                     transactionChannel: { label: '下单渠道' },
                     organization: { label: '所属机构' },
                     orderStatus: { label: '状态' },
-                    userUuid: { label: '操作' },
+                    //userUuid: { label: '操作' },
                 },
                 currentPage: 1,
                 perPage: 10,

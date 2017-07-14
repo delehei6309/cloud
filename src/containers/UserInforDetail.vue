@@ -25,7 +25,7 @@
                 </li> -->
                 <li flex="box:mean">
                     <span class="title" flex-box="1">终端设备</span>
-                    <span class="info" flex-box="2">{{userData.userOginDeviceType || '——'}}</span>
+                    <span class="info" flex-box="2">{{userData.userOginDeviceType || '--'}}</span>
                 </li>
                 <li flex="box:mean">
                     <span class="title" flex-box="1">注册时间</span>
@@ -38,26 +38,17 @@
         <div class=" user-info authentication">
             <h2>实名认证</h2>
             <div class="content" flex=" box:mean">
-                <ul flex-box="1" >
-                   <li >
-                    <span class="title">姓名</span>
+                <ul>
+                   <li class="auth-ul" flex="main:center">
+                        <span class="title">姓名</span>
+                        <span class="info">{{userData.investorRealName}}</span>
                     </li>
-                    <li >
+                    <li class="auth-ul" flex="main:center">
                         <span class="title">身份证号</span>
+                        <span class="info">{{userData.investorIdCardNo}}</span>
                     </li>
                     <!-- <li >
                         <span class="title">认证时间</span>
-                    </li> -->
-                </ul>
-                <ul flex-box="1" >
-                    <li>
-                        <span class="info" >{{userData.investorRealName}}</span>
-                    </li>
-                    <li>
-                        <span class="info" >{{userData.investorIdCardNo}}</span>
-                    </li>
-                    <!-- <li>
-                        <span class="info" >{{userData.}}</span>
                     </li> -->
                 </ul>
             </div>
@@ -73,9 +64,9 @@
                 </tr>
                 <tr>
                     <td>{{userData.bankUserCardNo}}</td>
-                    <td>招商银行</td>
-                    <td>2015-04-30 12:12:12</td>
-                    <td>使用中</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
                 </tr>
             </table>
         </div>

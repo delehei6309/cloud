@@ -11,7 +11,7 @@
                     </li>
                     <li flex="">
                         <span class="title">产品类型</span>
-                        <span class="info">固定收益类</span>
+                        <span class="info" v-if="productData.productType == 'FIXI'">固定收益类</span>
                     </li>
                     <li flex="">
                         <span class="title">收益方式</span>
@@ -43,7 +43,7 @@
                     </li>
                     <li flex="">
                         <span class="title" >预期年化收益率</span>
-                        <span class="info" >{{productData.annualInterestRate}}</span>
+                        <span class="info" >{{productData.annualInterestRate | translatePate}}</span>
                     </li>
                     <li flex="">
                         <span class="title" >起投金额</span>
@@ -110,9 +110,9 @@
                 </ul>
                 <div class="tab">
                     <ul flex="dir:left">
-                        <li v-for="(item,index) in tabList" :key="index" @click.stop="tab = index" :class="{active:tab==index,border:index == (tabList.length-1)}">{{item.title}}</li>
+                        <li v-for="(item,index) in productData.productInformation" :key="index" @click.stop="tab = index" :class="{active:tab==index,border:index == (productData.productInformation.length-1)}">{{item.inforKey}}</li>
                     </ul>
-                    <p><span>委托人预期年化收益率：</span><span> 5.15%，为定向委托投资标的到期产生的预期年化收益率扣除受托投资管理机构的管理费率。</span></p>
+                    <!-- <p><span>委托人预期年化收益率：</span><span> 5.15%，为定向委托投资标的到期产生的预期年化收益率扣除受托投资管理机构的管理费率。</span></p>
                     <p><span>收益起始日： </span><span>2017年03月24日</span></p>
                     <p><span>收益到期日： </span><span>2017年07月03日</span></p>
                     <p><span>期限：  </span><span>101天</span></p>
@@ -120,7 +120,8 @@
                     <p><span>定向委托投资标的： </span><span>非银行金融机构发行的产品，详见《定向委托投资标的说明》</span></p>
                     <p><span>定向委托投资标的风险提示： </span><span> 详见《风险提示函》</span></p>
                     <p><span>受托投资管理机构： </span><span>  深圳平安聚鑫资产管理有限公司</span></p>
-                    <p><span>托管机构： </span><span>  平安银行股份有限公司深圳分行</span></p>
+                    <p><span>托管机构： </span><span>  平安银行股份有限公司深圳分行</span></p> -->
+                    <p v-for="(item,index) in productData.productInformation" :key="index" v-show="index == tab">{{item.inforValue}}</p>
                 </div>
             </div>
         </div>
@@ -129,13 +130,12 @@
             <div class="main">
                 <ul>
                     <li v-for="(item,index) in productData.productAttachment" :key="index">
-                        <rou
+                        <a :href="item.attachmentLink" target="_blank">{{item.attachmentName}}</a>
                     </li>
+                    <!-- <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li>
                     <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li>
-                    <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li>
-                    <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li>
+                    <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li> -->
                 </ul>
-
             </div>
         </div>
         <div class="content content5">
@@ -185,7 +185,13 @@
                         <span class="info" v-if="productData.transactionStatus == -1">审核失败</span>
                     </li>
                 </ul>
-                <ul flex-box="1"></ul>
+            </div>
+        </div>
+        <div class="content content6">
+            <h2>投资结算比例</h2>
+            <div class="main main-bottom" flex="">
+               <div class="div-name">渠道结算比例：</div>
+               <div class="div-rate">1%</div>
             </div>
         </div>
     </div>
