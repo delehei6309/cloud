@@ -11,10 +11,7 @@
             <span>推荐至首页</span>
             <b-form-select v-model="selectedIsRecommend" :options="optionsIsRecommend" size="sm"></b-form-select>
             <div class="input-wrap">
-              创建时间：
-              <input type="date" id="startDate">
-              到
-              <input type="date" id="endDate">
+              创建时间：<input type="date" id="startDate">到<input type="date" id="endDate">
 
               <b-btn class="btn">查询</b-btn>
             </div>
@@ -22,12 +19,13 @@
 
         <!--显示列表-->
         <div class="table-wrap">
-            <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
-                <template slot="isAccount" scope="item">{{ item.value ? '是' : '否' }}</template>
+            <b-table :items="items" :fields="fields" :filter="filter" :current-page="currentPage" :per-page="perPage" bordered>
                 <template slot="productUuid" scope="item">
                     <router-link :to="{path: 'product-detail', query: {productUuid: item.value}}">详情</router-link>
                 </template>
-
+                <template slot="createTime" scope="item">
+                    {{item.value | timeFormat}}
+                </template>
             </b-table>
         </div>
 
@@ -46,6 +44,7 @@
         name: 'user-infor',
         data(){
             return {
+                filter: "0.01",
                 selectedBase: 'all',
                 selectedProductStatus: 'all',
                 selectedIsRecommend: 'all',
@@ -111,7 +110,7 @@
                     productPeriod: { label: '产品期限（天）' },
                     productOnStatus: { label: '上架状态' },
                     productStatus: { label: '产品状态' },
-                    productOpenTimeFrom: { label: '创建时间' },
+                    createTime: { label: '创建时间' },
                     productAccumulation: { label: '已募集金额（元）' },
                     productUuid: { label: '操作' },
                 },
