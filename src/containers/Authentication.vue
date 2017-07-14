@@ -8,7 +8,6 @@
                     <button :class="{'active':tab == 1}" @click.stop="tab=1">企业</button>
                     <button :class="{'active':tab == 2}" @click.stop="tab=2">个人</button>
                 </div>
-                <input type="file">
             </div>
             <div class="authentication-content">
                 <div class="content-infor">
@@ -163,15 +162,12 @@
         </div>
         <div class="submit-btn" flex="main:center">
             <button @click.stop="submit">提交</button>
-
         </div>
-        <datepicker v-model="date"></datepicker>
     </div>
 </template>
 
 <script>
     import '../less/authentication.less';
-    import datepicker from 'vue-date';
     import {checkPhone,valiIdCard} from '../tools/fun';
     import Toast from '../components/Toast';
     export default {
@@ -420,7 +416,7 @@
                 return (this.aptitude.other[0].loaded<100) && (this.aptitude.other[1].loaded<100) && (this.aptitude.other[2].loaded<100)
             }
         },
-        components: { datepicker },
+        components: { },
         methods: {
             conso(str){
                 console.log(str)

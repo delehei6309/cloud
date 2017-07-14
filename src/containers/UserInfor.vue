@@ -6,13 +6,17 @@
         <!--查询条件-->
         <div class="inquire">
             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-            <b-form-input type="text" placeholder="请输入用户信息" size="sm"></b-form-input>
-            <b-btn class="btn" @click="itemsFilter(items)">查询</b-btn>
+            <b-form-input type="text" placeholder="请输入用户信息" size="sm" v-model="inputVal"></b-form-input>
+            <b-btn class="btn" @click.native="query">查询</b-btn>
         </div>
 
         <!--显示列表-->
         <div class="table-wrap">
-            <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered>
+            <b-table :items="items" :fields="fields"  bordered>
+                <template slot="investorRiskScore" scope="item">
+                    <template v-if="item.value == 0">未评测</template>
+                    <template v-if="item.value == 1">已评测</template>
+                </template>
                 <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
                 <template slot="userUuid" scope="item">
                     <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
@@ -22,7 +26,7 @@
 
         <!--分页-->
         <div class="justify-content-center">
-            <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="items.length" :limit=10 :per-page='perPage' v-model="currentPage"></b-pagination>
+            <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='perPage' v-model="currentPage" @change="change"></b-pagination>
         </div>
     </div>
 </template>
@@ -35,44 +39,76 @@
         name: 'user-infor',
         data(){
             return {
-                selectedBase: 'phone',
+                selectedBase: 0,
                 inputVal: '',
+                count:0,
                 optionsBase: [
                     {
+                        text:'全部',
+                        value:0
+                    },{
                         text: '手机号',
-                        value: 'phone'
+                        value: 1
                     },{
                         text: '用户ID',
-                        value: 'B'
+                        value: 2
                     }
                 ],
                 items: [],
                 fields: {
                     userId: { label: '用户ID' },
-                    userLoginName: { label: '用户昵称' },
+                    investorRealName:{label:'姓名'},
                     investorMobile: { label: '手机号' },
+                    investorRiskScore:{label:'风险测评'},
                     userVerifyStatus: { label: '是否开户' },
                     userUuid: { label: '操作' },
                 },
                 currentPage: 1,
-                perPage: 10,
+                perPage: 30,
             }
         },
         created(){
-            $api.get('/user/investor/list').then(msg => {
-                if(msg.code == 200){
-                    this.items = msg.data
-                }else{
-                    Toast(msg.msg);
-                }
-            });
+            this.get();
         },
-        computed: {},
+        computed: {
+            investorMobile:function(){
+                if(this.selectedBase == 1){
+                    return this.inputVal;
+                }
+                return null
+            },
+            userId:function(){
+                if(this.selectedBase == 2){
+                    return this.inputVal;
+                }
+                return null
+            }
+        },
         methods: {
-            itemsFilter: function(items) {
-                return items.filter( function(item) {
-                    return item.userUuid == '18e328b8914443c899edc03b06c4eff5'
+            query(){
+                this.currentPage = 1;
+                this.get();
+            },
+            change(){
+                setTimeout(()=>{
+                    this.get();
                 })
+            },
+            get(){
+                let parm = {
+                    pageNo:this.currentPage,
+                    pageSize:30,
+                    investorMobile:this.investorMobile,
+                    userId:this.userId
+                }
+                $api.get('/user/investor/list',parm).then(msg => {
+                    if(msg.code == 200){
+                        this.items = msg.data.list;
+                        this.count = msg.data.count;
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             }
         },
         destroyed(){}

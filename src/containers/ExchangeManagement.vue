@@ -12,7 +12,7 @@
                         <span>产品状态</span>
                         <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                     </div>
-                    <b-btn class="btn">查询</b-btn>
+                    <b-btn class="btn" @click.native="query">查询</b-btn>
                 </div>
                 <!-- <span>推荐至首页</span>
                 <b-form-select v-model="selectedIsRecommend" :options="optionsIsRecommend" size="sm"></b-form-select> -->
@@ -26,7 +26,7 @@
 
             <!--显示列表-->
             <div class="table-wrap">
-                <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" bordered >
+                <b-table :items="items" :fields="fields" bordered >
                     <template slot="productPeriod" scope="item">
                         <template>{{item.value}}</template><template v-if="item.item.productPeriodType == 'D'">天</template><template v-if="item.item.productPeriodType == 'W'">周</template><template v-if="item.item.productPeriodType == 'M'">月</template><template v-if="item.item.productPeriodType == 'Y'">天</template>
                     </template>
@@ -60,7 +60,7 @@
 
             <!--分页-->
             <div class="justify-content-center">
-                <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="items.length" :limit=10 :per-page='perPage' v-model="currentPage"></b-pagination>
+                <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count"  :per-page="perPage" v-model="currentPage" @change="change"></b-pagination>
             </div>
         </div>
         <div class="look-over-box" v-show="lookOverShow">
@@ -86,30 +86,31 @@
         name: 'user-infor',
         data(){
             return {
+                count:0,
                 lookOverShow:false,
                 SubscriptionAgreemen:false,
                 dateStart:null,
                 dateEnd:null,
-                selectedBase: 'all',
-                selectedProductStatus: 0,
+                selectedBase: 0,
+                selectedProductStatus: null,
                 //selectedIsRecommend: 'all',
                 inputVal: '',
                 optionsBase: [
                     {
                         text: '全部',
-                        value: 'all'
-                    },{
-                        text: '产品编号',
-                        value: 'code'
+                        value: 0
                     },{
                         text: '产品名称',
-                        value: 'abbrName'
+                        value: 1
+                    },{
+                        text: '订单编号',
+                        value: 2
                     }
                 ],
                 optionsProductStatus: [
                     {
                         text: '全部',
-                        value: 0,
+                        value: null,
                     },{
                         text: '待支付',
                         value: 1,
@@ -157,21 +158,27 @@
                     //userUuid: { label: '操作' },
                 },
                 currentPage: 1,
-                perPage: 10,
+                perPage: 30,
             }
         },
         components: { datepicker },
         created(){
-            $api.get('/trade/order/list').then(msg => {
-                if(msg.code == 200){
-                    this.items = msg.data
-                    console.log(msg)
-                }else{
-                    Toast(msg.msg);
-                }
-            });
+            this.get();
         },
-        computed: {},
+        computed: {
+            orderBillCode:function(){
+                if(this.selectedBase == 2){
+                    return this.inputVal;
+                }
+                return null
+            },
+            productAbbrName:function(){
+                if(this.selectedBase == 1){
+                    return this.inputVal;
+                }
+                return null
+            }
+        },
         methods: {
             lookOver(item){
                 let {orderStatus} = item;
@@ -181,6 +188,34 @@
                     this.SubscriptionAgreemen = true;
                 }
                 this.lookOverShow = true;
+            },
+            change(){
+                setTimeout(()=>{
+                    this.get()
+                })
+            },
+            query(){
+                this.currentPage = 1;
+                this.get()
+            },
+            get(){
+                let parm = {
+                    pageNo:this.currentPage,
+                    pageSize:30,
+                    orderStatus:this.selectedProductStatus,
+                    orderBillCode:this.orderBillCode,
+                    productAbbrName:this.productAbbrName,
+                    transactionTimeFrom:this.dateStart,
+                    transactionTimeTo:this.dateEnd
+                }
+                $api.get('/trade/order/list',parm).then(msg => {
+                    if(msg.code == 200){
+                        this.items = msg.data.list;
+                        this.count = msg.data.count;
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             }
         },
         destroyed(){}

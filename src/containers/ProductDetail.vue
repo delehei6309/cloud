@@ -1,5 +1,5 @@
 <template>
-    <div class="fixi-goods-detail">
+    <div class="product-detail">
         <div class="title1">定期产品详情</div>
         <div class="content">
             <h2>基本要素</h2>
@@ -191,17 +191,17 @@
             <h2>投资结算比例</h2>
             <div class="main main-bottom" flex="">
                <div class="div-name">渠道结算比例：</div>
-               <div class="div-rate">1%</div>
+               <div class="div-rate">--</div>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import '../less/fixi-goods-detail.less';
+    import '../less/product-detail.less';
     import $api from '../tools/api';
     import Toast from '../components/Toast';
     export default {
-        name: 'fixi-goods-detail',
+        name: 'product-detail',
         data(){
             return {
                 id:'131181199103081929',

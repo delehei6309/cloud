@@ -64,9 +64,9 @@
                 </tr>
                 <tr>
                     <td>{{userData.bankUserCardNo}}</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
+                    <td>{{userData.depositBank}}</td>
+                    <td>{{userData.openAccountTime | timeFormat}}</td>
+                    <td>使用中</td>
                 </tr>
             </table>
         </div>
