@@ -98,14 +98,14 @@
         <div class="content content3">
             <h2>募集方</h2>
             <div class="main" >
-                <ul >
-                    <li flex="box:mean ">
-                        <span class="title" flex-box="1">企业用户编号：</span>
-                        <span class="info" flex-box="6">{{productData.productIssuerUuid}}</span>
+                <ul class="raise">
+                    <li flex>
+                        <span class="title">企业用户编号：</span>
+                        <span class="info" flex-box="1">{{productData.productIssuerUuid}}</span>
                     </li>
-                    <li flex="box:mean">
-                        <span class="title" flex-box="1" >企业名称：</span>
-                        <span class="info" flex-box="6">{{productData.productIssuerName}}</span>
+                    <li flex>
+                        <span class="title" >企业名称：</span>
+                        <span class="info" flex-box="1">{{productData.productIssuerName}}</span>
                     </li>
                 </ul>
                 <div class="tab">
