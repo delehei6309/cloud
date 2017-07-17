@@ -6,15 +6,13 @@ weixin-vue-test:
   tags:
     - weixin-jq-tag
   script:
-    - cnpm install
-    - cnpm run test
+     - echo 'start...'
 
   only:
     - /^.*test$/
   after_script:
-    - scp -r dist/* web@47.93.35.76:/home/web/webhive/nginx/vue/dist
-    - scp -r html/* web@47.93.35.76:/home/web/webhive/nginx/vue
-    - scp -r html/* web@47.93.35.76:/home/web/webhive/nginx/jq
+    - scp -r dist/* web@47.93.35.76:/home/web/webhive/nginx/cloud/dist
+    - scp -r html/* web@47.93.35.76:/home/web/webhive/nginx/cloud
 
 weixin-vue-build:
   cache:
@@ -24,12 +22,10 @@ weixin-vue-build:
   tags:
     - weixin-jq-tag
   script:
-    - cnpm install
-    - cnpm run build
+     - echo 'start...'
 
   only:
     - build
   after_script:
-    - scp -r dist/* web@47.93.35.76:/home/web/wechat/vue/dist
-    - scp -r html/* web@47.93.35.76:/home/web/wechat/vue
-    - scp -r html/* web@47.93.35.76:/home/web/wechat/jq
+    - scp -r dist/* web@47.93.35.76:/home/web/cloud/dist
+    - scp -r html/* web@47.93.35.76:/home/web/cloud
