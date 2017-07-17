@@ -19,24 +19,27 @@
                         <label class="label" for="phone" flex-box="0" flex="cross:center">
                             <img src="../images/login/phone.png">
                         </label>
-                        <input flex-box="1" id="phone" class="form-input" placeholder="手机号"/>
+                        <input flex-box="1" v-model.trim="username"
+                               id="phone" class="form-input" placeholder="手机号"/>
                     </div>
 
                     <div class="form-item" flex>
                         <label class="label" for="password" flex-box="0" flex="cross:center">
                             <img src="../images/login/password.png">
                         </label>
-                        <input flex-box="1" type="hidden" name="password" class="form-input" placeholder="密码"/>
-                        <input flex-box="1" type="password" name="password" id="password" class="form-input"
+                        <input flex-box="1" v-model.trim="password"
+                               type="hidden" name="password" class="form-input" placeholder="密码"/>
+                        <input flex-box="1" v-model.trim="password"
+                               type="password" name="password" id="password" class="form-input"
                                placeholder="密码"/>
                     </div>
                     <div class="text-hint" flex="main:justify">
-                        <span class="err-info">密码不正确</span>
+                        <span class="err-info">{{errInfo}}</span>
                         <router-link :to="{path:'forget-password'}">忘记密码</router-link>
                     </div>
 
                     <div class="btn-warp">
-                        <button class="btn-primary btn-submit">登录</button>
+                        <button class="btn-primary btn-submit" @click.stop="login">登录</button>
                     </div>
                 </div>
 
@@ -101,12 +104,16 @@
 <script>
     import IndexHeader from '../components/IndexHeader';
     import IndexFooter from '../components/IndexFooter';
+    import $api from '../tools/api';
     import '../less/login.less';
     export default {
         name: 'login',
         data(){
             return {
-                tab: 1
+                tab: 1,
+                username: '',
+                password: '',
+                errInfo: ''
             }
         },
         created(){
@@ -118,8 +125,49 @@
             IndexHeader,
             IndexFooter
         },
-        computed: {},
-        methods: {},
+        computed: {
+
+        },
+        methods: {
+            checkUserName(){
+                if (!this.username) {
+                    this.errInfo = '请输入手机号';
+                    return false;
+                }
+                let reg = /^1[3578]\d{9}/;
+                if (reg.test(this.username)) {
+                    return true;
+                }
+                this.errInfo = '请输入正确的手机号';
+                return false;
+            },
+            checkPassword(){
+                if (!this.password) {
+                    this.errInfo = '请输入登录密码';
+                    return false;
+                }
+                let reg = /(?=.*[0-9])(?=.*[A-Za-z])^[0-9A-Za-z]{6,20}$/;
+                if (reg.test(this.password)) {
+                    return true;
+                }
+                this.errInfo = '密码为（6~20位数字和字母）';
+                return false;
+            },
+            login(){
+                if (!this.checkUserName() || !this.checkPassword()) {
+                    return false;
+                }
+               let {username,password} =this;
+                $api.postSys('/a/login',{username,password})
+                    .then(res => {
+                        if (res.code == 200) {
+                            this.$router.push('/home');
+                        } else {
+                            this.errInfo = res.msg;
+                        }
+                    })
+            }
+        },
         watch: {
             $route () {
                 if (this.$route.query.tab == 'register') {
