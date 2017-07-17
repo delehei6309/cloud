@@ -8,5 +8,5 @@ export const productionUrl = `${protocol}//zj-weixin.zj-hf.cn`;
 /*export const baofooCallUrlProduct = `${protocol}//callme.zj-hf.cn`;
 export const baofooCallUrlTest = testUrl;*/
 export const telNumber = '400-640-3606';
-/*export const nodeTestApi = `${protocol}//market-test.zj-hf.cn`;
-export const nodeProductionApi = `${protocol}//market.zj-hf.cn`;*/
+export const nodeTestApi = `${protocol}//market-test.zj-hf.cn`;
+export const nodeProductionApi = `${protocol}//market.zj-hf.cn`;

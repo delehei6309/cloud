@@ -161,7 +161,7 @@
                     productUuid: { label: '操作' },
                 },
                 currentPage: 1,
-                perPage:30,
+                perPage:10,
             }
         },
         components: { datepicker },
@@ -195,7 +195,7 @@
             get(){
                 let parm = {
                     pageNo:this.currentPage,
-                    pageSize:30,
+                    pageSize:this.perPage,
                     ProductStatus:this.selectedProductStatus,
                     productCode:this.productCode,
                     productAbbrName:this.productAbbrName,
