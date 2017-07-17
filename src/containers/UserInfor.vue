@@ -64,7 +64,7 @@
                     userUuid: { label: '操作' },
                 },
                 currentPage: 1,
-                perPage: 30,
+                perPage: 10,
             }
         },
         created(){
@@ -97,7 +97,7 @@
             get(){
                 let parm = {
                     pageNo:this.currentPage,
-                    pageSize:30,
+                    pageSize:this.perPage,
                     investorMobile:this.investorMobile,
                     userId:this.userId
                 }
