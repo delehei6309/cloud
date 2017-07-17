@@ -53,6 +53,44 @@ export let checkPhone = (phone) => {
         return false;
     }
 };
+//组织机构代码校验
+export let isValidOrgCode = (orgCode)=>{
+    var ws = [3, 7, 9, 10, 5, 8, 4, 2];
+    var str = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var reg = /^([0-9A-Z]){8}-[0-9|X]$/;
+    if (!reg.test(orgCode)) {
+       return false;
+    }
+    return true;
+};
+//统一社会信用代码校验
+export let CheckSocialCreditCode = (orgCode)=>{
+    let patrn = /^[0-9A-Z]+$/;
+    if((orgCode.length != 18) || (patrn.test(orgCode) == false)){
+        return false;
+    }else{
+        let Ancode;
+        let Ancodevalue;
+        let total = 0;
+        let weightedfactors = [1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28];
+        let str = '0123456789ABCDEFGHJKLMNPQRTUWXY';
+        for(let i=0;i<orgCode.length-1;i++){
+            Ancode = orgCode.substring(i, i + 1);
+            Ancodevalue = str.indexOf(Ancode);
+            total = total + Ancodevalue * weightedfactors[i];
+        }
+        let logiccheckcode = 31 - total % 31;
+        logiccheckcode == 31 ? logiccheckcode = 0 : '';
+        var Str = "0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,T,U,W,X,Y";
+        var Array_Str = Str.split(',');
+        logiccheckcode = Array_Str[logiccheckcode];
+        var checkcode = orgCode.substring(17, 18);
+        if (logiccheckcode != checkcode){
+            return false;
+        }
+        return true;
+    }
+}
 const $fun = {
     valiIdCard,
     valiRealName

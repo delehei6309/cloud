@@ -168,7 +168,7 @@
 
 <script>
     import '../less/authentication.less';
-    import {checkPhone,valiIdCard} from '../tools/fun';
+    import {checkPhone,valiIdCard,isValidOrgCode,CheckSocialCreditCode} from '../tools/fun';
     import Toast from '../components/Toast';
     export default {
         name: 'authentication',
@@ -336,7 +336,7 @@
                         file:null,
                         text:'法人身份证',
                         loaded:0,
-                        src:'http://imgsrc.baidu.com/image/c0%3Dshijue%2C0%2C0%2C245%2C40/sign=0ead53e9eafe9925df0161135cc134aa/d0c8a786c9177f3e538db7217acf3bc79f3d5664.jpg'
+                        src:null
                     },
                     other:[
                         {
@@ -426,6 +426,24 @@
                 if(this.listCheck(this.companyInfor)){
                     return
                 }
+                let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
+
+                //组织机构代码校验
+                let orgCode = institutionCode.model.replace(/\s+/g, "");
+                if(orgCode.length>10){
+                    //统一社会信用代码
+                    if(!CheckSocialCreditCode(orgCode)){
+                        Toast('统一社会信用代码输入有误')
+                        return
+                    }
+                }else{
+                    console.log(isValidOrgCode(orgCode),!isValidOrgCode(orgCode))
+                    if(!isValidOrgCode(orgCode)){
+                        Toast('组织机构代码码输入有误')
+                        return
+                    }
+                }
+
                 if(this.aptitude.legalPersonIdcard.loaded<100){
                     Toast('请上传法人身份证照！')
                     return
@@ -463,7 +481,7 @@
                     return
                 }
 
-                let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
+
             },
             listCheck(arr){
                 for(let obj of arr){
