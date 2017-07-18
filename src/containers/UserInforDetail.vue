@@ -35,7 +35,7 @@
         </div>
 
     </div>
-        <div class=" user-info authentication">
+        <div class=" user-info authentication only-user">
             <h2>实名认证</h2>
             <div class="content" flex=" box:mean">
                 <ul>

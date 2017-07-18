@@ -2,7 +2,6 @@
 @import "variables";
 .user-infor-detail{
     background: #FFFFFF;
-    box-shadow: 0 3px 7px 0 rgba(194,194,194,0.50);
     padding-left:30px;
     overflow-y: auto;
     width: 80px;
@@ -28,6 +27,9 @@
         padding-top:30px;
         padding-bottom:30px;
         border-bottom:1px solid #D8D8D8;
+        &.only-user{
+            padding-left:0;
+        }
         h2{
             font-size: 18px;
             color: #333333;
@@ -72,13 +74,14 @@
     }
     .bankcar{
         overflow: hidden;
+        //width:978px;
         border-bottom: none;
         h2 {
             padding-bottom: 20px;
         }
         table{
-            margin:0 50px;
-            width: 635px;
+            margin:0 auto;
+            width: 100%;
             text-align: center;
             th{
                 text-align: center;

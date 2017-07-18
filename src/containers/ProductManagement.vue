@@ -7,7 +7,7 @@
             <div flex="main:justify">
                 <div>
                     <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                    <b-form-input type="text" v-model="inputVal" placeholder="请输入用户信息"></b-form-input>
+                    <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息搜索"></b-form-input>
                     <span>产品状态</span>
                     <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                     <!-- <span>推荐至首页</span>

@@ -8,7 +8,7 @@
                 <div flex="main:justify">
                     <div>
                         <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                        <b-form-input type="text" v-model="inputVal" placeholder="请输入用户信息"></b-form-input>
+                        <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
                         <span>产品状态</span>
                         <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                     </div>
@@ -50,7 +50,7 @@
                         <template v-if="item.value == 2">已支付</template>
                         <template v-if="item.value == 3">计息中</template>
                         <template v-if="item.value == 4">已到期</template>
-                        <template v-if="item.value == 4">已兑付</template>
+                        <template v-if="item.value == 5">已到期兑付</template>
                     </template>
                     <!-- <template slot="userUuid" scope="item">
                         <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>

@@ -1,5 +1,5 @@
 <template>
-    <div class="cloud-header"  flex="main:center">
+    <div class="cloud-header">
         <div class="header-body" flex="main:justify">
             <div class="header-left" flex>
                 <div class="imgs"><img src="../../images/cloud-logo.png" alt="logo"></div>
