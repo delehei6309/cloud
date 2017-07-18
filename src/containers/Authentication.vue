@@ -168,7 +168,7 @@
 
 <script>
     import '../less/authentication.less';
-    import {checkPhone,valiIdCard,isValidOrgCode,CheckSocialCreditCode} from '../tools/fun';
+    import {checkPhone,valiIdCard,isValidOrgCode,CheckSocialCreditCode,CheckMail} from '../tools/fun';
     import Toast from '../components/Toast';
     export default {
         name: 'authentication',
@@ -437,13 +437,17 @@
                         return
                     }
                 }else{
-                    console.log(isValidOrgCode(orgCode),!isValidOrgCode(orgCode))
                     if(!isValidOrgCode(orgCode)){
                         Toast('组织机构代码码输入有误')
                         return
                     }
                 }
-
+                //邮箱验证
+                let comMail = companyMail.model;
+                if(!CheckMail(comMail)){
+                    Toast('公司邮箱输入有误');
+                    return 
+                }
                 if(this.aptitude.legalPersonIdcard.loaded<100){
                     Toast('请上传法人身份证照！')
                     return
@@ -485,7 +489,8 @@
             },
             listCheck(arr){
                 for(let obj of arr){
-                    if(obj.model.length < 1){
+                    let model = obj.model.replace(/\s+/g, "");
+                    if(model.length < 1){
                         obj.error = true;
                         Toast(obj.name+'不能为空！');
                         return true;

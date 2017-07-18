@@ -90,7 +90,15 @@ export let CheckSocialCreditCode = (orgCode)=>{
         }
         return true;
     }
-}
+};
+//邮箱验证
+export let CheckMail = (mail)=>{
+    let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+    if(reg.test(mail)){
+        return true;
+    }
+    return false;
+};
 const $fun = {
     valiIdCard,
     valiRealName
