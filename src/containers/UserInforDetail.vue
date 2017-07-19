@@ -7,11 +7,11 @@
             <ul class="left">
                 <li>
                     <span class="title">用户ID：</span>
-                    <span class="info">{{userData.userId}}</span>
+                    <span class="info">{{userData.userId || '--'}}</span>
                 </li>
                 <li>
                     <span class="title">手机号：</span>
-                    <span class="info">{{userData.investorMobile}}</span>
+                    <span class="info">{{userData.investorMobile || '--'}}</span>
                 </li>
             </ul>
             <ul class="right">
@@ -81,7 +81,8 @@
                 id:'131181199103081929',
                 userData:{
 
-                }
+                },
+                openAccountTime:null
             }
         },
         created(){
