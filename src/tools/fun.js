@@ -64,7 +64,7 @@ export let isValidOrgCode = (orgCode)=>{
     return true;
 };
 //统一社会信用代码校验
-export let CheckSocialCreditCode = (orgCode)=>{
+export let checkSocialCreditCode = (orgCode)=>{
     let patrn = /^[0-9A-Z]+$/;
     if((orgCode.length != 18) || (patrn.test(orgCode) == false)){
         return false;
@@ -92,13 +92,21 @@ export let CheckSocialCreditCode = (orgCode)=>{
     }
 };
 //邮箱验证
-export let CheckMail = (mail)=>{
-    let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
+export let checkMail = (mail)=>{
+    let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
     if(reg.test(mail)){
         return true;
     }
     return false;
 };
+//银行卡验证
+export let checkTencent = (num)=>{
+    let reg = /^\w+$/;
+    if (reg.test(num)) {
+        return true;
+    }
+    return false;
+}
 const $fun = {
     valiIdCard,
     valiRealName

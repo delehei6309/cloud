@@ -42,7 +42,7 @@
                         <div class="qualification">
                             <div flex>
                                 <div class="upload-text">
-                                    <p>上传法人身份证</p>
+                                    <p>上传公司资质</p>
                                     <p class="text-last">(三证合一只需上传一张)</p>
                                 </div>
                                 <div class="qualification-box" flex>
@@ -90,17 +90,9 @@
                         <li flex>
                             <div class="infor-left">开户地址</div>
                             <div class="infor-center" flex>
-                                <div class="select-box selected-address selected-province">
-                                    <b-form-select v-model="bank.address.province.selected" @change.native="selectChange(3)" :options="bank.address.province.options" class="mb-3">
-                                    </b-form-select>
-                                    <div class="select-view">{{bank.address.province.options[bank.address.province.selected].text}}</div>
-                                </div> 
-                                <div class="select-box selected-address">
-                                    <b-form-select v-model="bank.address.city.selected" @change.native="selectChange(3)" :options="bank.address.city.options" class="mb-3">
-                                    </b-form-select>
-                                    <div class="select-view">{{bank.address.city.options[bank.address.city.selected].text}}</div>
-                                </div> 
+                                <areas @select="select"></areas>
                             </div>
+                            
                             <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
                         </li>
                         <li flex v-for="(item,index) in bank.lists" :key="index">
@@ -113,8 +105,8 @@
                                     :maxlength="item.maxlength" 
                                     @focus="item.error=false" 
                                     @blur="item.model.length<1 ? item.error=true : ''"
-                                    @keyup="item.model = item.model.replace(/\D/g,'')" 
-                                    @afterpaste="item.model = item.model.replace(/\D/g,'')"
+                                    @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')" 
+                                    @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
                                     />
                                 <input type="text" 
                                     v-else
@@ -151,7 +143,7 @@
                                 <span class="span-percent" v-if="item.loaded>0 && item.loaded<100">上传中{{item.loaded}}%</span>
                                 <span class="span-percent" v-if="item.loaded>=100"><img :src="item.src" ></span>
                                 <i>{{item.text}}</i>
-                                <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*" @change.native="conso(item.file)"></b-form-file>
+                                <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*" @change.native="uploadFile(item.file)"></b-form-file>
                             </div>
                         </div>
                         <div class="upload-error"
@@ -163,13 +155,27 @@
         <div class="submit-btn" flex="main:center">
             <button @click.stop="submit">提交</button>
         </div>
+        <!-- <el-upload
+            action="https://jsonplaceholder.typicode.com/posts/"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+        </el-upload>
+        <el-dialog v-model="dialogVisible" size="tiny">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog> -->
     </div>
 </template>
 
 <script>
+    /*import {Upload} from 'element-ui'
+    import 'element-ui/lib/theme-default/index.css'*/
     import '../less/authentication.less';
-    import {checkPhone,valiIdCard,isValidOrgCode,CheckSocialCreditCode,CheckMail} from '../tools/fun';
+    import {checkPhone,valiIdCard,isValidOrgCode,checkSocialCreditCode,checkMail,valiRealName,checkTencent} from '../tools/fun';
+    import $api from '../tools/api';
     import Toast from '../components/Toast';
+    import Areas from '../components/Areas';
     export default {
         name: 'authentication',
         data(){
@@ -255,59 +261,74 @@
                                 value:0
                             },
                             {
-                                text:'中国工商银行',
+                                text:'中国银行',
                                 value:1
                             },
                             {
-                                text:'中国农业银行',
+                                text:'中国工商银行',
                                 value:2
                             },
                             {
-                                text:'中国建设银行',
+                                text:'中国农业银行',
                                 value:3
+                            },
+                            {
+                                text:'中国建设银行',
+                                value:4
+                            },
+                            {
+                                text:'中国交通银行',
+                                value:5
+                            },
+                            {
+                                text:'民生银行',
+                                value:6
+                            },
+                            {
+                                text:'光大银行',
+                                value:7
+                            },
+                            {
+                                text:'广发银行',
+                                value:8
+                            },
+                            {
+                                text:'兴业银行',
+                                value:9
+                            },
+                            {
+                                text:'平安银行',
+                                value:10
+                            },
+                            {
+                                text:'浦发银行',
+                                value:11
+                            },
+                            {
+                                text:'上海银行',
+                                value:12
+                            },
+                            {
+                                text:'邮储银行',
+                                value:13
+                            },
+                            {
+                                text:'中信银行',
+                                value:14
+                            },
+                            {
+                                text:'招商银行',
+                                value:15
+                            },
+                            {
+                                text:'华夏银行',
+                                value:16
                             }
                         ]
                     },
                     address:{
-                        error:false,
-                        province:{
-                            selected:0,
-                            options:[
-                                {
-                                    text:'省份',
-                                    value:0
-                                },
-                                {
-                                    text:'北京',
-                                    value:1
-                                },
-                                {
-                                    text:'石家庄',
-                                    value:2
-                                },
-                                {
-                                    text:'衡水',
-                                    value:3
-                                }
-                            ]
-                        },
-                        city:{
-                            selected:0,
-                            options:[
-                                {
-                                    text:'城市',
-                                    value:0
-                                },
-                                {
-                                    text:'海淀区',
-                                    value:1
-                                },
-                                {
-                                    text:'朝阳区',
-                                    value:2
-                                }
-                            ]
-                        }
+                        province:null,
+                        city:null
                     },
                     lists:[
                         {
@@ -324,7 +345,7 @@
                         },
                         {
                             name:'银行卡号',
-                            maxlength:20,
+                            maxlength:24,
                             error:false,
                             model:''
                         }
@@ -405,21 +426,31 @@
                             loaded:0
                         }
                     ]
-                }
+                },
+                dialogImageUrl: '',
+                dialogVisible: false
             }
         },
         created(){
-
+            console.log(Areas)
         },
         computed: {
             licenseError:function(){
                 return (this.aptitude.other[0].loaded<100) && (this.aptitude.other[1].loaded<100) && (this.aptitude.other[2].loaded<100)
             }
         },
-        components: { },
+        components: { Areas},
         methods: {
-            conso(str){
+            uploadFile(str){
+                let parm = null;
                 console.log(str)
+                $api.get('/channel/file/upload',{file:str}).then(msg => {
+                    if(msg.code == 200){
+                        console.log(msg)
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             },
             submit(){
                 //企业信息
@@ -432,7 +463,7 @@
                 let orgCode = institutionCode.model.replace(/\s+/g, "");
                 if(orgCode.length>10){
                     //统一社会信用代码
-                    if(!CheckSocialCreditCode(orgCode)){
+                    if(!checkSocialCreditCode(orgCode)){
                         Toast('统一社会信用代码输入有误')
                         return
                     }
@@ -444,20 +475,24 @@
                 }
                 //邮箱验证
                 let comMail = companyMail.model;
-                if(!CheckMail(comMail)){
+                if(!checkMail(comMail)){
                     Toast('公司邮箱输入有误');
                     return 
                 }
+
+
                 if(this.aptitude.legalPersonIdcard.loaded<100){
                     Toast('请上传法人身份证照！')
                     return
                 }
+
                 //上传资质
                 if(this.licenseError){
                     Toast('请上传营业执照证件照')
                     return
                 }
                 //银行卡信息
+                let [branchName,accountName,bankCard] = this.bank.lists
                 if(this.bank.type.selected == 0){
                     this.bank.type.error = true;
                     Toast('请选择账户类型');
@@ -476,16 +511,40 @@
                 if(this.listCheck(this.bank.lists)){
                     return
                 }
+                if(!valiRealName(accountName)){
+                    Toast('开户人姓名输入有误');
+                    return
+                }
                 //联系人信息
                 if(this.listCheck(this.contacts.inputs)){
+                    return
+                }
+
+                let [concatName,concatNumber,concatMail,concatIdCard,concatTencent] = this.contacts.inputs;
+                if(!valiRealName(concatName.model)){
+                    Toast('姓名输入有误');
+                    return
+                }
+                if(!checkPhone(concatNumber.model)){
+                    Toast('手机号输入有误');
+                    return
+                }
+                if(!checkMail(concatMail.model)){
+                    Toast('邮箱地址输入有误');
+                    return
+                }
+                if(!valiIdCard(concatIdCard.model)){
+                    Toast('身份证号输入有误');
+                    return
+                }
+                if(!checkTencent(concatTencent.model)){
+                    Toast('微信/QQ号输入有误');
                     return
                 }
                 if((this.contacts.files[0].loaded < 100) || (this.contacts.files[1].loaded < 100)){
                     Toast('请上传身份证！');
                     return
                 }
-
-
             },
             listCheck(arr){
                 for(let obj of arr){
@@ -511,8 +570,21 @@
                         this.bank.address.error = !this.bank.address.province.selected || !this.bank.address.city.selected
                     })
                 }
-                
-            }
+            },
+            bankCardFormat(){
+                this.bankCard = this.bankCard.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
+            },
+            select(re){
+                this.bank.address.province = re.pro.name;
+                this.bank.address.city = re.city.name;
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+              },
+              handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+              }
         },
         destroyed(){
 
