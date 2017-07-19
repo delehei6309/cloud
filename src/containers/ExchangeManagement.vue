@@ -2,7 +2,7 @@
     <div class="user-infor exchange-manage">
         <div>
             <!--页面抬头-->
-            <div class="title">定期产品管理</div>
+            <div class="title">定期订单管理</div>
             <!--查询条件-->
             <div class="inquire">
                 <div flex="main:justify">
@@ -37,7 +37,7 @@
                         <template v-if="item.value == 1">app(IOS)</template>
                         <template v-if="item.value == 2">app(安卓)</template>
                         <template v-if="item.value == 3">微信</template>
-                        <template v-if="item.value == 0">其它</template>
+                        <template v-if="item.value == 0">--</template>
                     </template>
                     <template slot="organization" scope="item">
                         {{item.value || '--'}}
@@ -121,7 +121,7 @@
                         text: '已到期',
                         value: 4,
                     },{
-                        text: '已兑付',
+                        text: '已到期兑付',
                         value: 5,
                     }
                 ],
