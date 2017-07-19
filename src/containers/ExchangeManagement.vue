@@ -12,15 +12,13 @@
                         <span>产品状态</span>
                         <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                     </div>
+                    <div class="input-wrap" flex>
+                        <div class="date-text">创建时间：</div>
+                        <div class="input-date"><datepicker v-model="dateStart"></datepicker></div>
+                        <div class="date-text">到</div>
+                        <div class="input-date"><datepicker v-model="dateEnd"></datepicker></div>
+                    </div>
                     <b-btn class="btn" @click.native="query">查询</b-btn>
-                </div>
-                <!-- <span>推荐至首页</span>
-                <b-form-select v-model="selectedIsRecommend" :options="optionsIsRecommend" size="sm"></b-form-select> -->
-                <div class="input-wrap" flex>
-                  <div class="date-text">创建时间：</div>
-                  <div class="input-date"><datepicker v-model="dateStart"></datepicker></div>
-                  <div class="date-text">到</div>
-                  <div class="input-date"><datepicker v-model="dateEnd"></datepicker></div>
                 </div>
             </div>
 

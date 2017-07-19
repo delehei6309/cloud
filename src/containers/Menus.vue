@@ -58,7 +58,7 @@
                         child:[
                             {
                                 path:'/menus/user-infor',
-                                text:'用户管理'
+                                text:'用户信息'
                             }
                         ],
                         allPath:['/menus/user-infor','/menus/user-infor-detail']
@@ -71,7 +71,7 @@
                         child:[
                             {
                                 path:'/menus/product-management',
-                                text:'产品管理'
+                                text:'定期产品管理'
                             }
                         ],
                         allPath:['/menus/product-management','/menus/product-detail']
