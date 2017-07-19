@@ -5,6 +5,14 @@
     padding-left:30px;
     overflow-y: auto;
     width: 80px;
+    .title{
+        display: inline-block;
+        min-width: 90px;
+        text-align: right;
+    }
+    .info{
+        margin-left: 10px;
+    }
     .title1{
         padding:15px 0  15px 15px ;
         font-size: 20px;
@@ -29,6 +37,11 @@
         border-bottom:1px solid #D8D8D8;
         &.only-user{
             padding-left:0;
+            .left{
+                .auth-ul .info{
+                    margin-left: 10px;
+                }
+            }
         }
         h2{
             font-size: 18px;

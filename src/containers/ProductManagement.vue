@@ -7,7 +7,7 @@
             <div flex="main:justify">
                 <div>
                     <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                    <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
+                    <b-form-input type="text" v-model="inputVal"></b-form-input>
                     <span>产品状态</span>
                     <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                 </div>
@@ -59,8 +59,9 @@
         </div>
 
         <!--分页-->
-        <div class="justify-content-center">
+        <div class="justify-content-center paging">
             <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='perPage' v-model="currentPage" @click.native="change()"></b-pagination>
+            <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
         </div>
     </div>
 </template>
@@ -78,15 +79,12 @@
                 dateStart:null,
                 dateEnd:null,
                 filter: "0.01",
-                selectedBase: 0,
+                selectedBase: 1,
                 selectedProductStatus: null,
                 //selectedIsRecommend: null,
                 inputVal: '',
                 optionsBase: [
                     {
-                        text: '全部',
-                        value: 0
-                    },{
                         text: '产品编号',
                         value: 1
                     },{
@@ -99,32 +97,20 @@
                         text: '全部',
                         value: null,
                     },{
-                        text: '预热中',
+                        text: '募集中',
                         value: 1,
                     },{
-                        text: '募集中',
+                        text: '已售罄',
                         value: 2,
                     },{
-                        text: '已售罄',
+                        text: '已成立',
                         value: 3,
                     },{
-                        text: '已成立',
+                        text: '已到期',
                         value: 4,
                     },{
-                        text: '封存期',
-                        value: 5,
-                    },{
-                        text: '存续期',
-                        value: 6,
-                    },{
-                        text: '已结束',
-                        value: 7,
-                    },{
-                        text: '已到期',
-                        value: 8,
-                    },{
                         text: '已兑付',
-                        value: 9,
+                        value: 5,
                     }
                 ],
                 /*optionsIsRecommend: [
