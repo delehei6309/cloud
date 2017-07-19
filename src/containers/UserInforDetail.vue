@@ -13,10 +13,6 @@
                     <span class="title" flex-box="1">手机号</span>
                     <span class="info" flex-box="1">{{userData.investorMobile}}</span>
                 </li>
-                <li flex="box:mean">
-                    <span class="title" flex-box="1">用户昵称</span>
-                    <span class="info" flex-box="1">{{userData.userName}}</span>
-                </li>
             </ul>
             <ul class="right" flex-box="1">
                 <!-- <li flex="box:mean">
