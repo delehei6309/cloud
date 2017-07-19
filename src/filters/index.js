@@ -10,7 +10,7 @@ let add0 =(input)=>{
     return input.substring(0,2);
 };
 export let currencyFormat = (input) => {
-    if (!input) {
+    if ((input == null) || (input == undefined)) {
         return '--';
     }
     let ouputs = input.toString();
@@ -51,7 +51,7 @@ export let bankCardNoFormat=(input)=>{
 
 };
 export let timeFormat = (input) => {
-    if (!input) {
+    if ((input == null) || (input == undefined)) {
         return '--';
     }
     let newDate = new Date();
@@ -94,7 +94,7 @@ export let periodType = (input) => {
     return ouputs;
 };
 export let translatePate = (input) => {
-    if (!input) {
+    if ((input == null) || (input == undefined)) {
         return '--';
     }
     let inp = Number(input);

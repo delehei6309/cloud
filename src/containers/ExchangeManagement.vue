@@ -8,7 +8,7 @@
                 <div flex="main:justify">
                     <div>
                         <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                        <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
+                        <b-form-input type="text" v-model="inputVal"></b-form-input>
                         <span>产品状态</span>
                         <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                     </div>
@@ -32,6 +32,18 @@
                     </template>
                     <template slot="productAnnualInterestRate" scope="item">
                         {{item.value | translatePate}}
+                    </template>
+                    <template slot="orderAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
+                    <template slot="marketingAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
+                    <template slot="paidAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
+                    <template slot="expectedProfitAmount" scope="item">
+                        {{item.value | currencyFormat}}
                     </template>
                     <template slot="transactionChannel" scope="item">
                         <template v-if="item.value == 1">app(IOS)</template>
@@ -122,18 +134,6 @@
                         value: 5,
                     }
                 ],
-                /*optionsIsRecommend: [
-                    {
-                        text: '全部',
-                        value: 'all',
-                    },{
-                        text: '是',
-                        value: true,
-                    },{
-                        text: '否',
-                        value: false,
-                    },
-                ],*/
                 items: [],
                 fields: {
                     orderBillCode: { label: '订单号' },

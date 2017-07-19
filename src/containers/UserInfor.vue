@@ -6,7 +6,7 @@
         <!--查询条件-->
         <div class="inquire">
             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-            <b-form-input type="text" placeholder="请输入用户信息" size="sm" v-model="inputVal"></b-form-input>
+            <b-form-input type="text" size="sm" v-model="inputVal"></b-form-input>
             <b-btn class="btn" @click.native="query">查询</b-btn>
         </div>
 
