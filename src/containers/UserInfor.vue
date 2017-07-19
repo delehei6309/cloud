@@ -35,14 +35,11 @@
         name: 'user-infor',
         data(){
             return {
-                selectedBase: 0,
+                selectedBase: 1,
                 inputVal: '',
                 count:0,
                 optionsBase: [
                     {
-                        text:'全部',
-                        value:0
-                    },{
                         text: '手机号',
                         value: 1
                     },{

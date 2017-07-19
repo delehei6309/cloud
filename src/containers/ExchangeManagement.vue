@@ -88,15 +88,12 @@
                 SubscriptionAgreemen:false,
                 dateStart:null,
                 dateEnd:null,
-                selectedBase: 0,
+                selectedBase: 1,
                 selectedProductStatus: null,
                 //selectedIsRecommend: 'all',
                 inputVal: '',
                 optionsBase: [
                     {
-                        text: '全部',
-                        value: 0
-                    },{
                         text: '产品名称',
                         value: 1
                     },{
