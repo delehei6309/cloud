@@ -22,9 +22,9 @@
             </div> -->
             <div class="input-wrap" flex>
                 <div class="date-text">创建时间：</div>
-                <div class="input-date"><datepicker v-model="dateStart"></datepicker></div>
+                <div class="input-date"><datepicker language="ch" v-model="dateStart"></datepicker></div>
                 <div class="date-text">到</div>
-                <div class="input-date"><datepicker v-model="dateEnd"></datepicker></div>
+                <div class="input-date"><datepicker language="ch" v-model="dateEnd"></datepicker></div>
             </div>
         </div>
 
