@@ -7,11 +7,11 @@
             <ul class="left"  flex-box="1">
                 <li flex="box:mean">
                     <span class="title" flex-box="1">用户ID</span>
-                    <span class="info" flex-box="1">{{userData.userId}}</span>
+                    <span class="info" flex-box="1">{{userData.userId || '--'}}</span>
                 </li>
                 <li flex="box:mean">
                     <span class="title" flex-box="1">手机号</span>
-                    <span class="info" flex-box="1">{{userData.investorMobile}}</span>
+                    <span class="info" flex-box="1">{{userData.investorMobile || '--'}}</span>
                 </li>
             </ul>
             <ul class="right" flex-box="1">
@@ -37,11 +37,11 @@
                 <ul>
                    <li class="auth-ul" flex="main:center">
                         <span class="title">姓名</span>
-                        <span class="info">{{userData.investorRealName}}</span>
+                        <span class="info">{{userData.investorRealName || '--'}}</span>
                     </li>
                     <li class="auth-ul" flex="main:center">
                         <span class="title">身份证号</span>
-                        <span class="info">{{userData.investorIdCardNo}}</span>
+                        <span class="info">{{userData.investorIdCardNo || '--'}}</span>
                     </li>
                     <!-- <li >
                         <span class="title">认证时间</span>
@@ -59,8 +59,8 @@
                     <th>使用状态</th>
                 </tr>
                 <tr>
-                    <td>{{userData.bankUserCardNo}}</td>
-                    <td>{{userData.depositBank}}</td>
+                    <td>{{userData.bankUserCardNo || '--'}}</td>
+                    <td>{{userData.depositBank || '--'}}</td>
                     <td>{{userData.openAccountTime | timeFormat}}</td>
                     <td>使用中</td>
                 </tr>
@@ -80,7 +80,8 @@
                 id:'131181199103081929',
                 userData:{
 
-                }
+                },
+                openAccountTime:null
             }
         },
         created(){
