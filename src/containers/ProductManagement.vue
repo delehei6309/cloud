@@ -7,24 +7,17 @@
             <div flex="main:justify">
                 <div>
                     <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                    <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息搜索"></b-form-input>
+                    <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
                     <span>产品状态</span>
                     <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
-                    <!-- <span>推荐至首页</span>
-                    <b-form-select v-model="selectedIsRecommend" :options="optionsIsRecommend" size="sm"></b-form-select> -->
+                </div>
+                <div class="input-wrap" flex>
+                    <div class="date-text">创建时间：</div>
+                    <div class="input-date"><datepicker v-model="dateStart"></datepicker></div>
+                    <div class="date-text">到</div>
+                    <div class="input-date"><datepicker v-model="dateEnd"></datepicker></div>
                 </div>
                 <b-btn class="btn" @click.native="query">查询</b-btn>
-            </div>
-            <!-- <div class="input-wrap">
-              创建时间：<input type="date" id="startDate">到<input type="date" id="endDate">
-            
-              
-            </div> -->
-            <div class="input-wrap" flex>
-                <div class="date-text">创建时间：</div>
-                <div class="input-date"><datepicker v-model="dateStart"></datepicker></div>
-                <div class="date-text">到</div>
-                <div class="input-date"><datepicker v-model="dateEnd"></datepicker></div>
             </div>
         </div>
 
