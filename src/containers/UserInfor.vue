@@ -13,10 +13,6 @@
         <!--显示列表-->
         <div class="table-wrap">
             <b-table :items="items" :fields="fields"  bordered>
-                <template slot="investorRiskScore" scope="item">
-                    <template v-if="item.value == 0">未评测</template>
-                    <template v-if="item.value == 1">已评测</template>
-                </template>
                 <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
                 <template slot="userUuid" scope="item">
                     <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
@@ -59,7 +55,6 @@
                     userId: { label: '用户ID' },
                     investorRealName:{label:'姓名'},
                     investorMobile: { label: '手机号' },
-                    investorRiskScore:{label:'风险测评'},
                     userVerifyStatus: { label: '是否开户' },
                     userUuid: { label: '操作' },
                 },
