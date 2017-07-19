@@ -6,7 +6,7 @@
         <!--查询条件-->
         <div class="inquire">
             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-            <b-form-input type="text" placeholder="请输入用户信息" size="sm" v-model="inputVal"></b-form-input>
+            <b-form-input type="text" size="sm" v-model="inputVal"></b-form-input>
             <b-btn class="btn" @click.native="query">查询</b-btn>
         </div>
 
@@ -21,8 +21,9 @@
         </div>
 
         <!--分页-->
-        <div class="justify-content-center">
+        <div class="justify-content-center paging">
             <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='perPage' v-model="currentPage" @change="change"></b-pagination>
+            <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
         </div>
     </div>
 </template>

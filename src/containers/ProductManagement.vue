@@ -7,7 +7,7 @@
             <div flex="main:justify">
                 <div>
                     <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                    <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
+                    <b-form-input type="text" v-model="inputVal"></b-form-input>
                     <span>产品状态</span>
                     <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                 </div>
@@ -59,8 +59,9 @@
         </div>
 
         <!--分页-->
-        <div class="justify-content-center">
+        <div class="justify-content-center paging">
             <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='perPage' v-model="currentPage" @click.native="change()"></b-pagination>
+            <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
         </div>
     </div>
 </template>
