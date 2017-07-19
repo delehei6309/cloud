@@ -38,11 +38,11 @@
                     <template v-if="item.value == 3">已下架</template>
                 </template>
                 <template slot="productStatus" scope="item">
-                    <template v-if="item.value == 1">募集中</template>
-                    <template v-if="item.value == 2">已售罄</template>
-                    <template v-if="item.value == 3">已成立</template>
-                    <template v-if="item.value == 4">已到期</template>
-                    <template v-if="item.value == 5">已兑付</template>
+                    <template v-if="item.value == 2">募集中</template>
+                    <template v-if="item.value == 3">已售罄</template>
+                    <template v-if="item.value == 4">已成立</template>
+                    <template v-if="item.value == 8">已到期</template>
+                    <template v-if="item.value == 9">已兑付</template>
                 </template>
                 <template slot="createTime" scope="item">
                     {{item.value | timeFormat}}
@@ -94,19 +94,19 @@
                         value: null,
                     },{
                         text: '募集中',
-                        value: 1,
-                    },{
-                        text: '已售罄',
                         value: 2,
                     },{
-                        text: '已成立',
+                        text: '已售罄',
                         value: 3,
                     },{
-                        text: '已到期',
+                        text: '已成立',
                         value: 4,
                     },{
+                        text: '已到期',
+                        value: 8,
+                    },{
                         text: '已兑付',
-                        value: 5,
+                        value: 9,
                     }
                 ],
                 /*optionsIsRecommend: [
