@@ -33,6 +33,18 @@
                     <template slot="productAnnualInterestRate" scope="item">
                         {{item.value | translatePate}}
                     </template>
+                    <template slot="orderAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
+                    <template slot="marketingAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
+                    <template slot="paidAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
+                    <template slot="expectedProfitAmount" scope="item">
+                        {{item.value | currencyFormat}}
+                    </template>
                     <template slot="transactionChannel" scope="item">
                         <template v-if="item.value == 1">app(IOS)</template>
                         <template v-if="item.value == 2">app(安卓)</template>
@@ -123,18 +135,6 @@
                         value: 5,
                     }
                 ],
-                /*optionsIsRecommend: [
-                    {
-                        text: '全部',
-                        value: 'all',
-                    },{
-                        text: '是',
-                        value: true,
-                    },{
-                        text: '否',
-                        value: false,
-                    },
-                ],*/
                 items: [],
                 fields: {
                     orderBillCode: { label: '订单号' },

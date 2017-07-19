@@ -61,7 +61,7 @@
                 <tr>
                     <td>{{userData.bankUserCardNo || '--'}}</td>
                     <td>{{userData.depositBank || '--'}}</td>
-                    <td>{{userData.openAccountTime | timeFormat || '--'}}</td>
+                    <td>{{userData.openAccountTime | timeFormat}}</td>
                     <td v-if="userData.bankUserCardNo">使用中</td>
                     <td v-else>--</td>
                 </tr>
