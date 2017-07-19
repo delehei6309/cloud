@@ -4,43 +4,43 @@
         <div class="user-info">
         <h2>用户信息</h2>
         <div class="content" flex="dir:left main:justify box:mean">
-            <ul class="left"  flex-box="1">
-                <li flex="box:mean">
-                    <span class="title" flex-box="1">用户ID</span>
-                    <span class="info" flex-box="1">{{userData.userId || '--'}}</span>
+            <ul class="left">
+                <li>
+                    <span class="title">用户ID：</span>
+                    <span class="info">{{userData.userId || '--'}}</span>
                 </li>
-                <li flex="box:mean">
-                    <span class="title" flex-box="1">手机号</span>
-                    <span class="info" flex-box="1">{{userData.investorMobile || '--'}}</span>
+                <li>
+                    <span class="title">手机号：</span>
+                    <span class="info">{{userData.investorMobile || '--'}}</span>
                 </li>
             </ul>
-            <ul class="right" flex-box="1">
+            <ul class="right">
                 <!-- <li flex="box:mean">
                     <span class="title" flex-box="1">渠道</span>
                     <span class="info" flex-box="2">大众点评</span>
                 </li> -->
-                <li flex="box:mean">
-                    <span class="title" flex-box="1">终端设备</span>
-                    <span class="info" flex-box="2">{{userData.userOginDeviceType || '--'}}</span>
+                <li>
+                    <span class="title">终端设备：</span>
+                    <span class="info">{{userData.registerDeviceType || '--'}}</span>
                 </li>
-                <li flex="box:mean">
-                    <span class="title" flex-box="1">注册时间</span>
-                    <span class="info" flex-box="2">{{userData.registerTime | timeFormat}}</span>
+                <li>
+                    <span class="title">注册时间：</span>
+                    <span class="info">{{userData.registerTime | timeFormat}}</span>
                 </li>
             </ul>
         </div>
 
     </div>
-        <div class=" user-info authentication only-user">
+        <div class="user-info authentication only-user">
             <h2>实名认证</h2>
-            <div class="content" flex=" box:mean">
-                <ul>
-                   <li class="auth-ul" flex="main:center">
-                        <span class="title">姓名</span>
+            <div class="content">
+                <ul class="left">
+                   <li class="auth-ul">
+                        <span class="title">姓名：</span>
                         <span class="info">{{userData.investorRealName || '--'}}</span>
                     </li>
-                    <li class="auth-ul" flex="main:center">
-                        <span class="title">身份证号</span>
+                    <li class="auth-ul">
+                        <span class="title">身份证号：</span>
                         <span class="info">{{userData.investorIdCardNo || '--'}}</span>
                     </li>
                     <!-- <li >
@@ -61,8 +61,9 @@
                 <tr>
                     <td>{{userData.bankUserCardNo || '--'}}</td>
                     <td>{{userData.depositBank || '--'}}</td>
-                    <td>{{userData.openAccountTime | timeFormat}}</td>
-                    <td>使用中</td>
+                    <td>{{userData.openAccountTime | timeFormat || '--'}}</td>
+                    <td v-if="userData.bankUserCardNo">使用中</td>
+                    <td v-else>--</td>
                 </tr>
             </table>
         </div>

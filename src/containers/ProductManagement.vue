@@ -78,15 +78,12 @@
                 dateStart:null,
                 dateEnd:null,
                 filter: "0.01",
-                selectedBase: 0,
+                selectedBase: 1,
                 selectedProductStatus: null,
                 //selectedIsRecommend: null,
                 inputVal: '',
                 optionsBase: [
                     {
-                        text: '全部',
-                        value: 0
-                    },{
                         text: '产品编号',
                         value: 1
                     },{
@@ -99,32 +96,20 @@
                         text: '全部',
                         value: null,
                     },{
-                        text: '预热中',
+                        text: '募集中',
                         value: 1,
                     },{
-                        text: '募集中',
+                        text: '已售罄',
                         value: 2,
                     },{
-                        text: '已售罄',
+                        text: '已成立',
                         value: 3,
                     },{
-                        text: '已成立',
+                        text: '已到期',
                         value: 4,
                     },{
-                        text: '封存期',
-                        value: 5,
-                    },{
-                        text: '存续期',
-                        value: 6,
-                    },{
-                        text: '已结束',
-                        value: 7,
-                    },{
-                        text: '已到期',
-                        value: 8,
-                    },{
                         text: '已兑付',
-                        value: 9,
+                        value: 5,
                     }
                 ],
                 /*optionsIsRecommend: [
