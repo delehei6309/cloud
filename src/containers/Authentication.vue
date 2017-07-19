@@ -155,6 +155,43 @@
         <div class="submit-btn" flex="main:center">
             <button @click.stop="submit">提交</button>
         </div>
+        <form action="http://10.10.10.168:8079/channel/file/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="submit">
+        </form>
+        <template >
+            <vue-file-upload
+                url='http://10.10.10.168:8079/channel/file/upload'
+                ref="vueFileUploader"
+                v-bind:filters = "filters"
+                v-bind:events = 'cbEvents'
+                v-bind:request-options = "reqopts"
+                v-on:onAdd = "onAddItem"></vue-file-upload>
+            <table>
+                <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>size</th>
+                        <th>progress</th>
+                        <th>status</th>
+                        <th>action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for='file in files'>
+                        <td v-text='file.name'></td>
+                        <td v-text='file.size'></td>
+                        <td v-text='file.progress'></td>
+                        <td v-text='onStatus(file)'></td>
+                        <td>
+                            <button type='button' @click="uploadItem(file)">上传</button>
+                            <button type='button' @click="uploadAll">上传all</button>
+                            <button type='button' @click="clearAll">清空文件列表</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
         <!-- <el-upload
             action="https://jsonplaceholder.typicode.com/posts/"
             list-type="picture-card"
@@ -171,6 +208,7 @@
 <script>
     /*import {Upload} from 'element-ui'
     import 'element-ui/lib/theme-default/index.css'*/
+    import VueFileUpload from 'vue-file-upload';
     import '../less/authentication.less';
     import {checkPhone,valiIdCard,isValidOrgCode,checkSocialCreditCode,checkMail,valiRealName,checkTencent} from '../tools/fun';
     import $api from '../tools/api';
@@ -427,8 +465,33 @@
                         }
                     ]
                 },
-                dialogImageUrl: '',
-                dialogVisible: false
+                files:[],
+                //文件过滤器，只能上传图片 
+                filters:[
+                    {
+                        name:"imageFilter",
+                        fn(file){
+                            var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+                            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+                        }
+                    }
+                ],
+                //回调函数绑定 
+                cbEvents:{
+                    onCompleteUpload:(file,response,status,header)=>{
+                        console.log(file);
+                        console.log(response);
+                        console.log("finish upload;")
+                    }
+                },
+                //xhr请求附带参数 
+                reqopts:{
+                    formData:{
+                        tokens:'tttttttttttttt'
+                    },
+                    responseType:'json',
+                    withCredentials:false
+                }
             }
         },
         created(){
@@ -439,18 +502,34 @@
                 return (this.aptitude.other[0].loaded<100) && (this.aptitude.other[1].loaded<100) && (this.aptitude.other[2].loaded<100)
             }
         },
-        components: { Areas},
+        components: { Areas,VueFileUpload},
         methods: {
-            uploadFile(str){
-                let parm = null;
-                console.log(str)
-                $api.get('/channel/file/upload',{file:str}).then(msg => {
-                    if(msg.code == 200){
-                        console.log(msg)
-                    }else{
-                        Toast(msg.msg);
-                    }
-                });
+            onStatus(file){
+                if(file.isSuccess){
+                return "上传成功";
+              }else if(file.isError){
+                return "上传失败";
+              }else if(file.isUploading){
+                return "正在上传";
+              }else{
+                return "待上传";
+              }
+            },
+            onAddItem(files){
+                console.log(files);
+                this.files = files;
+            },
+            uploadItem(file){
+              //单个文件上传 
+              file.upload();
+            },
+            uploadAll(){
+              //上传所有文件 
+              this.$refs.vueFileUploader.uploadAll();
+            },
+            clearAll(){
+              //清空所有文件 
+              this.$refs.vueFileUploader.clearAll();
             },
             submit(){
                 //企业信息

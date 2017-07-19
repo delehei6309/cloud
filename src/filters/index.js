@@ -11,7 +11,7 @@ let add0 =(input)=>{
 };
 export let currencyFormat = (input) => {
     if (!input) {
-        return '0.00';
+        return '--';
     }
     let ouputs = input.toString();
     ouputs = ouputs.split('.');
@@ -52,7 +52,7 @@ export let bankCardNoFormat=(input)=>{
 };
 export let timeFormat = (input) => {
     if (!input) {
-        return '';
+        return '--';
     }
     let newDate = new Date();
     newDate.setTime(input);
@@ -95,7 +95,7 @@ export let periodType = (input) => {
 };
 export let translatePate = (input) => {
     if (!input) {
-        return '0.00%';
+        return '--';
     }
     let inp = Number(input);
     function accMul(arg1,arg2){
