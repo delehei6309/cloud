@@ -44,8 +44,8 @@
                         <span class="info">{{userData.investorIdCardNo || '--'}}</span>
                     </li>
                     <li class="auth-ul">
-                        <span class="title">绑定时间：</span>
-                        <span class="info">{{userData.createTime | timeFormat}}</span>
+                        <span class="title">开户时间：</span>
+                        <span class="info">{{userData.openAccountTime | timeFormat}}</span>
                     </li>
                 </ul>
             </div>
