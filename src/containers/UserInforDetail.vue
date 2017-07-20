@@ -43,29 +43,27 @@
                         <span class="title">身份证号：</span>
                         <span class="info">{{userData.investorIdCardNo || '--'}}</span>
                     </li>
-                    <!-- <li >
-                        <span class="title">认证时间</span>
-                    </li> -->
+                    <li class="auth-ul">
+                        <span class="title">绑定时间：</span>
+                        <span class="info">{{userData.createTime | timeFormat}}</span>
+                    </li>
                 </ul>
             </div>
         </div>
         <div class="user-info bankcar">
             <h2>银行卡</h2>
-            <table>
-                <tr>
-                    <th>银行卡号</th>
-                    <th>开户行</th>
-                    <th>绑定时间</th>
-                    <th>使用状态</th>
-                </tr>
-                <tr>
-                    <td>{{userData.bankUserCardNo || '--'}}</td>
-                    <td>{{userData.depositBank || '--'}}</td>
-                    <td>{{userData.openAccountTime | timeFormat}}</td>
-                    <td v-if="userData.bankUserCardNo">使用中</td>
-                    <td v-else>--</td>
-                </tr>
-            </table>
+            <div class="content">
+                <ul class="left">
+                    <li class="auth-ul">
+                        <span class="title">银行卡号：</span>
+                        <span class="info">{{userData.bankUserCardNo || '--'}}</span>
+                    </li>
+                    <li class="auth-ul">
+                        <span class="title">开户行：</span>
+                        <span class="info">{{userData.depositBank || '--'}}</span>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
