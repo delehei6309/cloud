@@ -13,7 +13,9 @@ import ProductManagement  from '../containers/ProductManagement';
 import UserInforDetail  from '../containers/UserInforDetail';
 import ProductDetail  from '../containers/ProductDetail';
 import ExchangeManagement  from '../containers/ExchangeManagement';
-import ForgetPassword from '../containers/ForgetPassword'
+import ForgetPassword from '../containers/ForgetPassword';
+
+const title = '开放平台';
 let routes = [
     {
         path:'/',
@@ -23,14 +25,14 @@ let routes = [
         path:'/login',
         component:Login,
         meta: {
-            title: '登录',
+            title: title,
         },
     },
     {
         path:'/forget-password',
         component:ForgetPassword,
         meta: {
-            title: '忘记密码',
+            title: title,
         },
     },
     {
@@ -38,7 +40,7 @@ let routes = [
         name:'menus',
         component:Menus,
         meta: {
-            title: '菜单'
+            title: title
 
         },
         children:[
@@ -47,7 +49,7 @@ let routes = [
                 name:'authentication',
                 component:Authentication,
                 meta: {
-                    title: '资质认证'
+                    title: title
                 },
             },
             {
@@ -55,7 +57,7 @@ let routes = [
                 name:'user-infor',
                 component:UserInfor,
                 meta: {
-                    title: '用户信息'
+                    title: title
                 }
             },
             {
@@ -63,7 +65,7 @@ let routes = [
                 name:'product-management',
                 component:ProductManagement,
                 meta: {
-                    title: '产品管理'
+                    title: title
                 }
             },
             {
@@ -71,7 +73,7 @@ let routes = [
                 name:'product-detail',
                 component:ProductDetail,
                 meta: {
-                    title: '定期产品详情'
+                    title: title
                 }
             },
             {
@@ -79,7 +81,7 @@ let routes = [
                 name:'user-infor-detail',
                 component:UserInforDetail,
                 meta: {
-                    title: '用户信息详情'
+                    title: title
                 }
             },
             {
@@ -87,7 +89,7 @@ let routes = [
                 name:'product-detail',
                 component:ProductDetail,
                 meta: {
-                    title: '用户信息详情'
+                    title: title
                 }
             },
             {
@@ -95,14 +97,14 @@ let routes = [
                 name:'exchange-management',
                 component:ExchangeManagement,
                 meta: {
-                    title: '定期产品订单管理'
+                    title: title
                 }
             },
             {
                 path:'/home',
                 component:Home,
                 meta: {
-                    title: '首页',
+                    title: title,
                 },
             }
         ]
