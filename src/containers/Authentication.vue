@@ -5,8 +5,8 @@
             <div class="header-select" flex>
                 <div class="select-text">请选择您的所属身份</div>
                 <div class="select-btn" flex>
-                    <button :class="{'active':tab == 1}" @click.stop="tab=1">企业</button>
-                    <button :class="{'active':tab == 2}" @click.stop="tab=2">个人</button>
+                    <button :class="{'active':channelType == 2}" @click.stop="channelType=2">企业</button>
+                    <button :class="{'active':channelType == 1}" @click.stop="channelType=1">个人</button>
                 </div>
             </div>
             <div class="authentication-content">
@@ -30,14 +30,23 @@
                     <div class="upload">
                         <div class="idcard" flex>
                             <div class="upload-text">上传法人身份证</div>
-                            <div class="idcard-box upload-img-box" :class="{uploading:aptitude.legalPersonIdcard.loaded<=0}">
-                                <span class="span-bg" :style="{height:aptitude.legalPersonIdcard.loaded+'%'}"></span>
+                            <div class="idcard-box upload-img-box" :class="{uploading:uploadPhotos.legalIdCard.progress<=0}">
+                                <span class="span-bg" :style="{height:uploadPhotos.legalIdCard.progress+'%'}"></span>
                                 <span class="span-percent" 
-                                    v-if="aptitude.legalPersonIdcard.loaded>0 && aptitude.legalPersonIdcard.loaded<100">上传中{{aptitude.legalPersonIdcard.loaded}}%</span>
-                                <span class="span-percent" v-if="aptitude.legalPersonIdcard.loaded>=100"><img :src="aptitude.legalPersonIdcard.src"></span>
-                                <b-form-file v-model="aptitude.legalPersonIdcard.file" :disabled="aptitude.legalPersonIdcard.loaded>0 && aptitude.legalPersonIdcard.loaded<100" class="form-file" accept="image/*"></b-form-file>
+                                    v-if="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100">上传中{{uploadPhotos.legalIdCard.progress}}%</span>
+                                <span class="span-percent" v-if="uploadPhotos.legalIdCard.progress>=100"><img :src="uploadPhotos.legalIdCard.src"></span>
+                                <vue-core-image-upload
+                                    class="btn btn-primary"
+                                    inputOfFile="file"
+                                    :data="data"
+                                    :max-file-size="209715200"
+                                    :url="`${serverUrl}/channel/file/upload`"
+                                    @imageuploaded="imageuploaded"
+                                    @imageuploading = "imageuploading(uploadPhotos.legalIdCard.status)"
+                                    @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)" >
+                                </vue-core-image-upload>
                             </div>
-                            <div class="upload-error" v-if="aptitude.legalPersonIdcard.loaded<100">！请上传法人身份证照，大小不超过2M</div>
+                            <div class="upload-error" v-show="legalIdCardError">！请上传法人身份证照，大小不超过2M</div>
                         </div>
                         <div class="qualification">
                             <div flex>
@@ -46,19 +55,27 @@
                                     <p class="text-last">(三证合一只需上传一张)</p>
                                 </div>
                                 <div class="qualification-box" flex>
-                                    <div class="license imgs" v-for="(item,index) in aptitude.other" :key="index">
-                                        <div class="upload-img-box" :class="{uploading:item.loaded<=0}">
-                                            <span class="span-bg" :style="{height:item.loaded+'%'}"></span>
-                                            <span v-if="item.loaded>0 && item.loaded<100" class="span-percent">上传中{{item.loaded}}%</span>
-                                            <span v-if="item.loaded>=100" class="span-percent"><img :src="item.src"></span>
-                                            <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*"></b-form-file>
+                                    <div class="license imgs" v-for="(item,index) in uploadPhotos.qualification" :key="index">
+                                        <div class="upload-img-box" :class="{uploading:item.progress<=0}">
+                                            <span class="span-bg" :style="{height:item.progress+'%'}"></span>
+                                            <span v-if="item.progress>0 && item.progress<100" class="span-percent">上传中{{item.progress}}%</span>
+                                            <span v-if="item.progress>=100" class="span-percent"><img :src="item.src"></span>
+                                            <vue-core-image-upload
+                                                class="btn btn-primary"
+                                                inputOfFile="file"
+                                                :data="data"
+                                                :max-file-size="209715200"
+                                                :url="`${serverUrl}/channel/file/upload`"
+                                                @imageuploaded="imageuploaded"
+                                                @imageuploading = "imageuploading(item.status)"
+                                                @imagechanged = "imagechanged(item.status)" >
+                                            </vue-core-image-upload>
                                         </div>
                                         <div>{{item.text}}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="upload-error" 
-                                v-if="licenseError">！请上传营业执照证件照，大小不超过2M</div>
+                            <div class="upload-error" v-show="licenseError">！请上传营业执照证件照，大小不超过2M</div>
                         </div>
                     </div>
                 </div>
@@ -138,16 +155,33 @@
                     <div class="upload-photo" >
                         <div flex>
                             <div class="upload-text">上传联系人身份证照</div>
-                            <div class="upload-img-box" :class="{front:index==0,contrary:index==1,uploading:item.loaded<=0}" v-for="(item,index) in contacts.files" :key="index">
-                                <span class="span-bg" :style="{height:item.loaded+'%'}"></span>
-                                <span class="span-percent" v-if="item.loaded>0 && item.loaded<100">上传中{{item.loaded}}%</span>
-                                <span class="span-percent" v-if="item.loaded>=100"><img :src="item.src" ></span>
+                            <div class="upload-img-box" :class="{front:index==0,contrary:index==1,uploading:item.progress<=0}" v-for="(item,index) in uploadPhotos.linkIdCard" :key="index">
+                                <span class="span-bg" :style="{height:item.progress+'%'}"></span>
+                                <span class="span-percent" v-if="item.progress>0 && item.progress<100">上传中{{item.progress}}%</span>
+                                <span class="span-percent" v-if="item.progress>=100"><img :src="item.src"></span>
                                 <i>{{item.text}}</i>
-                                <b-form-file v-model="item.file" class="form-file" :disabled="item.loaded>0 && item.loaded<100" accept="image/*" @change.native="uploadFile(item.file)"></b-form-file>
+                                <!-- <vue-file-upload
+                                    :autoUpload = "true"
+                                    :url="`${serverUrl}/channel/file/upload`"
+                                    ref="vueFileUploader"
+                                    v-bind:filters = "filters"
+                                    v-bind:events = "cbEvents"
+                                    v-bind:request-options = "reqopts"
+                                    v-on:onAdd = "onAddItem">
+                                </vue-file-upload> -->
+                                <vue-core-image-upload
+                                    class="btn btn-primary"
+                                    inputOfFile="file"
+                                    :data="data"
+                                    :max-file-size="209715200"
+                                    :url="`${serverUrl}/channel/file/upload`"
+                                    @imageuploaded="imageuploaded"
+                                    @imageuploading = "imageuploading(item.status)"
+                                    @imagechanged = "imagechanged(item.status)" >
+                                </vue-core-image-upload>
                             </div>
                         </div>
-                        <div class="upload-error"
-                            v-if="contacts.files[0].loaded<100 || contacts.files[1].loaded<100">！请上传身份证，大小不超过2M</div>
+                        <div class="upload-error" v-show="linkIdCardError">！请上传身份证，大小不超过2M</div>
                     </div>
                 </div>
             </div>
@@ -155,60 +189,10 @@
         <div class="submit-btn" flex="main:center">
             <button @click.stop="submit">提交</button>
         </div>
-        <form action="http://10.10.10.168:8079/channel/file/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit" value="submit">
-        </form>
-        <template >
-            <vue-file-upload
-                url='http://10.10.10.168:8079/channel/file/upload'
-                ref="vueFileUploader"
-                v-bind:filters = "filters"
-                v-bind:events = 'cbEvents'
-                v-bind:request-options = "reqopts"
-                v-on:onAdd = "onAddItem"></vue-file-upload>
-            <table>
-                <thead>
-                    <tr>
-                        <th>name</th>
-                        <th>size</th>
-                        <th>progress</th>
-                        <th>status</th>
-                        <th>action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for='file in files'>
-                        <td v-text='file.name'></td>
-                        <td v-text='file.size'></td>
-                        <td v-text='file.progress'></td>
-                        <td v-text='onStatus(file)'></td>
-                        <td>
-                            <button type='button' @click="uploadItem(file)">上传</button>
-                            <button type='button' @click="uploadAll">上传all</button>
-                            <button type='button' @click="clearAll">清空文件列表</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </template>
-        <!-- <el-upload
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture-card"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove">
-            <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog v-model="dialogVisible" size="tiny">
-            <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog> -->
     </div>
 </template>
-
 <script>
-    /*import {Upload} from 'element-ui'
-    import 'element-ui/lib/theme-default/index.css'*/
-    import VueFileUpload from 'vue-file-upload';
+    import VueCoreImageUpload from 'vue-core-image-upload';
     import '../less/authentication.less';
     import {checkPhone,valiIdCard,isValidOrgCode,checkSocialCreditCode,checkMail,valiRealName,checkTencent} from '../tools/fun';
     import $api from '../tools/api';
@@ -218,8 +202,12 @@
         name: 'authentication',
         data(){
             return {
+                data:{
+                    parm:'000'
+                },
+                imgsrc:null,
                 date:null,
-                tab:1,
+                channelType:2,
                 companyInfor:[
                     {
                         name:'公司全称',
@@ -366,7 +354,8 @@
                     },
                     address:{
                         province:null,
-                        city:null
+                        city:null,
+                        error:false
                     },
                     lists:[
                         {
@@ -386,35 +375,6 @@
                             maxlength:24,
                             error:false,
                             model:''
-                        }
-                    ]
-                },
-                //资质
-                aptitude:{
-                    legalPersonIdcard:{//法人身份证
-                        file:null,
-                        text:'法人身份证',
-                        loaded:0,
-                        src:null
-                    },
-                    other:[
-                        {
-                            file:null,
-                            text:'营业执照',
-                            loaded:0,
-                            src:null
-                        },
-                        {
-                            file:null,
-                            text:'组织机构代码证',
-                            loaded:10,
-                            src:null
-                        },
-                        {
-                            file:null,
-                            text:'税务登记证',
-                            loaded:0,
-                            src:null
                         }
                     ]
                 },
@@ -451,150 +411,204 @@
                             error:false,
                             model:''
                         }
-                    ],
-                    files:[
+                    ]
+                },
+                uploadPhotos:{
+                    legalIdCard:{
+                        status:1,
+                        progress:0,
+                        name:'',
+                        src:null
+                    },
+                    qualification:[
                         {
-                            text:'正面照',
-                            file:null,
-                            loaded:0
+                            status:2,
+                            text:'营业执照证件照',
+                            progress:0,
+                            name:'',
+                            src:null 
                         },
                         {
+                            status:3,
+                            text:'组织机构代码证照',
+                            progress:0,
+                            name:'',
+                            src:null 
+                        },
+                        {
+                            status:4,
+                            text:'税务登记照',
+                            progress:0,
+                            name:'',
+                            src:null 
+                        }
+                    ],
+                    linkIdCard:[
+                        {
+                            status:5,
+                            progress:0,
+                            text:'正面照',
+                            name:'',
+                            src:null
+                        },
+                        {
+                            status:6,
+                            progress:0,
                             text:'反面照',
-                            file:null,
-                            loaded:0
+                            name:'',
+                            src:null
                         }
                     ]
                 },
-                files:[],
-                //文件过滤器，只能上传图片 
-                filters:[
-                    {
-                        name:"imageFilter",
-                        fn(file){
-                            var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-                            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-                        }
-                    }
-                ],
-                //回调函数绑定 
-                cbEvents:{
-                    onCompleteUpload:(file,response,status,header)=>{
-                        console.log(file);
-                        console.log(response);
-                        console.log("finish upload;")
-                    }
-                },
-                //xhr请求附带参数 
-                reqopts:{
-                    formData:{
-                        tokens:'tttttttttttttt'
-                    },
-                    responseType:'json',
-                    withCredentials:false
-                }
+                uploadStatus:0
             }
         },
         created(){
-            console.log(Areas)
+            console.log(this.serverUrl)
         },
         computed: {
             licenseError:function(){
-                return (this.aptitude.other[0].loaded<100) && (this.aptitude.other[1].loaded<100) && (this.aptitude.other[2].loaded<100)
+                return (this.uploadPhotos.qualification[0].progress<100) && (this.uploadPhotos.qualification[1].progress<100) && (this.uploadPhotos.qualification[2].progress<100)
+            },
+            linkIdCardError:function(){
+                return (this.uploadPhotos.linkIdCard[0].progress < 100) || (this.uploadPhotos.linkIdCard[1].progress < 100)
+            },
+            legalIdCardError:function(){
+                return (this.uploadPhotos.legalIdCard.progress < 100)
+            },
+            serverUrl:function(){
+                return $api.serverUrl;
             }
         },
-        components: { Areas,VueFileUpload},
+        components: { Areas,VueCoreImageUpload},
         methods: {
-            onStatus(file){
-                if(file.isSuccess){
-                return "上传成功";
-              }else if(file.isError){
-                return "上传失败";
-              }else if(file.isUploading){
-                return "正在上传";
-              }else{
-                return "待上传";
-              }
+            imageuploading(){
+                console.log('000')
             },
-            onAddItem(files){
-                console.log(files);
-                this.files = files;
+            imageuploaded(res){
+                console.log(res)
+                if(res.code == 200){
+                    let src = res.data.attachmentLink;
+                    let name = res.data.attachmentName;
+                    let parm = res.data.parm;
+                    /*if(parm == 1){
+                        this.uploadPhotos.legalIdCard.src = src;
+                    }else if(parm > 4){
+                        this.uploadPhotos.linkIdCard[parm-5].src = src;
+                        this.uploadPhotos.linkIdCard[parm-5].progress = 100;
+                    }else if((parm > 1) && (parm <= 4)){
+                        this.uploadPhotos.qualification[parm-2].src = src;
+                        this.uploadPhotos.qualification[parm-2].progress = 100;
+                    }*/
+                    this.photo(parm).src = src;
+                    this.photo(parm).name = name;
+                    this.photo(parm).progress = 100;
+                }
             },
-            uploadItem(file){
-              //单个文件上传 
-              file.upload();
+            setProcess(height){
+                let things = () =>{
+                    if(height>=100){
+                        height = 100
+                    }else{
+                        height++;
+                        setTimeout(()=>{
+                            things();
+                        }) 
+                    }
+                }
             },
-            uploadAll(){
-              //上传所有文件 
-              this.$refs.vueFileUploader.uploadAll();
+            photo(parm){
+                let obj = {};
+                if(parm == 1){
+                    obj = this.uploadPhotos.legalIdCard;
+                }else if(parm > 4){
+                    obj = this.uploadPhotos.linkIdCard[parm-5];
+                }else if((parm > 1) && (parm <= 4)){
+                    obj = this.uploadPhotos.qualification[parm-2];
+                }
+                return obj;
             },
-            clearAll(){
-              //清空所有文件 
-              this.$refs.vueFileUploader.clearAll();
+            imagechanged(status){
+                this.data.parm = status;
             },
             submit(){
-                //企业信息
+                /*--------------企业信息--------------*/
                 if(this.listCheck(this.companyInfor)){
                     return
                 }
                 let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
-
-                //组织机构代码校验
-                let orgCode = institutionCode.model.replace(/\s+/g, "");
-                if(orgCode.length>10){
+                let compFullName = fullName.model,
+                    compLegalPerson = calPerson.model,
+                    channelAppName = appName.model,
+                    compOrganizationCode = institutionCode.model.replace(/\s+/g, ""),//组织机构代码校验
+                    compContactWay = contactWay.model,
+                    channelEmail = companyMail.model,
+                    compAddress = companyAddress.model;
+                if(compOrganizationCode.length>10){
                     //统一社会信用代码
-                    if(!checkSocialCreditCode(orgCode)){
+                    if(!checkSocialCreditCode(compOrganizationCode)){
                         Toast('统一社会信用代码输入有误')
                         return
                     }
                 }else{
-                    if(!isValidOrgCode(orgCode)){
+                    if(!isValidOrgCode(compOrganizationCode)){
                         Toast('组织机构代码码输入有误')
                         return
                     }
                 }
                 //邮箱验证
-                let comMail = companyMail.model;
-                if(!checkMail(comMail)){
+                if(!checkMail(channelEmail)){
                     Toast('公司邮箱输入有误');
                     return 
                 }
 
-
-                if(this.aptitude.legalPersonIdcard.loaded<100){
+                /*--------------上传资质----------------*/
+                if(this.legalIdCardError){
                     Toast('请上传法人身份证照！')
-                    return
+                    return;
                 }
 
+                let legalPersonIdImgPath = this.uploadPhotos.legalIdCard.src;
                 //上传资质
                 if(this.licenseError){
                     Toast('请上传营业执照证件照')
                     return
                 }
-                //银行卡信息
+
+                let businessLicenceImgPath = this.uploadPhotos.qualification[0].src;
+                let orgCodeImgPath = this.uploadPhotos.qualification[1].src;
+                let taxRegImgPath = this.uploadPhotos.qualification[2].src;
+                /*--------------银行卡信息----------------*/
+                let accountType = this.bank.type.selected;
                 let [branchName,accountName,bankCard] = this.bank.lists
-                if(this.bank.type.selected == 0){
+                if(accountType == 0){
                     this.bank.type.error = true;
                     Toast('请选择账户类型');
                     return 
                 }
-                if(this.bank.bankName.selected == 0){
+                let bankIndex = this.bank.bankName.selected;
+                if(bankIndex == 0){
                     this.bank.bankName.error = true;
                     Toast('请选择开户银行');
                     return 
                 }
+                let depositBank = this.bank.bankName.options[bankIndex].text;//开户银行
                 if((this.bank.address.province.selected == 0) || (this.bank.address.city.selected == 0)){
                     this.bank.address.error = true;
                     Toast('请选择开户地址');
                     return 
                 }
+                let bankProvince = this.bank.address.province,bankCity = this.bank.address.city;
+                let depositAddress = (bankProvince + '-' + bankCity);//开户地址
                 if(this.listCheck(this.bank.lists)){
                     return
                 }
+                let subBranch = this.bank.lists[0].name;
                 if(!valiRealName(accountName)){
                     Toast('开户人姓名输入有误');
                     return
                 }
-                //联系人信息
+                /*-----------------------------联系人信息----------------------------------------*/
                 if(this.listCheck(this.contacts.inputs)){
                     return
                 }
@@ -620,7 +634,7 @@
                     Toast('微信/QQ号输入有误');
                     return
                 }
-                if((this.contacts.files[0].loaded < 100) || (this.contacts.files[1].loaded < 100)){
+                if(this.linkIdCardError){
                     Toast('请上传身份证！');
                     return
                 }
@@ -654,16 +668,18 @@
                 this.bankCard = this.bankCard.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
             },
             select(re){
+                if(this.bank.address.province != null){
+                    if(re.pro.name == '请选择'){
+                        this.bank.address.error = true;
+                    }else{
+                        this.bank.address.error = false;
+                    }
+                }
                 this.bank.address.province = re.pro.name;
                 this.bank.address.city = re.city.name;
-            },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-              },
-              handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
-              }
+                    
+                
+            }
         },
         destroyed(){
 
