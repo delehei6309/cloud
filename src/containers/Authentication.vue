@@ -107,7 +107,7 @@
                             </div>
                             <div class="infor-right" v-show="bank.type.error">！请选择账户类型</div>
                         </li>
-                        <li flex>
+                        <!-- <li flex>
                             <div class="infor-left">开户银行</div>
                             <div class="infor-center">
                                 <div class="select-box">
@@ -117,7 +117,7 @@
                                 </div> 
                             </div>
                             <div class="infor-right" v-show="bank.bankName.error">！请选择开户银行</div>
-                        </li>
+                        </li> -->
                         <li flex>
                             <div class="infor-left">开户地址</div>
                             <div class="infor-center" flex>
@@ -138,6 +138,7 @@
                                     @blur="item.model.length<1 ? item.error=true : ''"
                                     @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')" 
                                     @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                    @input="gainBank"
                                     />
                                 <input type="text" 
                                     v-else
@@ -151,6 +152,7 @@
                             <div class="infor-right" v-show="item.error">！{{item.name}}不能为空</div>
                         </li>
                     </ul>
+                    <p class="the-bank">{{theBank}}</p>
                 </div>
                 <div class="contacts">
                     <h6>联系人信息</h6>
@@ -221,6 +223,7 @@
                 },
                 date:null,
                 channelType:2,
+                theBank:'',
                 companyInfor:[
                     {
                         name:'公司全称',
@@ -288,80 +291,6 @@
                             {
                                 text:'个人账户',
                                 value:2
-                            }
-                        ]
-                    },
-                    bankName:{
-                        error:false,
-                        selected:0,
-                        options:[
-                            {
-                                text:'请选择',
-                                value:0
-                            },
-                            {
-                                text:'中国银行',
-                                value:1
-                            },
-                            {
-                                text:'中国工商银行',
-                                value:2
-                            },
-                            {
-                                text:'中国农业银行',
-                                value:3
-                            },
-                            {
-                                text:'中国建设银行',
-                                value:4
-                            },
-                            {
-                                text:'中国交通银行',
-                                value:5
-                            },
-                            {
-                                text:'民生银行',
-                                value:6
-                            },
-                            {
-                                text:'光大银行',
-                                value:7
-                            },
-                            {
-                                text:'广发银行',
-                                value:8
-                            },
-                            {
-                                text:'兴业银行',
-                                value:9
-                            },
-                            {
-                                text:'平安银行',
-                                value:10
-                            },
-                            {
-                                text:'浦发银行',
-                                value:11
-                            },
-                            {
-                                text:'上海银行',
-                                value:12
-                            },
-                            {
-                                text:'邮储银行',
-                                value:13
-                            },
-                            {
-                                text:'中信银行',
-                                value:14
-                            },
-                            {
-                                text:'招商银行',
-                                value:15
-                            },
-                            {
-                                text:'华夏银行',
-                                value:16
                             }
                         ]
                     },
@@ -495,6 +424,21 @@
         },
         components: { Areas,VueCoreImageUpload},
         methods: {
+            gainBank(){
+                let bankCardNum = this.bank.lists[2].model.replace(/\s+/g, "");
+                if(bankCardNum.length<6){
+                    this.theBank = '';
+                }
+                if(bankCardNum.length == 6){
+                    $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
+                        if(msg.code == 200){
+                            this.theBank = msg.data.depositBank;
+                        }else{
+                            Toast(msg.msg);
+                        }
+                    });
+                }
+            },
             imageuploading(){
                 console.log('000')
             },
@@ -504,15 +448,6 @@
                     let src = res.data.attachmentLink;
                     let name = res.data.attachmentName;
                     let parm = res.data.parm;
-                    /*if(parm == 1){
-                        this.uploadPhotos.legalIdCard.src = src;
-                    }else if(parm > 4){
-                        this.uploadPhotos.linkIdCard[parm-5].src = src;
-                        this.uploadPhotos.linkIdCard[parm-5].progress = 100;
-                    }else if((parm > 1) && (parm <= 4)){
-                        this.uploadPhotos.qualification[parm-2].src = src;
-                        this.uploadPhotos.qualification[parm-2].progress = 100;
-                    }*/
                     this.photo(parm).src = src;
                     this.photo(parm).name = name;
                     this.photo(parm).progress = 100;
@@ -603,14 +538,14 @@
                     this.bank.type.error = true;
                     Toast('请选择账户类型');
                     return 
-                }
+                }/*
                 let bankIndex = this.bank.bankName.selected;
                 if(bankIndex == 0){
                     this.bank.bankName.error = true;
                     Toast('请选择开户银行');
                     return 
-                }
-                parmData.depositBank = this.bank.bankName.options[bankIndex].text;//开户银行
+                }*/
+                parmData.depositBank = this.theBank;//开户银行
                 if((this.bank.address.province.selected == 0) || (this.bank.address.city.selected == 0)){
                     this.bank.address.error = true;
                     Toast('请选择开户地址');
@@ -626,6 +561,10 @@
                 parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
                 if(!valiRealName(parmData.depositPersonName)){
                     Toast('开户人姓名输入有误');
+                    return
+                }
+                if(bankCard.model.length<16){
+                    Toast('请输入正确的银行卡号')
                     return
                 }
                 /*-----------------------------联系人信息----------------------------------------*/
@@ -667,7 +606,7 @@
                 parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
                 $api.post('/channel/insert',{data:parmData}).then(msg => {
                     if(msg.code == 200){
-                        console.log(msg)
+                        this.$router.push('/submit-state');
                     }else{
                         Toast(msg.msg);
                     }
@@ -683,20 +622,10 @@
                     }
                 }
             },
-            selectChange(status){
-                if(status == 1){
-                    setTimeout(()=>{
-                        this.bank.type.error = !this.bank.type.selected
-                    })
-                }else if(status == 2){
-                    setTimeout(()=>{
-                        this.bank.bankName.error = !this.bank.bankName.selected
-                    })
-                }else if(status == 3){
-                    setTimeout(()=>{
-                        this.bank.address.error = !this.bank.address.province.selected || !this.bank.address.city.selected
-                    })
-                }
+            selectChange(){
+                setTimeout(()=>{
+                    this.bank.type.error = !this.bank.type.selected
+                })
             },
             bankCardFormat(){
                 this.bankCard = this.bankCard.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
