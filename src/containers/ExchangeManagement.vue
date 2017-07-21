@@ -60,6 +60,7 @@
                         <template v-if="item.value == 3">计息中</template>
                         <template v-if="item.value == 4">已到期</template>
                         <template v-if="item.value == 5">已到期兑付</template>
+                        <template v-if="item.value == 6">已撤消</template>
                     </template>
                     <!-- <template slot="userUuid" scope="item">
                         <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>
@@ -133,6 +134,9 @@
                     },{
                         text: '已到期兑付',
                         value: 5,
+                    },{
+                        text: '已撤消',
+                        value: 6,
                     }
                 ],
                 items: [],

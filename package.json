@@ -15,6 +15,7 @@
     "mint-ui": "^2.2.7",
     "qrcode": "^0.8.2",
     "vue": "^2.2.6",
+    "vue-core-image-upload": "^2.3.5",
     "vue-date": "^1.1.7",
     "vue-file-upload": "^0.1.2",
     "vue-router": "^2.3.1",
