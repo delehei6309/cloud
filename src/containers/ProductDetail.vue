@@ -133,7 +133,7 @@
                     <p><span>定向委托投资标的风险提示： </span><span> 详见《风险提示函》</span></p>
                     <p><span>受托投资管理机构： </span><span>  深圳平安聚鑫资产管理有限公司</span></p>
                     <p><span>托管机构： </span><span>  平安银行股份有限公司深圳分行</span></p> -->
-                    <p v-for="(item,index) in tabList" :key="index" v-show="index == tab">{{item.inner}}</p>
+                    <p v-for="(item,index) in tabList" :key="index" v-show="index == tab" v-html="item.inner"></p>
                 </div>
             </div>
         </div>
