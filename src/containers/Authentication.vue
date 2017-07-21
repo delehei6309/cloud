@@ -1,7 +1,7 @@
 <template>
     <div class="authentication">
         <div class="authentication-body">
-            <div class="header-p">开通产品标准接入服务，需要客户提交资料并上传相应的凭证，请务必正确填写，我们将尽快联系到您。</div>
+            <div class="header-p">开通金融云开放服务，需要客户提交资料并上传相应的凭证，请务必正确填写，我们将尽快联系到您。</div>
             <div class="header-select" flex>
                 <div class="select-text">请选择您的所属身份</div>
                 <div class="select-btn" flex>
@@ -14,14 +14,28 @@
                     <h6>企业信息</h6>
                     <ul class="common-lists">
                         <li flex v-for="(item,index) in companyInfor" :key="index">
-                            <div class="infor-left">{{item.name}}</div>
-                            <div class="infor-center">
-                                <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
-                                    @focus="item.error=false" 
-                                    @blur="item.model.length<1 ? item.error=true : ''"
-                                    >
-                            </div>
-                            <div class="infor-right" v-show="item.error">！{{item.name}}不能为空</div>
+                            <template v-if="index == 3">
+                                <div class="infor-left">{{item.name}}</div>
+                                <div class="infor-center">
+                                    <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
+                                        @focus="item.error=false" 
+                                        @blur="item.model.length<1 ? item.error=true : ''"
+                                        @keyup="item.model = item.model.replace(/\s+/g, '')" 
+                                        @afterpaste="item.model = item.model.replace(/\s+/g, '')"
+                                        >
+                                </div>
+                                <div class="infor-right" v-show="item.error">！组织机构代码或统一社会信用代码不能为空</div>
+                            </template>
+                            <template v-else>
+                                <div class="infor-left">{{item.name}}</div>
+                                <div class="infor-center">
+                                    <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
+                                        @focus="item.error=false" 
+                                        @blur="item.model.length<1 ? item.error=true : ''"
+                                        >
+                                </div>
+                                <div class="infor-right" v-show="item.error">！{{item.name}}不能为空</div>
+                            </template>
                         </li>
                     </ul>
                 </div>
@@ -203,9 +217,8 @@
         data(){
             return {
                 data:{
-                    parm:'000'
+                    parm:''
                 },
-                imgsrc:null,
                 date:null,
                 channelType:2,
                 companyInfor:[
@@ -536,28 +549,33 @@
                 if(this.listCheck(this.companyInfor)){
                     return
                 }
+                let parmData = {channelType:this.channelType};
                 let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
-                let compFullName = fullName.model,
-                    compLegalPerson = calPerson.model,
-                    channelAppName = appName.model,
-                    compOrganizationCode = institutionCode.model.replace(/\s+/g, ""),//组织机构代码校验
-                    compContactWay = contactWay.model,
-                    channelEmail = companyMail.model,
-                    compAddress = companyAddress.model;
-                if(compOrganizationCode.length>10){
+                parmData.compFullName = fullName.model;
+                parmData.compLegalPerson = calPerson.model;
+                parmData.channelAppName = appName.model;
+                parmData.compOrganizationCode = institutionCode.model;//组织机构代码校验
+                parmData.compContactWay = contactWay.model;
+                parmData.channelEmail = companyMail.model;
+                parmData.compAddress = companyAddress.model;
+                if(!valiRealName(parmData.compLegalPerson)){
+                    Toast('公司法人输入有误');
+                    return
+                }
+                if(parmData.compOrganizationCode.length>10){
                     //统一社会信用代码
-                    if(!checkSocialCreditCode(compOrganizationCode)){
+                    if(!checkSocialCreditCode(parmData.compOrganizationCode)){
                         Toast('统一社会信用代码输入有误')
                         return
                     }
                 }else{
-                    if(!isValidOrgCode(compOrganizationCode)){
+                    if(!isValidOrgCode(parmData.compOrganizationCode)){
                         Toast('组织机构代码码输入有误')
                         return
                     }
                 }
                 //邮箱验证
-                if(!checkMail(channelEmail)){
+                if(!checkMail(parmData.channelEmail)){
                     Toast('公司邮箱输入有误');
                     return 
                 }
@@ -568,20 +586,20 @@
                     return;
                 }
 
-                let legalPersonIdImgPath = this.uploadPhotos.legalIdCard.src;
+                parmData.legalPersonIdImgPath = this.uploadPhotos.legalIdCard.src;
                 //上传资质
                 if(this.licenseError){
                     Toast('请上传营业执照证件照')
                     return
                 }
 
-                let businessLicenceImgPath = this.uploadPhotos.qualification[0].src;
-                let orgCodeImgPath = this.uploadPhotos.qualification[1].src;
-                let taxRegImgPath = this.uploadPhotos.qualification[2].src;
+                parmData.businessLicenceImgPath = this.uploadPhotos.qualification[0].src;
+                parmData.orgCodeImgPath = this.uploadPhotos.qualification[1].src;
+                parmData.taxRegImgPath = this.uploadPhotos.qualification[2].src;
                 /*--------------银行卡信息----------------*/
-                let accountType = this.bank.type.selected;
+                parmData.accountType = this.bank.type.selected;//账户类型
                 let [branchName,accountName,bankCard] = this.bank.lists
-                if(accountType == 0){
+                if(parmData.accountType == 0){
                     this.bank.type.error = true;
                     Toast('请选择账户类型');
                     return 
@@ -592,19 +610,21 @@
                     Toast('请选择开户银行');
                     return 
                 }
-                let depositBank = this.bank.bankName.options[bankIndex].text;//开户银行
+                parmData.depositBank = this.bank.bankName.options[bankIndex].text;//开户银行
                 if((this.bank.address.province.selected == 0) || (this.bank.address.city.selected == 0)){
                     this.bank.address.error = true;
                     Toast('请选择开户地址');
                     return 
                 }
                 let bankProvince = this.bank.address.province,bankCity = this.bank.address.city;
-                let depositAddress = (bankProvince + '-' + bankCity);//开户地址
+                parmData.depositAddress = (bankProvince + '-' + bankCity);//开户地址
                 if(this.listCheck(this.bank.lists)){
                     return
                 }
-                let subBranch = this.bank.lists[0].name;
-                if(!valiRealName(accountName)){
+                parmData.subBranch = branchName.model;
+                parmData.depositPersonName = accountName.model;
+                parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
+                if(!valiRealName(parmData.depositPersonName)){
                     Toast('开户人姓名输入有误');
                     return
                 }
@@ -614,6 +634,11 @@
                 }
 
                 let [concatName,concatNumber,concatMail,concatIdCard,concatTencent] = this.contacts.inputs;
+                parmData.linkmanName = concatName.model;
+                parmData.linkmanPhone = concatNumber.model;
+                parmData.linkmanEmail = concatMail.model;
+                parmData.linkmanIdNum = concatIdCard.model;
+                parmData.linkmanSocialSignal = concatTencent.model;
                 if(!valiRealName(concatName.model)){
                     Toast('姓名输入有误');
                     return
@@ -638,6 +663,15 @@
                     Toast('请上传身份证！');
                     return
                 }
+                parmData.linkmanIdFrontViewPath = this.uploadPhotos.linkIdCard[0].src;//正
+                parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
+                $api.post('/channel/insert',{data:parmData}).then(msg => {
+                    if(msg.code == 200){
+                        console.log(msg)
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             },
             listCheck(arr){
                 for(let obj of arr){
@@ -676,9 +710,7 @@
                     }
                 }
                 this.bank.address.province = re.pro.name;
-                this.bank.address.city = re.city.name;
-                    
-                
+                this.bank.address.city = re.city.name;  
             }
         },
         destroyed(){

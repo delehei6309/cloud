@@ -84,6 +84,7 @@ let post = (path, data = {}) => {
             t: new Date().getTime()
         },
         withCredentials: true,
+        dataType:'json',
         data: $query(data)
     }).then(response => {
         if (response.status == 200) {
