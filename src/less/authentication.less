@@ -37,6 +37,11 @@
                 color:#fff;
             }
         }
+        .no-pointer{
+            button{
+                cursor: not-allowed;
+            }
+        }
     }
     .authentication-content{
         .select-box{
@@ -97,10 +102,8 @@
         }
         .upload-img-box{
             position: relative;
-            cursor: pointer;
             border: @upload-border;
             text-align: center;
-            overflow: hidden;
             span{
                 position: absolute;
                 display: block;
@@ -123,7 +126,12 @@
                     max-width: 100%;
                     max-height: 100%;
                     width:auto;
+                    vertical-align: middle;
                 }
+            }
+            span.perent-img{
+                font-size:0;
+                cursor:pointer;
             }
             .btn-primary{
                 width:100%;
@@ -154,7 +162,7 @@
             height:3px;
             margin:-1.5px 0 0 -11px;
         }
-        div{
+        >div{
             h6{
                 color:@color-text;
                 line-height: 1em;
@@ -188,6 +196,10 @@
                         border: 1px solid #9B9C9C;
                         border-radius: 4px;
                         padding:0 12px;
+                        color:#333;
+                    }
+                    input:disabled,input[disabled]{
+                        background-color: transparent;
                     }
                     .infor-right{
                         margin-left: 10px;
@@ -255,6 +267,9 @@
                         width:235px;
                         height:132px;
                         border-radius: 4px;
+                        .span-percent{
+                            line-height: 130px;
+                        }
 
                     }
                 }
@@ -284,6 +299,7 @@
                         line-height: 1em;
                         padding-left: 370px;
                         margin-top:20px;
+                        height:14px;
                     }
                 }
                 
@@ -333,6 +349,7 @@
                     line-height: 1em;
                     padding-left: 370px;
                     margin-top: 20px;
+                    height:14px;
                     
                 }
             }
@@ -349,5 +366,24 @@
             color:#fff;
         }
     }
-
+    .photo-box{
+        .photo-bg,.photo-wrap{
+            height:100%;width:100%;
+            min-width: 1200px;
+            position: fixed;
+            left:0;top:0;
+        }
+        .photo-bg{
+            z-index: 996;
+            background-color: #000;
+            opacity: .5;
+        }
+        .photo-wrap{
+            z-index: 999;
+            cursor: pointer;
+            img{
+                width:520px;
+            }
+        }
+    }
 }

@@ -15,6 +15,7 @@ import ProductDetail  from '../containers/ProductDetail';
 import ExchangeManagement  from '../containers/ExchangeManagement';
 import ForgetPassword from '../containers/ForgetPassword';
 import submitState from '../containers/submitState';
+import auditState from '../containers/auditState';
 
 const title = '开放平台';
 let routes = [
@@ -109,8 +110,17 @@ let routes = [
                 },
             },
             {
-                path:'/submit-state',
+                path:'submit-state',
+                name:'submit-state',
                 component:submitState,
+                meta: {
+                    title: title,
+                },
+            },
+            {
+                path:'audit-state',
+                name:'audit-state',
+                component:auditState,
                 meta: {
                     title: title,
                 },

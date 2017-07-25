@@ -2,14 +2,14 @@
     <div class="select-area">
         <div class="rows" flex="main:justify">
             <div class="cols">
-                <select v-model="f.p" @change="selpro" class="mb-3 form-control">
+                <select v-model="f.p" @change="selpro" class="mb-3 form-control"v-bind:disabled="disabled">
                     <option :value="i" v-for="(v,i) in pro">{{v.name}}</option>
                 </select>
                 <div class="select-view">{{pro[f.p].name}}</div>
             </div>
     
             <div class="cols">
-                <select v-model="f.c" @change="selcity" class="mb-3 form-control">
+                <select v-model="f.c" @change="selcity" class="mb-3 form-control" v-bind:disabled="disabled">
                     <option :value="i" v-for="(v,i) in city">{{v.name}}</option>
                 </select>
                 <div class="select-view">{{city[f.c].name}}</div>
@@ -30,7 +30,7 @@
     import './areas.less';
     export default {
         name: 'areas',
-        props: ['title'],
+        props: ['title','disabled'],
         data(){
             return {
                data:data,

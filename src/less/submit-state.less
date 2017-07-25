@@ -14,5 +14,36 @@
         border:1px solid #d8d8d8;
         border-right: 0;
         min-height:368px;
+        margin-top:16px;
+        text-align: center;
+        color: #666666;
+        .state-content-up{
+            padding:54px 0 15px;
+            .text{
+                font-size: 24px;
+                line-height: 54px;
+                padding-left: 16px;
+            }
+        }
+        .state-content-down{
+            font-size:18px;
+            &.error-color{
+                color:#D0011B;
+            }
+        }
+    }
+}
+.audit-state{
+    .audit-state-btn{
+        text-align: center;
+        font-style: 0;
+        padding-top:20px;
+        button{
+            padding:6px 20px;
+            background-color: @color-active;
+            color:#fff;
+            font-size:20px;
+            margin:0 auto;
+        }
     }
 }
