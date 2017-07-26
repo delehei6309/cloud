@@ -1,258 +1,295 @@
 <template>
-    <div class="authentication">
-        <div class="authentication-body">
-            <div class="header-p">开通金融云开放服务，需要客户提交资料并上传相应的凭证，请务必正确填写，我们将尽快联系到您。</div>
-            <div class="header-select" flex>
-                <div class="select-text">请选择您的所属身份</div>
-                <div class="select-btn no-pointer" flex v-if="disabled">
-                    <button :class="{'active':channelType == 2}">企业</button>
-                    <button :class="{'active':channelType == 1}">个人</button>
+    <div class="aui-box">
+        <div class="authentication" v-if="authenticationShow">
+            <div class="authentication-body" :class="{'boxs-disabled':disabled}">
+                <div class="header-p" v-if="!disabled">开通金融云开放服务，需要客户提交资料并上传相应的凭证，请务必正确填写，我们将尽快联系到您。</div>
+                <div class="header-select" flex>
+                    <div class="select-text">
+                        <template v-if="disabled">认证类型</template>
+                        <template v-else>请选择您的所属身份</template>
+                    </div>
+                    <div class="select-btn no-pointer" flex v-if="disabled">
+                        <button :class="{'active':channelType == 2}" v-if="channelType == 2">企业</button>
+                        <button :class="{'active':channelType == 1}" v-if="channelType == 1">个人</button>
+                    </div>
+                    <div class="select-btn" flex v-else>
+                        <button :class="{'active':channelType == 2}" @click.stop="channelType=2">企业</button>
+                        <button :class="{'active':channelType == 1}" @click.stop="channelType=1">个人</button>
+                    </div>
                 </div>
-                <div class="select-btn" flex v-else>
-                    <button :class="{'active':channelType == 2}" @click.stop="channelType=2">企业</button>
-                    <button :class="{'active':channelType == 1}" @click.stop="channelType=1">个人</button>
-                </div>
-            </div>
-            <div class="authentication-content">
-                <div class="content-infor">
-                    <h6>企业信息</h6>
-                    <ul class="common-lists">
-                        <li flex v-for="(item,index) in companyInfor" :key="index" :class="item.dom">
-                            <template v-if="index == 3">
+                <div class="authentication-content">
+                    <div class="content-infor">
+                        <h6>企业信息</h6>
+                        <ul class="common-lists">
+                            <li flex v-for="(item,index) in companyInfor" :key="index" :class="item.dom">
+                                <template v-if="index == 3">
+                                    <div class="infor-left">{{item.name}}</div>
+                                    <div class="infor-center">
+                                        <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength"
+                                            :disabled="disabled"
+                                            @focus="item.error=false" 
+                                            @blur="item.model.length<1 ? item.error=true : ''"
+                                            @keyup="item.model = item.model.replace(/\s+/g, '')" 
+                                            @afterpaste="item.model = item.model.replace(/\s+/g, '')"
+                                            >
+                                    </div>
+                                    <div class="infor-right" v-show="item.error">
+                                        <span v-if="item.model.length<1">！统一社会信用代码不能为空</span>
+                                        <span v-else>！请输入正确的统一社会信用代码</span>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="infor-left">{{item.name}}</div>
+                                    <div class="infor-center">
+                                        <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
+                                            :disabled="disabled"
+                                            @focus="item.error=false" 
+                                            @blur="item.model.length<1 ? item.error=true : ''"
+                                            >
+                                    </div>
+                                    <div class="infor-right" v-show="item.error">
+                                        <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
+                                        <span v-else>！请输入正确的{{item.name}}</span>
+                                    </div>
+                                </template>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content-upload">
+                        <h6>上传资质</h6>
+                        <div class="upload">
+                            <div class="idcard" flex :class="uploadPhotos.legalIdCard.dom">
+                                <div class="upload-text">上传法人身份证</div>
+                                <div class="idcard-box upload-img-box" :class="{uploading:uploadPhotos.legalIdCard.progress<=0}">
+                                    <span class="span-bg" 
+                                        :style="{height:uploadPhotos.legalIdCard.progress+'%'}" 
+                                        v-show="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100"></span>
+                                    <span class="span-percent" 
+                                        v-if="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100">上传中{{parseInt(uploadPhotos.legalIdCard.progress)}}%</span>
+                                    <span class="span-percent perent-img" v-if="uploadPhotos.legalIdCard.progress>=100"
+                                        @click.stop="viewImg=uploadPhotos.legalIdCard.src;photoShow=true">
+                                        <img :src="uploadPhotos.legalIdCard.src">
+                                    </span>
+                                    <vue-core-image-upload
+                                        class="btn btn-primary"
+                                        v-if="!disabled"
+                                        :title="uploadPhotos.legalIdCard.fileTitle"
+                                        v-show="uploadPhotos.legalIdCard.progress==0 || uploadPhotos.legalIdCard.progress==100"
+                                        inputOfFile="file"
+                                        :data="data"
+                                        :max-file-size="209715200"
+                                        :url="`${serverUrl}/channel/file/upload`"
+                                        @imageuploaded="imageuploaded"
+                                        @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)" >
+                                    </vue-core-image-upload>
+                                </div>
+                                <div class="upload-error" v-show="legalIdCardError && photoError1">！请上传法人身份证照，大小不超过2M</div>
+                            </div>
+                            <div class="qualification">
+                                <div flex>
+                                    <div class="upload-text">
+                                        <p>上传公司资质</p>
+                                        <p class="text-last">(三证合一只需上传一张)</p>
+                                    </div>
+                                    <div class="qualification-box" flex>
+                                        <div class="license imgs" v-for="(item,index) in uploadPhotos.qualification" :key="index" 
+                                            :class="item.dom" 
+                                            v-if="item.src || !disabled">
+                                            <div class="upload-img-box" :class="{uploading:item.progress<=0}">
+                                                <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
+                                                <span v-if="item.progress>0 && item.progress<100" class="span-percent">上传中{{parseInt(item.progress)}}%</span>
+                                                <span v-if="item.progress>=100" class="span-percent perent-img"
+                                                    @click.stop="viewImg=item.src;photoShow=true">
+                                                    <img :src="item.src">
+                                                </span>
+                                                <vue-core-image-upload
+                                                    class="btn btn-primary"
+                                                    v-if="!disabled"
+                                                    :title="item.fileTitle"
+                                                    v-show="item.progress==0 || item.progress ==100"
+                                                    inputOfFile="file"
+                                                    :data="data"
+                                                    :max-file-size="209715200"
+                                                    :url="`${serverUrl}/channel/file/upload`"
+                                                    @imageuploaded="imageuploaded"
+                                                    @imagechanged = "imagechanged(item.status)" >
+                                                </vue-core-image-upload>
+                                            </div>
+                                            <div>{{item.text}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="upload-error">
+                                    <span v-show="licenseError && photoError2">！请上传营业执照证件照，大小不超过2M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <h6>银行卡信息<span>（请确保正确填写银行卡信息，便于结款准确到账）</span></h6>
+                        <ul class="common-lists">
+                            <li flex :class="bank.type.dom">
+                                <div class="infor-left">账户类型</div>
+                                <div class="infor-center">
+                                    <div class="select-box">
+                                        <b-form-select class="mb-3"
+                                            v-model="bank.type.selected"
+                                            @change.native="selectChange(1)" 
+                                            :options="bank.type.options"
+                                            :disabled="disabled">
+                                        </b-form-select>
+                                        <div class="select-view">{{bank.type.options[bank.type.selected].text}}</div>
+                                    </div> 
+                                </div>
+                                <div class="infor-right" v-show="bank.type.error">！请选择账户类型</div>
+                            </li>
+                            <li flex :class="bank.address.dom">
+                                <div class="infor-left">开户地址</div>
+                                <div class="infor-center" flex>
+                                    <areas @select="select" :disabled="disabled" :addressCity="bank.address.city" :addressProvince="bank.address.province"></areas>
+                                </div>
+                                <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
+                            </li>
+                            <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
                                 <div class="infor-left">{{item.name}}</div>
                                 <div class="infor-center">
-                                    <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength"
-                                        :disabled="disabled"
+                                    <input type="text" 
+                                        v-if="index==2"
+                                        :placeholder="'请输入'+item.name" 
+                                        v-model="item.model" 
+                                        :maxlength="item.maxlength" 
                                         @focus="item.error=false" 
                                         @blur="item.model.length<1 ? item.error=true : ''"
-                                        @keyup="item.model = item.model.replace(/\s+/g, '')" 
-                                        @afterpaste="item.model = item.model.replace(/\s+/g, '')"
-                                        >
-                                </div>
-                                <div class="infor-right" v-show="item.error">
-                                    <span v-if="item.model.length<1">！统一社会信用代码不能为空</span>
-                                    <span v-else>！请输入正确的统一社会信用代码</span>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <div class="infor-left">{{item.name}}</div>
-                                <div class="infor-center">
-                                    <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
+                                        @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')" 
+                                        @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                        @input="gainBank"
                                         :disabled="disabled"
+                                        />
+                                    <input type="text" 
+                                        v-else
+                                        :placeholder="'请输入'+item.name" 
+                                        v-model="item.model" 
+                                        :maxlength="item.maxlength" 
                                         @focus="item.error=false" 
                                         @blur="item.model.length<1 ? item.error=true : ''"
-                                        >
+                                        :disabled="disabled"
+                                        />
                                 </div>
                                 <div class="infor-right" v-show="item.error">
                                     <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
                                     <span v-else>！请输入正确的{{item.name}}</span>
                                 </div>
-                            </template>
-                        </li>
-                    </ul>
-                </div>
-                <div class="content-upload">
-                    <h6>上传资质</h6>
-                    <div class="upload">
-                        <div class="idcard" flex :class="uploadPhotos.legalIdCard.dom">
-                            <div class="upload-text">上传法人身份证</div>
-                            <div class="idcard-box upload-img-box" :class="{uploading:uploadPhotos.legalIdCard.progress<=0}">
-                                <span class="span-bg" 
-                                    :style="{height:uploadPhotos.legalIdCard.progress+'%'}" 
-                                    v-show="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100"></span>
-                                <span class="span-percent" 
-                                    v-if="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100">上传中{{parseInt(uploadPhotos.legalIdCard.progress)}}%</span>
-                                <span class="span-percent perent-img" v-if="uploadPhotos.legalIdCard.progress>=100"
-                                    @click.stop="viewImg=uploadPhotos.legalIdCard.src;photoShow=true">
-                                    <img :src="uploadPhotos.legalIdCard.src">
-                                </span>
-                                <vue-core-image-upload
-                                    class="btn btn-primary"
-                                    v-if="!disabled"
-                                    :title="uploadPhotos.legalIdCard.fileTitle"
-                                    v-show="uploadPhotos.legalIdCard.progress==0 || uploadPhotos.legalIdCard.progress==100"
-                                    inputOfFile="file"
-                                    :data="data"
-                                    :max-file-size="209715200"
-                                    :url="`${serverUrl}/channel/file/upload`"
-                                    @imageuploaded="imageuploaded"
-                                    @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)" >
-                                </vue-core-image-upload>
-                            </div>
-                            <div class="upload-error" v-show="legalIdCardError && photoError1">！请上传法人身份证照，大小不超过2M</div>
-                        </div>
-                        <div class="qualification">
-                            <div flex>
-                                <div class="upload-text">
-                                    <p>上传公司资质</p>
-                                    <p class="text-last">(三证合一只需上传一张)</p>
+                            </li>
+                        </ul>
+                        <p class="the-bank">{{theBank}}</p>
+                    </div>
+                    <div class="contacts">
+                        <h6>联系人信息</h6>
+                        <ul class="common-lists">
+                            <li flex v-for="(item,index) in contacts" :key="index" :class="item.dom">
+                                <div class="infor-left">{{item.name}}</div>
+                                <div class="infor-center">
+                                    <template v-if="index==1">
+                                        <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
+                                        @focus="item.error=false" 
+                                        @blur="item.model.length<1 ? item.error=true : ''"
+                                        @keyup="item.model = item.model.replace(/\D/g,'')" 
+                                        @afterpaste="item.model = item.model.replace(/\D/g,'')"
+                                        :disabled="disabled"
+                                        >
+                                    </template>
+                                    <template v-else>
+                                        <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
+                                        @focus="item.error=false" 
+                                        @blur="item.model.length<1 ? item.error=true : ''"
+                                        :disabled="disabled"
+                                        >
+                                    </template>
+                                    
                                 </div>
-                                <div class="qualification-box" flex>
-                                    <div class="license imgs" v-for="(item,index) in uploadPhotos.qualification" :key="index" :class="item.dom">
-                                        <div class="upload-img-box" :class="{uploading:item.progress<=0}">
-                                            <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
-                                            <span v-if="item.progress>0 && item.progress<100" class="span-percent">上传中{{parseInt(item.progress)}}%</span>
-                                            <span v-if="item.progress>=100" class="span-percent perent-img"
-                                                @click.stop="viewImg=item.src;photoShow=true">
-                                                <img :src="item.src">
-                                            </span>
-                                            <vue-core-image-upload
-                                                class="btn btn-primary"
-                                                v-if="!disabled"
-                                                :title="item.fileTitle"
-                                                v-show="item.progress==0 || item.progress ==100"
-                                                inputOfFile="file"
-                                                :data="data"
-                                                :max-file-size="209715200"
-                                                :url="`${serverUrl}/channel/file/upload`"
-                                                @imageuploaded="imageuploaded"
-                                                @imagechanged = "imagechanged(item.status)" >
-                                            </vue-core-image-upload>
-                                        </div>
-                                        <div>{{item.text}}</div>
-                                    </div>
+                                <div class="infor-right" v-show="item.error">
+                                    <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
+                                    <span v-else>！请输入正确的{{item.name}}</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="upload-photo" >
+                            <div flex :class="uploadPhotos.linkIdCard[0].dom">
+                                <div class="upload-text">上传联系人身份证照</div>
+                                <div class="upload-img-box" :class="{front:index==0,contrary:index==1,uploading:item.progress<=0}" v-for="(item,index) in uploadPhotos.linkIdCard" :key="index">
+                                    <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
+                                    <span class="span-percent" v-if="item.progress>0 && item.progress<100">上传中{{parseInt(item.progress)}}%</span>
+                                    <span class="span-percent perent-img" v-if="item.progress>=100"
+                                        @click.stop="viewImg=item.src;photoShow=true">
+                                        <img :src="item.src">
+                                    </span>
+                                    <i>{{item.text}}</i>
+                                    <vue-core-image-upload
+                                        class="btn btn-primary"
+                                        :title="item.fileTitle"
+                                        v-if="!disabled"
+                                        v-show="item.progress==0 || item.progress ==100"
+                                        inputOfFile="file"
+                                        :data="data"
+                                        :max-file-size="209715200"
+                                        :url="`${serverUrl}/channel/file/upload`"
+                                        @imageuploaded="imageuploaded"
+                                        @imagechanged = "imagechanged(item.status)" >
+                                    </vue-core-image-upload>
                                 </div>
                             </div>
                             <div class="upload-error">
-                                <span v-show="licenseError && photoError2">！请上传营业执照证件照，大小不超过2M</span>
+                                <span v-show="linkIdCardError && photoError3">！请上传身份证件照，大小不超过2M</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bank-card">
-                    <h6>银行卡信息<span>（请确保正确填写银行卡信息，便于结款准确到账）</span></h6>
-                    <ul class="common-lists">
-                        <li flex :class="bank.type.dom">
-                            <div class="infor-left">账户类型</div>
-                            <div class="infor-center">
-                                <div class="select-box">
-                                    <b-form-select class="mb-3"
-                                        v-model="bank.type.selected"
-                                        @change.native="selectChange(1)" 
-                                        :options="bank.type.options"
-                                        :disabled="disabled">
-                                    </b-form-select>
-                                    <div class="select-view">{{bank.type.options[bank.type.selected].text}}</div>
-                                </div> 
-                            </div>
-                            <div class="infor-right" v-show="bank.type.error">！请选择账户类型</div>
-                        </li>
-                        <li flex :class="bank.address.dom">
-                            <div class="infor-left">开户地址</div>
-                            <div class="infor-center" flex>
-                                <areas @select="select" :disabled="disabled" :addressCity="bank.address.city" :addressProvince="bank.address.province"></areas>
-                            </div>
-                            <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
-                        </li>
-                        <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
-                            <div class="infor-left">{{item.name}}</div>
-                            <div class="infor-center">
-                                <input type="text" 
-                                    v-if="index==2"
-                                    :placeholder="'请输入'+item.name" 
-                                    v-model="item.model" 
-                                    :maxlength="item.maxlength" 
-                                    @focus="item.error=false" 
-                                    @blur="item.model.length<1 ? item.error=true : ''"
-                                    @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')" 
-                                    @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
-                                    @input="gainBank"
-                                    :disabled="disabled"
-                                    />
-                                <input type="text" 
-                                    v-else
-                                    :placeholder="'请输入'+item.name" 
-                                    v-model="item.model" 
-                                    :maxlength="item.maxlength" 
-                                    @focus="item.error=false" 
-                                    @blur="item.model.length<1 ? item.error=true : ''"
-                                    :disabled="disabled"
-                                    />
-                            </div>
-                            <div class="infor-right" v-show="item.error">
-                                <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
-                                <span v-else>！请输入正确的{{item.name}}</span>
-                            </div>
-                        </li>
-                    </ul>
-                    <p class="the-bank">{{theBank}}</p>
-                </div>
-                <div class="contacts">
-                    <h6>联系人信息</h6>
-                    <ul class="common-lists">
-                        <li flex v-for="(item,index) in contacts" :key="index" :class="item.dom">
-                            <div class="infor-left">{{item.name}}</div>
-                            <div class="infor-center">
-                                <template v-if="index==1">
-                                    <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
-                                    @focus="item.error=false" 
-                                    @blur="item.model.length<1 ? item.error=true : ''"
-                                    @keyup="item.model = item.model.replace(/\D/g,'')" 
-                                    @afterpaste="item.model = item.model.replace(/\D/g,'')"
-                                    :disabled="disabled"
-                                    >
-                                </template>
-                                <template v-else>
-                                    <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
-                                    @focus="item.error=false" 
-                                    @blur="item.model.length<1 ? item.error=true : ''"
-                                    :disabled="disabled"
-                                    >
-                                </template>
-                                
-                            </div>
-                            <div class="infor-right" v-show="item.error">
-                                <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
-                                <span v-else>！请输入正确的{{item.name}}</span>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="upload-photo" >
-                        <div flex :class="uploadPhotos.linkIdCard[0].dom">
-                            <div class="upload-text">上传联系人身份证照</div>
-                            <div class="upload-img-box" :class="{front:index==0,contrary:index==1,uploading:item.progress<=0}" v-for="(item,index) in uploadPhotos.linkIdCard" :key="index">
-                                <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
-                                <span class="span-percent" v-if="item.progress>0 && item.progress<100">上传中{{parseInt(item.progress)}}%</span>
-                                <span class="span-percent perent-img" v-if="item.progress>=100"
-                                    @click.stop="viewImg=item.src;photoShow=true">
-                                    <img :src="item.src">
-                                </span>
-                                <i>{{item.text}}</i>
-                                <vue-core-image-upload
-                                    class="btn btn-primary"
-                                    :title="item.fileTitle"
-                                    v-if="!disabled"
-                                    v-show="item.progress==0 || item.progress ==100"
-                                    inputOfFile="file"
-                                    :data="data"
-                                    :max-file-size="209715200"
-                                    :url="`${serverUrl}/channel/file/upload`"
-                                    @imageuploaded="imageuploaded"
-                                    @imagechanged = "imagechanged(item.status)" >
-                                </vue-core-image-upload>
-                            </div>
-                        </div>
-                        <div class="upload-error">
-                            <span v-show="linkIdCardError && photoError3">！请上传身份证件照，大小不超过2M</span>
-                        </div>
-                    </div>
+            </div>
+            <div class="submit-btn" flex="main:center" v-if="!disabled">
+                <button @click.stop="submit">提交</button>
+            </div>
+            <div class="photo-box" v-show="photoShow">
+                <div class="photo-bg"></div>
+                <div class="photo-wrap" flex="main:center cross:center" @click.stop="photoShow=false">
+                    <img :src="viewImg" alt="">
                 </div>
             </div>
         </div>
-        <div class="submit-btn" flex="main:center" v-if="!disabled">
-            <button @click.stop="submit">提交</button>
-        </div>
-        <div class="photo-box" v-show="photoShow">
-            <div class="photo-bg"></div>
-            <div class="photo-wrap" flex="main:center cross:center" @click.stop="photoShow=false">
-                <img :src="viewImg" alt="">
+        <div class="submit-state" v-if="stateShow" :class="{'audit-state':stateErrorShow}">
+            <div class="submit-state-title">系统消息</div>
+            <div class="submit-state-content" v-if="stateErrorShow">
+                <div class="state-content-up" flex="main:center">
+                    <div><img src="../images/icon/error.png" alt=""></div>
+                    <div class="text">资质审核未通过</div>
+                </div>
+                <div class="state-content-down error-color">{{submitError}}</div>
+                <div class="audit-state-btn"><button @click.stop="reAmend">修改资质</button></div>
+            </div>
+            <div class="submit-state-content" v-else>
+                <div class="state-content-up" flex="main:center">
+                    <div><img src="../images/icon/success.png" alt=""></div>
+                    <div class="text">提交成功！</div>
+                </div>
+                <div class="state-content-down">将在1-3个工作日审核完毕并与您联系！</div>
             </div>
         </div>
+        <!-- <div class="submit-state audit-state" v-if="state=='sucess'">
+            <div class="submit-state-title">系统消息</div>
+            <div class="submit-state-content">
+                <div class="state-content-up" flex="main:center">
+                    <div><img src="../images/icon/error.png" alt=""></div>
+                    <div class="text">资质审核未通过</div>
+                </div>
+                <div class="state-content-down error-color">{{text}}</div>
+                <div class="audit-state-btn"><button>修改资质</button></div>
+            </div>
+        </div> -->
     </div>
 </template>
 <script>
     import VueCoreImageUpload from 'vue-core-image-upload';
     import '../less/authentication.less';
+    import '../less/submit-state.less';
     import {checkPhone,valiIdCard,isValidOrgCode,checkSocialCreditCode,checkMail,valiRealName,checkTencent} from '../tools/fun';
     import $api from '../tools/api';
     import Toast from '../components/Toast';
@@ -261,7 +298,7 @@
         name: 'authentication',
         data(){
             return {
-                viewImg:'http://10.10.10.5:8090/group1/M00/00/00/CgoKBVjvWlaAflp3AAE_h9VcFx0725_big.png',
+                viewImg:null,
                 photoShow:false,
                 data:{
                     parm:''
@@ -477,60 +514,44 @@
                 photoError1:false,
                 photoError2:false,
                 photoError3:false,
+                authenticationShow:false,
+                stateShow:false,
+                stateErrorShow:false,
                 disabled:false,
+                channelData:null,
+                submitError:'您提交的证件照片不清晰，与原公司名称对不上！',
+                channelUuid:'469af2de73ed41858d56aacc5dcc4c8d',
                 ajaxUrl:'/channel/insert'
             }
         },
         created(){
-            let channelUuid = this.$route.query.channelUuid;
-            let preview = this.$route.query.preview;
-            if(channelUuid){
-                if(preview){
-                    this.disabled = true;
-                }
-                this.ajaxUrl = '/channel/reApply'//保存接口
-                $api.get('/channel/'+channelUuid).then(msg=>{
-                    if(msg.code == 200){
-                        let data = msg.data;
-                        this.channelType = data.channelType;
-                        this.companyInfor[0].model = data.compFullName;
-                        this.companyInfor[1].model = data.compLegalPerson;
-                        this.companyInfor[2].model = data.channelAppName;
-                        this.companyInfor[3].model = data.compOrganizationCode;
-                        this.companyInfor[4].model = data.compContactWay;
-                        this.companyInfor[5].model = data.channelEmail;
-                        this.companyInfor[6].model = data.compAddress;
-
-                        this.uploadPhotos.legalIdCard.src = data.legalPersonIdImgPath;
-                        this.uploadPhotos.legalIdCard.progress = 100;
-                        this.uploadPhotos.qualification[0].src = data.businessLicenceImgPath;
-                        this.uploadPhotos.qualification[0].progress = 100;
-                        this.uploadPhotos.qualification[1].src = data.orgCodeImgPath;
-                        this.uploadPhotos.qualification[1].progress = 100;
-                        this.uploadPhotos.qualification[2].src = data.taxRegImgPath;
-                        this.uploadPhotos.qualification[2].progress = 100;
-
-                        this.bank.type.selected = data.accountType || 0;
-                        this.bank.address.province = data.depositBankProvince;
-                        this.bank.address.city = data.depositBankCity;
-                        this.bank.lists[0].model = data.subBranch;
-                        this.bank.lists[1].model = data.depositPersonName;
-                        let bankCardNum = data.bankCardNum+'';
-                        this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
-
-                        this.contacts[0].model = data.linkmanName;
-                        this.contacts[1].model = data.linkmanPhone;
-                        this.contacts[2].model = data.linkmanEmail;
-                        this.contacts[3].model = data.linkmanIdNum;
-                        this.contacts[4].model = data.linkmanSocialSignal || '';
-
-                        this.uploadPhotos.linkIdCard[0].src = data.linkmanIdFrontViewPath;
-                        this.uploadPhotos.linkIdCard[0].progress = 100;
-                        this.uploadPhotos.linkIdCard[1].src = data.linkmanIdBackViewPath;
-                        this.uploadPhotos.linkIdCard[1].progress = 100;
-                    }
-                })
+            //先查询当前操作状态
+            if(!this.channelUuid){
+                this.authenticationShow = true;
+                return
             }
+            $api.get('/channel/'+this.channelUuid).then(msg=>{
+                if(msg.code == 200){
+                    const data = msg.data;
+                    this.stateShow = true;
+                    if(data.certAuditingStatus == 1){//已通过
+                        this.stateShow = false;
+                        this.authenticationShow = true;
+                        this.disabled = true;
+                        this.creatData(data);
+                    }else if(data.certAuditingStatus == 2){//未通过;
+                        $api.get('/channel/cred/'+this.channelUuid).then(msg =>{
+                            if(msg.code == 200){
+                                this.channelData = data;
+                                this.stateErrorShow = true
+                                this.submitError = msg.data.auditingRemark;
+                            }
+                        })
+                    }else{//审核中
+                        console.log('sss')
+                    }
+                }
+            });
         },
         computed: {
             licenseError:function(){
@@ -548,6 +569,51 @@
         },
         components: { Areas,VueCoreImageUpload},
         methods: {
+            reAmend(){
+                this.ajaxUrl = '/channel/reApply';
+                this.stateShow = false;
+                this.submitError = false;
+                this.authenticationShow = true;
+                this.creatData(this.channelData);
+            },
+            creatData(data){
+                this.channelType = data.channelType;
+                this.companyInfor[0].model = data.compFullName;
+                this.companyInfor[1].model = data.compLegalPerson;
+                this.companyInfor[2].model = data.channelAppName;
+                this.companyInfor[3].model = data.compOrganizationCode;
+                this.companyInfor[4].model = data.compContactWay;
+                this.companyInfor[5].model = data.channelEmail;
+                this.companyInfor[6].model = data.compAddress;
+
+                this.uploadPhotos.legalIdCard.src = data.legalPersonIdImgPath;
+                this.uploadPhotos.legalIdCard.progress = 100;
+                this.uploadPhotos.qualification[0].src = data.businessLicenceImgPath;
+                this.uploadPhotos.qualification[0].progress = 100;
+                this.uploadPhotos.qualification[1].src = data.orgCodeImgPath;
+                this.uploadPhotos.qualification[1].progress = 100;
+                this.uploadPhotos.qualification[2].src = data.taxRegImgPath;
+                this.uploadPhotos.qualification[2].progress = 100;
+
+                this.bank.type.selected = data.accountType || 0;
+                this.bank.address.province = data.depositBankProvince;
+                this.bank.address.city = data.depositBankCity;
+                this.bank.lists[0].model = data.subBranch;
+                this.bank.lists[1].model = data.depositPersonName;
+                let bankCardNum = data.bankCardNum+'';
+                this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
+
+                this.contacts[0].model = data.linkmanName;
+                this.contacts[1].model = data.linkmanPhone;
+                this.contacts[2].model = data.linkmanEmail;
+                this.contacts[3].model = data.linkmanIdNum;
+                this.contacts[4].model = data.linkmanSocialSignal || '';
+
+                this.uploadPhotos.linkIdCard[0].src = data.linkmanIdFrontViewPath;
+                this.uploadPhotos.linkIdCard[0].progress = 100;
+                this.uploadPhotos.linkIdCard[1].src = data.linkmanIdBackViewPath;
+                this.uploadPhotos.linkIdCard[1].progress = 100;
+            },
             gainBank(){
                 let bankCardNum = this.bank.lists[2].model.replace(/\s+/g, "");
                 if(bankCardNum.length<6){
@@ -647,17 +713,10 @@
             },
             submit(){
                 /*--------------企业信息--------------*/
-                $api.post(this.ajaxUrl,{data:{channelUuid:'da9effa3d9cf4620a19d3679dc43d171',channelAppName:"11111",compFullName:"222"}}).then(msg => {
-                    if(msg.code == 200){
-                        this.$router.push('./submit-state');
-                    }else{
-                        Toast(msg.msg);
-                    }
-                });
                 if(this.listCheck(this.companyInfor)){
                     return
                 }
-                let parmData = {channelType:this.channelType};
+                let parmData = {channelType:this.channelType,channelUuid:this.channelUuid};
                 let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
                 parmData.compFullName = fullName.model;
                 parmData.compLegalPerson = calPerson.model;
@@ -789,7 +848,7 @@
                 parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
-                        this.$router.push('./submit-state');
+                        this.$router.go(0);
                     }else{
                         Toast(msg.msg);
                     }

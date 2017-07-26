@@ -386,4 +386,20 @@
             }
         }
     }
+    .boxs-disabled{
+        .header-select .select-btn button,.authentication-content > div .common-lists li input,.authentication-content .select-box .select-view
+        ,.authentication-content > div .common-lists li .infor-center .select-area .cols .select-view,.authentication-content .upload-img-box,
+        .authentication-content .select-box select,
+        .authentication-content > div .common-lists li .infor-center .select-area .cols select, .authentication .authentication-content > div .common-lists li .infor-center .select-area .cols .select-view{
+            border-color: #fff;
+            cursor: auto;
+        }
+        .authentication-content .select-box .select-view
+        ,.authentication-content > div .common-lists li .infor-center .select-area .cols .select-view{
+            &:after{
+                width:0;height:0;
+                background:none;
+            }
+        }
+    }
 }
