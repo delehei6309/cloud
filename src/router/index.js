@@ -14,8 +14,8 @@ import UserInforDetail  from '../containers/UserInforDetail';
 import ProductDetail  from '../containers/ProductDetail';
 import ExchangeManagement  from '../containers/ExchangeManagement';
 import ForgetPassword from '../containers/ForgetPassword';
-import submitState from '../containers/submitState';
-import auditState from '../containers/auditState';
+import SubmitState from '../containers/SubmitState';
+import AuditState from '../containers/AuditState';
 
 const title = '开放平台';
 let routes = [
@@ -112,7 +112,7 @@ let routes = [
             {
                 path:'submit-state',
                 name:'submit-state',
-                component:submitState,
+                component:SubmitState,
                 meta: {
                     title: title,
                 },
@@ -120,7 +120,7 @@ let routes = [
             {
                 path:'audit-state',
                 name:'audit-state',
-                component:auditState,
+                component:AuditState,
                 meta: {
                     title: title,
                 },
