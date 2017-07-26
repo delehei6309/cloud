@@ -140,7 +140,7 @@
                         <li flex :class="bank.address.dom">
                             <div class="infor-left">开户地址</div>
                             <div class="infor-center" flex>
-                                <areas @select="select" :disabled="disabled"></areas>
+                                <areas @select="select" :disabled="disabled" :addressCity="bank.address.city" :addressProvince="bank.address.province"></areas>
                             </div>
                             <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
                         </li>
@@ -484,12 +484,11 @@
         created(){
             let channelUuid = this.$route.query.channelUuid;
             let preview = this.$route.query.preview;
-            console.log(channelUuid)
             if(channelUuid){
                 if(preview){
                     this.disabled = true;
                 }
-                this.ajaxUrl = 'channel/update'//保存接口
+                this.ajaxUrl = '/channel/reApply'//保存接口
                 $api.get('/channel/'+channelUuid).then(msg=>{
                     if(msg.code == 200){
                         let data = msg.data;
@@ -511,11 +510,13 @@
                         this.uploadPhotos.qualification[2].src = data.taxRegImgPath;
                         this.uploadPhotos.qualification[2].progress = 100;
 
-                        this.bank.type.selected = data.accountType || 1;
-
+                        this.bank.type.selected = data.accountType || 0;
+                        this.bank.address.province = data.depositBankProvince;
+                        this.bank.address.city = data.depositBankCity;
                         this.bank.lists[0].model = data.subBranch;
                         this.bank.lists[1].model = data.depositPersonName;
-                        this.bank.lists[2].model = data.bankCardNum;
+                        let bankCardNum = data.bankCardNum+'';
+                        this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
 
                         this.contacts[0].model = data.linkmanName;
                         this.contacts[1].model = data.linkmanPhone;
@@ -572,9 +573,7 @@
                     let parm = res.data.parm;
                     this.photo(parm).src = src;
                     this.photo(parm).name = name;
-                    //this.photo(parm).progress = 100;
                     this.photo(parm).loading = true;
-                    console.log(this.photo(parm))
                 }
             },
             setProcess(status){
@@ -648,6 +647,13 @@
             },
             submit(){
                 /*--------------企业信息--------------*/
+                $api.post(this.ajaxUrl,{data:{channelUuid:'da9effa3d9cf4620a19d3679dc43d171',channelAppName:"11111",compFullName:"222"}}).then(msg => {
+                    if(msg.code == 200){
+                        this.$router.push('./submit-state');
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
                 if(this.listCheck(this.companyInfor)){
                     return
                 }
@@ -739,7 +745,6 @@
                     return
                 }
                 /*-----------------------------联系人信息----------------------------------------*/
-                console.log(this.contacts)
                 if(this.listCheck(this.contacts)){
                     return
                 }
