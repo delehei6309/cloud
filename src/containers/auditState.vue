@@ -11,7 +11,6 @@
         </div>
     </div>
 </template>
-
 <script>
     import '../less/submit-state.less';
     import $api from '../tools/api';
