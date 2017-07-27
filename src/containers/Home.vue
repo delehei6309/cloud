@@ -8,10 +8,10 @@
         </div>
         <div class="content">
             <div class="table">
-                <ul flex >
-                    <li v-for="(item,index) in tableList" flex-box="1" :key="index" :class="{active:tab==index}" @click.stop="tab = index">
+                <ul flex="box:mean" >
+                    <li v-for="(item,index) in tableList" :key="index" :class="{active:tab==index}" @click.stop="tab = index">
+                        <div class="table-text" v-html="item.text"></div>
                         <div class="table-data">{{item.data}}</div>
-                        <div class="table-text">{{item.text}}</div>
                         <div class="table-rate red" :class="{green:item.rate.substring(0,1)=='-'}">{{item.rate}}</div>
                     </li>
                 </ul>
@@ -37,7 +37,7 @@
                 tableList:[
                     {
                         data:'364',
-                        text:'注册量',
+                        text:'总注册量',
                         rate:'+4'
                     },
                     {
@@ -47,17 +47,17 @@
                     },
                     {
                         data:'8',
-                        text:'下单笔数（今）',
+                        text:'下单笔数<i>（今）</i>',
                         rate:'-4'
                     },
                     {
                         data:'8000',
-                        text:'募集总金额（今）',
+                        text:'募集总额<i>（今）</i>',
                         rate:'+400'
                     },
                     {
                         data:'8',
-                        text:'产品到期笔数（今）',
+                        text:'到期笔数<i>（今）</i>',
                         rate:'+5'
                     }
                 ],
