@@ -7,7 +7,7 @@
             </div>
             <div class="header-right" flex>
                 <div>
-                    <router-link class="home" :to="{path:'/home'}"  >首页</router-link>
+                    <router-link class="header-home" :to="{path:'/home'}"  >首页</router-link>
                 </div>
                 <div class="head-username">用户名{{userMobile | mobileFormat}}</div>
                 <div class="quit" @click.stop="loginOut">退出</div>

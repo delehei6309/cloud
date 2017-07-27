@@ -10,9 +10,11 @@
     .menus{
         width: 160px;
         background-color: #fff;
-        height: 500px;
         border:@border-default;
-        border-right: 0;
+        margin-right:10px;
+        &:hover{
+            box-shadow: 0 3px 7px 0 rgba(194,194,194,0.50);
+        }
         .menus-list{
             border-bottom: @border-default;
             .menus-item .menu,.menus-parent{
@@ -39,7 +41,7 @@
                     color: @color-text;
                     line-height: 46px;
                     text-decoration: none;
-                    &.menu-active{
+                    &.menu-active,&:hover{
                         color: #fff;
                         background-color: @bg-menu-active;
                         background-position: 20px -37px;
@@ -66,7 +68,7 @@
                         font-size: 12px;
                         line-height: 32px;
                         text-decoration: none;
-                        &.menu-active{
+                        &.menu-active,&:hover{
                             color: #fff;
                             background-color: @bg-menu-active;
                         }

@@ -520,7 +520,7 @@
                 disabled:false,
                 channelData:null,
                 submitError:'您提交的证件照片不清晰，与原公司名称对不上！',
-                channelUuid:'469af2de73ed41858d56aacc5dcc4c8d',
+                //channelUuid:'469af2de73ed41858d56aacc5dcc4c8d',
                 ajaxUrl:'/channel/insert'
             }
         },
