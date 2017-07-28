@@ -1,77 +1,81 @@
 <template>
     <div class="user-infor exchange-manage">
-        <div>
-            <!--页面抬头-->
-            <div class="title">定期订单管理</div>
-            <!--查询条件-->
-            <div class="inquire">
-                <div flex="main:justify">
-                    <div>
-                        <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                        <b-form-input type="text" v-model="inputVal"></b-form-input>
-                        <span>产品状态</span>
-                        <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
+        <div flex="dir:top" class="user-infor-box">
+            <div flex-box="0">
+                <!--页面抬头-->
+                <div class="title">定期订单管理</div>
+                <!--查询条件-->
+                <div class="inquire">
+                    <div flex="main:justify">
+                        <div>
+                            <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
+                            <b-form-input type="text" v-model="inputVal"></b-form-input>
+                            <span>产品状态</span>
+                            <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
+                        </div>
+                        <div class="input-wrap" flex>
+                            <div class="date-text">创建时间：</div>
+                            <div class="input-date"><datepicker language="ch" v-model="dateStart"></datepicker></div>
+                            <div class="date-text">到</div>
+                            <div class="input-date"><datepicker language="ch" v-model="dateEnd"></datepicker></div>
+                        </div>
+                        <b-btn class="btn" @click.native="query">查询</b-btn>
                     </div>
-                    <div class="input-wrap" flex>
-                        <div class="date-text">创建时间：</div>
-                        <div class="input-date"><datepicker language="ch" v-model="dateStart"></datepicker></div>
-                        <div class="date-text">到</div>
-                        <div class="input-date"><datepicker language="ch" v-model="dateEnd"></datepicker></div>
-                    </div>
-                    <b-btn class="btn" @click.native="query">查询</b-btn>
                 </div>
             </div>
-            <!--显示列表-->
-            <div class="table-wrap">
-                <b-table :items="items" :fields="fields" bordered >
-                    <template slot="productPeriod" scope="item">
-                        <template>{{item.value}}</template><template v-if="item.item.productPeriodType == 'D'">天</template><template v-if="item.item.productPeriodType == 'W'">周</template><template v-if="item.item.productPeriodType == 'M'">月</template><template v-if="item.item.productPeriodType == 'Y'">天</template>
-                    </template>
-                    <template slot="transactionTime" scope="item">
-                        {{item.value | timeFormat}}
-                    </template>
-                    <template slot="productAnnualInterestRate" scope="item">
-                        {{item.value | translatePate}}
-                    </template>
-                    <template slot="orderAmount" scope="item">
-                        {{item.value | currencyFormat}}
-                    </template>
-                    <template slot="marketingAmount" scope="item">
-                        {{item.value | currencyFormat}}
-                    </template>
-                    <template slot="paidAmount" scope="item">
-                        {{item.value | currencyFormat}}
-                    </template>
-                    <template slot="expectedProfitAmount" scope="item">
-                        {{item.value | currencyFormat}}
-                    </template>
-                    <template slot="transactionChannel" scope="item">
-                        <template v-if="item.value == 1">app(IOS)</template>
-                        <template v-if="item.value == 2">app(安卓)</template>
-                        <template v-if="item.value == 3">微信</template>
-                        <template v-if="item.value == 0">--</template>
-                    </template>
-                    <template slot="organization" scope="item">
-                        {{item.value || '--'}}
-                    </template>
-                    <template slot="orderStatus" scope="item">
-                        <template v-if="item.value == 1">待支付</template>
-                        <template v-if="item.value == 2">已支付</template>
-                        <template v-if="item.value == 3">计息中</template>
-                        <template v-if="item.value == 4">已到期</template>
-                        <template v-if="item.value == 5">已到期兑付</template>
-                        <template v-if="item.value == 9">已撤消</template>
-                    </template>
-                    <!-- <template slot="userUuid" scope="item">
-                        <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>
-                    </template> -->
-                </b-table>
-            </div>
+            <div flex="dir:top" flex-box="1">
+                <!--显示列表-->
+                <div class="table-wrap" flex-box="1">
+                    <b-table :items="items" :fields="fields" bordered >
+                        <template slot="productPeriod" scope="item">
+                            <template>{{item.value}}</template><template v-if="item.item.productPeriodType == 'D'">天</template><template v-if="item.item.productPeriodType == 'W'">周</template><template v-if="item.item.productPeriodType == 'M'">月</template><template v-if="item.item.productPeriodType == 'Y'">天</template>
+                        </template>
+                        <template slot="transactionTime" scope="item">
+                            {{item.value | timeFormat}}
+                        </template>
+                        <template slot="productAnnualInterestRate" scope="item">
+                            {{item.value | translatePate}}
+                        </template>
+                        <template slot="orderAmount" scope="item">
+                            {{item.value | currencyFormat}}
+                        </template>
+                        <template slot="marketingAmount" scope="item">
+                            {{item.value | currencyFormat}}
+                        </template>
+                        <template slot="paidAmount" scope="item">
+                            {{item.value | currencyFormat}}
+                        </template>
+                        <template slot="expectedProfitAmount" scope="item">
+                            {{item.value | currencyFormat}}
+                        </template>
+                        <template slot="transactionChannel" scope="item">
+                            <template v-if="item.value == 1">app(IOS)</template>
+                            <template v-if="item.value == 2">app(安卓)</template>
+                            <template v-if="item.value == 3">微信</template>
+                            <template v-if="item.value == 0">--</template>
+                        </template>
+                        <template slot="organization" scope="item">
+                            {{item.value || '--'}}
+                        </template>
+                        <template slot="orderStatus" scope="item">
+                            <template v-if="item.value == 1">待支付</template>
+                            <template v-if="item.value == 2">已支付</template>
+                            <template v-if="item.value == 3">计息中</template>
+                            <template v-if="item.value == 4">已到期</template>
+                            <template v-if="item.value == 5">已到期兑付</template>
+                            <template v-if="item.value == 9">已撤消</template>
+                        </template>
+                        <!-- <template slot="userUuid" scope="item">
+                            <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>
+                        </template> -->
+                    </b-table>
+                </div>
 
-            <!--分页-->
-            <div class="justify-content-center paging">
-                <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count"  :per-page="perPage" v-model="currentPage" @change="change"></b-pagination>
-                <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
+                <!--分页-->
+                <div class="justify-content-center paging" flex-box="0">
+                    <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count"  :per-page="perPage" v-model="currentPage" @change="change"></b-pagination>
+                    <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
+                </div>
             </div>
         </div>
         <div class="look-over-box" v-show="lookOverShow">

@@ -87,6 +87,19 @@
                             }
                         ],
                         allPath:['/menus/exchange-management']
+                    },
+                    {
+                        path:'',
+                        text:'数据统计',
+                        class:'icon-statistics',
+                        show:true,
+                        child:[
+                            {
+                                path:'/menus/data-statistics',
+                                text:'定期订单管理'
+                            }
+                        ],
+                        allPath:['/menus/data-statistics']
                     }
                 ]
             }

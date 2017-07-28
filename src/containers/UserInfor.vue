@@ -1,29 +1,32 @@
 <template>
-    <div class="user-infor">
-        <!--页面抬头-->
-        <div class="title">用户信息</div>
+    <div class="user-infor" flex="dir:top">
+        <div class="user-detail-head" flex-box="0">
+            <!--页面抬头-->
+            <div class="title">用户信息</div>
 
-        <!--查询条件-->
-        <div class="inquire">
-            <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-            <b-form-input type="text" size="sm" v-model="inputVal"></b-form-input>
-            <b-btn class="btn" @click.native="query">查询</b-btn>
+            <!--查询条件-->
+            <div class="inquire">
+                <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
+                <b-form-input type="text" size="sm" v-model="inputVal"></b-form-input>
+                <b-btn class="btn" @click.native="query">查询</b-btn>
+            </div>
         </div>
+        <div class="user-detail-box" flex-box="1" flex="dir:top">
+            <!--显示列表-->
+            <div class="table-wrap" flex-box="1">
+                <b-table :items="items" :fields="fields"  bordered>
+                    <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
+                    <template slot="userUuid" scope="item">
+                        <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
+                    </template>
+                </b-table>
+            </div>
 
-        <!--显示列表-->
-        <div class="table-wrap">
-            <b-table :items="items" :fields="fields"  bordered>
-                <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
-                <template slot="userUuid" scope="item">
-                    <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
-                </template>
-            </b-table>
-        </div>
-
-        <!--分页-->
-        <div class="justify-content-center paging">
-            <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='perPage' v-model="currentPage" @change="change"></b-pagination>
-            <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
+            <!--分页-->
+            <div class="justify-content-center paging" flex-box="0">
+                <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='perPage' v-model="currentPage" @change="change"></b-pagination>
+                <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
+            </div>
         </div>
     </div>
 </template>
