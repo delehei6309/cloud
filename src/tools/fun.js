@@ -107,6 +107,11 @@ export let checkTencent = (num)=>{
     }
     return false;
 }
+//当前时间处理
+export let timeDeal = ()=>{
+    const time = new Date();
+    console.log(time.getHours())
+}
 const $fun = {
     valiIdCard,
     valiRealName

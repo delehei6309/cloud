@@ -56,10 +56,10 @@
                         </ul>
                     </div>
                     <div class="content-upload">
-                        <h6>上传资质</h6>
+                        <h6>资质认证信息</h6>
                         <div class="upload">
                             <div class="idcard" flex :class="uploadPhotos.legalIdCard.dom">
-                                <div class="upload-text">上传法人身份证</div>
+                                <div class="upload-text">上传法人代表身份证</div>
                                 <div class="idcard-box upload-img-box" :class="{uploading:uploadPhotos.legalIdCard.progress<=0}">
                                     <span class="span-bg" 
                                         :style="{height:uploadPhotos.legalIdCard.progress+'%'}" 
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                     <div class="bank-card">
-                        <h6>银行卡信息<span>（请确保正确填写银行卡信息，便于结款准确到账）</span></h6>
+                        <h6>银行账户信息<span>（请确保正确填写银行账户信息，便于结款准确到账）</span></h6>
                         <ul class="common-lists">
                             <li flex :class="bank.type.dom">
                                 <div class="infor-left">账户类型</div>
@@ -176,8 +176,13 @@
                                         />
                                 </div>
                                 <div class="infor-right" v-show="item.error">
-                                    <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
-                                    <span v-else>！请输入正确的{{item.name}}</span>
+                                    <template v-if="item.dom == 'bank-list4'">
+                                        <span>可空，最高输入12位</span>
+                                    </template>
+                                    <template v-else>
+                                        <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
+                                        <span v-else>！请输入正确的{{item.name}}</span>
+                                    </template>
                                 </div>
                             </li>
                         </ul>
@@ -273,17 +278,6 @@
                 <div class="state-content-down">将在1-3个工作日审核完毕并与您联系！</div>
             </div>
         </div>
-        <!-- <div class="submit-state audit-state" v-if="state=='sucess'">
-            <div class="submit-state-title">系统消息</div>
-            <div class="submit-state-content">
-                <div class="state-content-up" flex="main:center">
-                    <div><img src="../images/icon/error.png" alt=""></div>
-                    <div class="text">资质审核未通过</div>
-                </div>
-                <div class="state-content-down error-color">{{text}}</div>
-                <div class="audit-state-btn"><button>修改资质</button></div>
-            </div>
-        </div> -->
     </div>
 </template>
 <script>
@@ -316,8 +310,8 @@
                         model:''
                     },
                     {
-                        name:'公司法人',
-                        placeholder:'请输入公司法人',
+                        name:'公司法人代表',
+                        placeholder:'请输入公司法人代表',
                         dom:'dom2',
                         maxlength:16,
                         error:false,
@@ -399,17 +393,24 @@
                             model:''
                         },
                         {
-                            name:'开户人姓名',
+                            name:'账户户名',
                             maxlength:30,
                             error:false,
                             dom:'bank-list2',
                             model:''
                         },
                         {
-                            name:'银行卡号',
+                            name:'银行账号',
                             maxlength:24,
                             error:false,
                             dom:'bank-list3',
+                            model:''
+                        },
+                        {
+                            name:'开户行大额支付行号',
+                            maxlength:12,
+                            error:false,
+                            dom:'bank-list4',
                             model:''
                         }
                     ]
@@ -857,6 +858,9 @@
             listCheck(arr){
                 for(let obj of arr){
                     let model = obj.model.replace(/\s+/g, "");
+                    if(obj.dom == 'bank-list4'){
+                        return false;
+                    }
                     if(model.length < 1){
                         this.setScrollTop(obj.dom);
                         obj.error = true;

@@ -7,6 +7,7 @@ import {setTitle} from '../tools/operation';
 import Login from '../containers/Login';
 import Menus from '../containers/Menus';
 import Home from '../containers/Home';
+import Information from '../containers/Information';
 import Authentication from '../containers/Authentication';
 import UserInfor  from '../containers/UserInfor';
 import ProductManagement  from '../containers/ProductManagement';
@@ -14,6 +15,7 @@ import UserInforDetail  from '../containers/UserInforDetail';
 import ProductDetail  from '../containers/ProductDetail';
 import ExchangeManagement  from '../containers/ExchangeManagement';
 import ForgetPassword from '../containers/ForgetPassword';
+import DataStatistics from '../containers/DataStatistics';
 import Test from '../containers/Test';
 
 const title = '开放平台';
@@ -102,8 +104,23 @@ let routes = [
                 }
             },
             {
+                path:'data-statistics',
+                name:'data-statistics',
+                component:DataStatistics,
+                meta: {
+                    title: title
+                }
+            },
+            {
                 path:'/home',
                 component:Home,
+                meta: {
+                    title: title,
+                },
+            },
+            {
+                path:'/information',
+                component:Information,
                 meta: {
                     title: title,
                 },

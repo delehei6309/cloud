@@ -96,7 +96,7 @@
                         child:[
                             {
                                 path:'/menus/data-statistics',
-                                text:'定期订单管理'
+                                text:'整体概况'
                             }
                         ],
                         allPath:['/menus/data-statistics']

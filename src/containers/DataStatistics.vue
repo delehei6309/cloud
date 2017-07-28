@@ -1,12 +1,13 @@
 <template>
-    <div class="user-management">
-        user-management
+    <div class="data-statistics">
+        data-statistics
     </div>
 </template>
 
 <script>
+    import '../less/data-statistics.less';
     export default {
-        name: 'user-management',
+        name: 'data-statistics',
         data(){
             return {}
         },

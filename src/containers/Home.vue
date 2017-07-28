@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="information" flex="dir:right">
-            <div class="infor-div">
+            <div class="infor-div" @click.stop="inforLink">
                 <span class="infor-inner">信息</span>
                 <span class="infor-count">2</span>
             </div>
@@ -9,7 +9,7 @@
         <div class="content">
             <div class="table">
                 <ul flex="box:mean" >
-                    <li v-for="(item,index) in tableList" :key="index" :class="{active:tab==index}" @click.stop="tab = index">
+                    <li v-for="(item,index) in tableList" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
                         <div class="table-text" v-html="item.text"></div>
                         <div class="table-data">{{item.data}}</div>
                         <div class="table-rate red" :class="{green:item.rate.substring(0,1)=='-'}">{{item.rate}}</div>
@@ -28,6 +28,7 @@
     import '../less/home.less';
     import Vue from 'vue';
     import VueHighcharts from 'vue-highcharts';
+    import {timeDeal} from '../tools/fun.js';
     Vue.use(VueHighcharts);
     export default {
         name: 'home',
@@ -71,11 +72,11 @@
                         x: -20
                     },
                     xAxis: {
-                        categories: ['00', '01', '02', '03', '04', '05','06', '07', '08', '09', '10', '11','12','13','14','15','16','17','18','19','20']
+                        categories: ['00', '03', '06', '09', '12', '15','18', '21']
                     },
                     yAxis: {
                         title: {
-                            text: ''
+                            text: '注册数量（个）'
                         },
                         plotLines: [{
                             value: 0,
@@ -84,24 +85,30 @@
                         }]
                     },
                     tooltip: {
-                        valueSuffix: ''
+                        valueSuffix: '个',
+                        crosshairs: true,
+                        shared: true
+                    },
+                    credits: {
+                        enabled: false//去掉地址
                     },
                     legend: {
-                        layout: 'vertical',
-                        align: 'right',
-                        verticalAlign: 'middle',
                         borderWidth: 0
                     },
-                    series: [{
-                        name: '今日',
-                        data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6,20,15,12,13,14,10],
-                        color:'#4990E2',
-                    },
-                    {
-                        name: '昨日',
-                        data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5,30,25.2, 26.5, 23.3,21],
-                        color:'#D0011B'
-                    }]
+                    series: [
+                        {
+                            name: '今日',
+                            data: [7.0, 6.9, 9.5, 14.5, 180],
+                            color:'#4990E2',
+                            lineWidth:1
+                        },
+                        {
+                            name: '昨日',
+                            data: [1, 8, 17, 23, 27, 32, 46, 54],
+                            color:'#D0011B',
+                            lineWidth:1
+                        }
+                    ]
                 }
             }
         },
@@ -109,10 +116,22 @@
             
         },
         created(){
-            console.log(('-6%'.substring(0,1)))
+            timeDeal()
         },
         computed: {},
-        methods: {},
+        methods: {
+            change(index){
+                this.tab = index;
+                //this.options.series[0].data[4] = this.options.series[0].data[4]+index;
+                let chart = this.$refs.highcharts.chart;
+                //console.log(chart)
+                chart.series[0].setData([10,12,11,23,33]);
+                //console.log(this.options.series[0].data[4])
+            },
+            inforLink(){
+                this.$router.push('/information')
+            }
+        },
         destroyed(){
 
         }
