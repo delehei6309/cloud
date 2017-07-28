@@ -72,9 +72,11 @@
                 </div>
 
                 <!--分页-->
-                <div class="justify-content-center paging" flex-box="0">
-                    <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count"  :per-page="perPage" v-model="currentPage" @change="change"></b-pagination>
-                    <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
+                <div class="justify-content-center paging" flex-box="0" flex="main:center">
+                    <div>
+                        <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count"  :per-page="perPage" v-model="currentPage" @change="change"></b-pagination>
+                        <div class="total"><span>共{{ Math.ceil(count / perPage) }}页</span><span>共{{ count }}条</span></div>
+                    </div>
                 </div>
             </div>
         </div>
