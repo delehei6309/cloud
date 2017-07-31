@@ -28,6 +28,7 @@
     import '../less/home.less';
     import Vue from 'vue';
     import VueHighcharts from 'vue-highcharts';
+    import $api from '../tools/api';
     import {timeDeal} from '../tools/fun.js';
     Vue.use(VueHighcharts);
     export default {
@@ -116,20 +117,22 @@
             
         },
         created(){
-            timeDeal()
+            timeDeal();
+            $api.get('/count/indexCount').then(msg=>{
+                if(msg.code == 200){
+                    console.log(msg)
+                }
+            });
         },
         computed: {},
         methods: {
             change(index){
                 this.tab = index;
-                //this.options.series[0].data[4] = this.options.series[0].data[4]+index;
                 let chart = this.$refs.highcharts.chart;
-                //console.log(chart)
                 chart.series[0].setData([10,12,11,23,33]);
-                //console.log(this.options.series[0].data[4])
             },
             inforLink(){
-                this.$router.push('/information')
+                this.$router.push('/information');
             }
         },
         destroyed(){

@@ -251,7 +251,7 @@
                 </div>
             </div>
             <div class="submit-btn" flex="main:center" v-if="!disabled">
-                <button @click.stop="submit">提交</button>
+                <button @click.stop="submit" :class="{'btn-disabled':btnDisabled}">提交</button>
             </div>
             <div class="photo-box" v-show="photoShow">
                 <div class="photo-bg"></div>
@@ -521,8 +521,9 @@
                 disabled:false,
                 channelData:null,
                 submitError:'您提交的证件照片不清晰，与原公司名称对不上！',
-                //channelUuid:'469af2de73ed41858d56aacc5dcc4c8d',
-                ajaxUrl:'/channel/insert'
+                channelUuid:'8b0645033b344953bedb934eaa1a6f96',
+                ajaxUrl:'/channel/insert',
+                btnDisabled:false
             }
         },
         created(){
@@ -713,6 +714,9 @@
                 this.setProcess(status);
             },
             submit(){
+                if(this.btnDisabled){
+                    return
+                }
                 /*--------------企业信息--------------*/
                 if(this.listCheck(this.companyInfor)){
                     return
@@ -772,15 +776,14 @@
                 parmData.taxRegImgPath = this.uploadPhotos.qualification[2].src;
                 /*--------------银行卡信息----------------*/
                 parmData.accountType = this.bank.type.selected;//账户类型
-                let [branchName,accountName,bankCard] = this.bank.lists
+                let [branchName,accountName,bankCard,largePayment] = this.bank.lists
                 if(parmData.accountType == 0){
                     this.bank.type.error = true;
                     this.setScrollTop(this.bank.type.dom)
                     return 
                 }
                 parmData.depositBank = this.theBank;//开户银行
-
-                if(this.bank.address.province == '\u8BF7\u9009\u62E9'){
+                if((this.bank.address.province == '\u8BF7\u9009\u62E9') || (this.bank.address.province == null)){
                     this.bank.address.error = true;
                     this.setScrollTop(this.bank.address.dom)
                     return 
@@ -794,6 +797,7 @@
                 parmData.subBranch = branchName.model;
                 parmData.depositPersonName = accountName.model;
                 parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
+                parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
                 if(!valiRealName(parmData.depositPersonName)){
                     accountName.error = true;
                     this.setScrollTop(accountName.dom)
@@ -847,11 +851,13 @@
                 }
                 parmData.linkmanIdFrontViewPath = this.uploadPhotos.linkIdCard[0].src;//正
                 parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
+                this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
                         this.$router.go(0);
                     }else{
                         Toast(msg.msg);
+                        this.btnDisabled = false;
                     }
                 });
             },
@@ -881,13 +887,11 @@
                 this.bankCard = this.bankCard.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
             },
             select(re){
-                if(this.bank.address.province != null){
-                    if(re.pro.name == '\u8BF7\u9009\u62E9'){
+                if(re.pro.name == '\u8BF7\u9009\u62E9'){
                         this.bank.address.error = true;
                     }else{
                         this.bank.address.error = false;
                     }
-                }
                 this.bank.address.province = re.pro.name;
                 this.bank.address.city = re.city.name;  
             }
