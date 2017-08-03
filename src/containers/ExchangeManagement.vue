@@ -111,6 +111,7 @@
                 selectedBase: 1,
                 selectedProductStatus: null,
                 //selectedIsRecommend: 'all',
+                belongMerchantNum:this.$route.query.belongMerchantNum,
                 inputVal: '',
                 optionsBase: [
                     {
@@ -211,7 +212,8 @@
                     orderBillCode:this.orderBillCode,
                     productAbbrName:this.productAbbrName,
                     transactionTimeFrom:this.dateStart,
-                    transactionTimeTo:this.dateEnd
+                    transactionTimeTo:this.dateEnd,
+                    belongMerchantNum:this.belongMerchantNum
                 }
                 $api.get('/trade/order/list',parm).then(msg => {
                     if(msg.code == 200){

@@ -42,7 +42,7 @@
                 animateHeight:false,
                 menus:[
                     {
-                        path:'/menus/authentication',
+                        path:'/menus/authentication?channelUuid=',
                         class:'icon-authentication',
                         text:'资质认证',
                         show:false,
@@ -56,7 +56,7 @@
                         show:true,
                         child:[
                             {
-                                path:'/menus/user-infor',
+                                path:'/menus/user-infor?registerMerchantNum=00000',
                                 text:'用户信息'
                             }
                         ],
@@ -69,7 +69,7 @@
                         show:true,
                         child:[
                             {
-                                path:'/menus/product-management',
+                                path:'/menus/product-management?merchantNum=00000',
                                 text:'定期产品管理'
                             }
                         ],
@@ -82,7 +82,7 @@
                         show:true,
                         child:[
                             {
-                                path:'/menus/exchange-management',
+                                path:'/menus/exchange-management?belongMerchantNum=00000',
                                 text:'定期订单管理'
                             }
                         ],

@@ -521,7 +521,7 @@
                 disabled:false,
                 channelData:null,
                 submitError:'您提交的证件照片不清晰，与原公司名称对不上！',
-                channelUuid:'8b0645033b344953bedb934eaa1a6f96',
+                channelUuid:this.$route.query.channelUuid,
                 ajaxUrl:'/channel/insert',
                 btnDisabled:false
             }
