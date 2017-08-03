@@ -80,7 +80,8 @@
                                         :max-file-size="2097152"
                                         :url="`${serverUrl}/channel/file/upload`"
                                         @imageuploaded="imageuploaded"
-                                        @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)" >
+                                        @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)"
+                                        @errorhandle ="errorhandle" >
                                     </vue-core-image-upload>
                                 </div>
                                 <div class="upload-error" v-show="legalIdCardError && photoError1">！请上传法人身份证照，大小不超过2M</div>
@@ -112,7 +113,8 @@
                                                     :max-file-size="2097152"
                                                     :url="`${serverUrl}/channel/file/upload`"
                                                     @imageuploaded="imageuploaded"
-                                                    @imagechanged = "imagechanged(item.status)" >
+                                                    @imagechanged = "imagechanged(item.status)" 
+                                                    @errorhandle ="errorhandle">
                                                 </vue-core-image-upload>
                                             </div>
                                             <div>{{item.text}}</div>
@@ -239,7 +241,8 @@
                                         :max-file-size="2097152"
                                         :url="`${serverUrl}/channel/file/upload`"
                                         @imageuploaded="imageuploaded"
-                                        @imagechanged = "imagechanged(item.status)" >
+                                        @imagechanged = "imagechanged(item.status)"
+                                        @errorhandle ="errorhandle" >
                                     </vue-core-image-upload>
                                 </div>
                             </div>
@@ -630,6 +633,9 @@
                         }
                     });
                 }
+            },
+            errorhandle(error){
+                Toast('上传图片大小不要超过2M！');
             },
             imageuploaded(res){
                 if(res.code == 200){
