@@ -26,11 +26,8 @@
             <router-view flex-box="1" class="content-view"></router-view>
         </div>
         <cloud-footer></cloud-footer>
-
     </div>
-
 </template>
-
 <script>
     import CloudHeader from '../components/CloudHeader';
     import CloudFooter from '../components/CloudFooter';
