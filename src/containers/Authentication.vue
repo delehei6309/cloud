@@ -77,7 +77,7 @@
                                         v-show="uploadPhotos.legalIdCard.progress==0 || uploadPhotos.legalIdCard.progress==100"
                                         inputOfFile="file"
                                         :data="data"
-                                        :max-file-size="209715200"
+                                        :max-file-size="2097152"
                                         :url="`${serverUrl}/channel/file/upload`"
                                         @imageuploaded="imageuploaded"
                                         @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)" >
@@ -109,7 +109,7 @@
                                                     v-show="item.progress==0 || item.progress ==100"
                                                     inputOfFile="file"
                                                     :data="data"
-                                                    :max-file-size="209715200"
+                                                    :max-file-size="2097152"
                                                     :url="`${serverUrl}/channel/file/upload`"
                                                     @imageuploaded="imageuploaded"
                                                     @imagechanged = "imagechanged(item.status)" >
@@ -236,7 +236,7 @@
                                         v-show="item.progress==0 || item.progress ==100"
                                         inputOfFile="file"
                                         :data="data"
-                                        :max-file-size="209715200"
+                                        :max-file-size="2097152"
                                         :url="`${serverUrl}/channel/file/upload`"
                                         @imageuploaded="imageuploaded"
                                         @imagechanged = "imagechanged(item.status)" >
@@ -630,9 +630,6 @@
                         }
                     });
                 }
-            },
-            imageuploading(){
-                console.log('000')
             },
             imageuploaded(res){
                 if(res.code == 200){
