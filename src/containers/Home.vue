@@ -11,8 +11,8 @@
                 <ul flex="box:mean" >
                     <li v-for="(item,index) in tableList" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
                         <div class="table-text" v-html="item.text"></div>
-                        <div class="table-data">{{item.data}}</div>
-                        <div class="table-rate red" :class="{green:item.rate.substring(0,1)=='-'}">{{item.rate}}</div>
+                        <div class="table-data">{{item.today}}</div>
+                        <div v-if="index==1" class="table-rate red" :class="{green:item.today>=item.yesterday}">{{(item.today-item.yesterday) | }}</div>
                     </li>
                 </ul>
             </div>
@@ -38,27 +38,32 @@
                 tab:0,
                 tableList:[
                     {
-                        data:'364',
+                        today:364,
+                        yesterday:534,
                         text:'总注册量',
                         rate:'+4'
                     },
                     {
-                        data:'2.5%',
+                        today:0.35,
+                        yesterday:0.16,
                         text:'次日留存',
                         rate:'-0.8%'
                     },
                     {
-                        data:'8',
+                        today:8,
+                        yesterday:7,
                         text:'下单笔数<i>（今）</i>',
                         rate:'-4'
                     },
                     {
-                        data:'8000',
+                        today:8000,
+                        yesterday:12000,
                         text:'募集总额<i>（今）</i>',
                         rate:'+400'
                     },
                     {
-                        data:'8',
+                        today:24,
+                        yesterday:30,
                         text:'到期笔数<i>（今）</i>',
                         rate:'+5'
                     }
@@ -120,7 +125,22 @@
             timeDeal();
             $api.get('/count/indexCount').then(msg=>{
                 if(msg.code == 200){
-                    console.log(msg)
+                    let data = msg.data;
+                    this.tableList[0].today = data.countRegisterUser.todayUserCount || 0;
+                    this.tableList[0].yesterday = data.countRegisterUser.yesterdayUserCount || 0;
+                    console.log(data.nextDayRemains)
+                    this.tableList[1].today = data.nextDayRemains.todayRemains;
+                    this.tableList[1].yesterday = data.nextDayRemains.yesRemains;
+
+                    this.tableList[2].today = data.countOrderNumber.todayOrderCount || 0;
+                    this.tableList[2].yesterday = data.countOrderNumber.yesterdayOrderCount || 0;
+
+                    this.tableList[3].today = data.sumPaidAmountByHours.todayUserCount || 0;
+                    this.tableList[3].yesterday = data.sumPaidAmountByHours.yesterdayUserCount || 0;
+
+                    this.tableList[4].today = data.countExpiringDateNumber.todaySumPaidAmount || 0;
+                    this.tableList[4].yesterday = data.countExpiringDateNumber.yesterdaySumPaidAmount || 0;
+                    console.log(this.tableList)
                 }
             });
         },
