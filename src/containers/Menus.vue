@@ -14,6 +14,13 @@
                             </li>
                         </ul>
                     </div>
+                    <div v-else>
+                        <div class="menus-item" :class="item.class">
+                            <router-link class="menu" :to="{path:item.path}"
+                                 active-class="menu-active"
+                                 replace >{{item.text}}</router-link>
+                        </div>
+                    </div>
                 </div>
             </div>
             <router-view flex-box="1" class="content-view"></router-view>
