@@ -316,7 +316,7 @@
                             <div class="content-upload">
                                 <div class="upload">
                                     <div class="idcard" flex :class="iUploadPhotos.idCard.dom">
-                                        <div class="upload-text"><span v-if="disabled">上传</span><span>手持身份证正面照</span></div>
+                                        <div class="upload-text"><span v-if="!disabled">上传</span><span>手持身份证正面照</span></div>
                                         <div class="idcard-box upload-img-box" :class="{uploading:iUploadPhotos.idCard.progress<=0}">
                                             <span class="span-bg"
                                               :style="{height:iUploadPhotos.idCard.progress+'%'}"
