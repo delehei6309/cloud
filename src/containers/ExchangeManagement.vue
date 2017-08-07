@@ -68,6 +68,7 @@
                             <template v-if="item.value == 5">已到期兑付</template>
                             <template v-if="item.value == 9">已撤消</template>
                         </template>
+                        <!--查看协议-->
                         <!-- <template slot="userUuid" scope="item">
                             <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>
                         </template> -->
