@@ -1,5 +1,23 @@
 <template>
     <div class="aui-box">
+        <div class="submit-state" v-if="stateShow" :class="{'audit-state':stateErrorShow}">
+            <div class="submit-state-title">系统消息</div>
+            <div class="submit-state-content" v-if="stateErrorShow">
+                <div class="state-content-up" flex="main:center">
+                    <div><img src="../images/icon/error.png" alt=""></div>
+                    <div class="text">资质审核未通过</div>
+                </div>
+                <div class="state-content-down error-color">{{submitError}}</div>
+                <div class="audit-state-btn"><button @click.stop="reAmend">修改资质</button></div>
+            </div>
+            <div class="submit-state-content" v-else>
+                <div class="state-content-up" flex="main:center">
+                    <div><img src="../images/icon/success.png" alt=""></div>
+                    <div class="text">提交成功！</div>
+                </div>
+                <div class="state-content-down">将在1-3个工作日审核完毕并与您联系！</div>
+            </div>
+        </div>
         <div class="authentication" v-if="authenticationShow">
             <div class="authentication-body" :class="{'boxs-disabled':disabled}">
                 <div class="header-p" v-if="!disabled">开通金融云开放服务，需要客户提交资料并上传相应的凭证，请务必正确填写，我们将尽快联系到您。</div>
@@ -123,6 +141,11 @@
                                 </div>
                                 <div class="upload-error">
                                     <span v-show="licenseError && photoError2">！请上传营业执照证件照，大小不超过2M</span>
+                                </div>
+                                <div class="tips">
+                                    温馨提示: <br>
+                                    1、2M以内，JPG/PNG格式的图片 <br>
+                                    2、要求上传的证件信息清晰无遮挡
                                 </div>
                             </div>
                         </div>
@@ -249,10 +272,15 @@
                             <div class="upload-error">
                                 <span v-show="linkIdCardError && photoError3">！请上传身份证件照，大小不超过2M</span>
                             </div>
+                            <div class="tips">
+                                温馨提示: <br>
+                                1、2M以内，JPG/PNG格式的图片 <br>
+                                2、要求上传的证件信息清晰无遮挡
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="authentication-content" v-show="channelType == 1">
+                <div class="authentication-content individual" v-show="channelType == 1">
                     <div class="content-infor">
                         <h6>基本信息</h6>
                         <ul class="common-lists">
@@ -272,6 +300,43 @@
                                     </div>
                                 </template>
                             </li>
+                            <div class="content-upload">
+                                <div class="upload">
+                                    <div class="idcard" flex :class="iUploadPhotos.idCard.dom">
+                                        <div class="upload-text">上传手持身份证正面照</div>
+                                        <div class="idcard-box upload-img-box" :class="{uploading:iUploadPhotos.idCard.progress<=0}">
+                                            <span class="span-bg"
+                                              :style="{height:iUploadPhotos.idCard.progress+'%'}"
+                                              v-show="iUploadPhotos.idCard.progress>0 && iUploadPhotos.idCard.progress<100"></span>
+                                            <span class="span-percent"
+                                                  v-if="iUploadPhotos.idCard.progress>0 && iUploadPhotos.idCard.progress<100">上传中{{parseInt(iUploadPhotos.idCard.progress)}}%</span>
+                                            <span class="span-percent perent-img" v-if="iUploadPhotos.idCard.progress>=100"
+                                                @click.stop="viewImg=iUploadPhotos.idCard.src;photoShow=true">
+                                                <img :src="iUploadPhotos.idCard.src">
+                                            </span>
+                                            <vue-core-image-upload
+                                                class="btn btn-primary"
+                                                v-if="!disabled"
+                                                :title="iUploadPhotos.idCard.fileTitle"
+                                                v-show="iUploadPhotos.idCard.progress==0 || iUploadPhotos.idCard.progress==100"
+                                                inputOfFile="file"
+                                                :data="data"
+                                                :max-file-size="2097152"
+                                                :url="`${serverUrl}/channel/file/upload`"
+                                                @imageuploaded="imageuploaded"
+                                                @imagechanged = "imagechanged(iUploadPhotos.idCard.status)"
+                                                @errorhandle ="errorhandle" >
+                                            </vue-core-image-upload>
+                                        </div>
+                                        <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传法人身份证照，大小不超过2M</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tips">
+                                温馨提示: <br>
+                                1、2M以内，JPG/PNG格式的图片 <br>
+                                2、联系人手持身份证正面进行拍照，要求五官可见，证件信息清晰无遮挡
+                            </div>
                         </ul>
                     </div>
                     <div class="bank-card">
@@ -341,7 +406,7 @@
                 </div>
             </div>
             <div>
-                
+
             </div>
             <div class="submit-btn" flex="main:center" v-if="!disabled">
                 <button @click.stop="submit" :class="{'btn-disabled':btnDisabled}">提交</button>
@@ -351,24 +416,6 @@
                 <div class="photo-wrap" flex="main:center cross:center" @click.stop="photoShow=false">
                     <img :src="viewImg" alt="">
                 </div>
-            </div>
-        </div>
-        <div class="submit-state" v-if="stateShow" :class="{'audit-state':stateErrorShow}">
-            <div class="submit-state-title">系统消息</div>
-            <div class="submit-state-content" v-if="stateErrorShow">
-                <div class="state-content-up" flex="main:center">
-                    <div><img src="../images/icon/error.png" alt=""></div>
-                    <div class="text">资质审核未通过</div>
-                </div>
-                <div class="state-content-down error-color">{{submitError}}</div>
-                <div class="audit-state-btn"><button @click.stop="reAmend">修改资质</button></div>
-            </div>
-            <div class="submit-state-content" v-else>
-                <div class="state-content-up" flex="main:center">
-                    <div><img src="../images/icon/success.png" alt=""></div>
-                    <div class="text">提交成功！</div>
-                </div>
-                <div class="state-content-down">将在1-3个工作日审核完毕并与您联系！</div>
             </div>
         </div>
     </div>
@@ -385,7 +432,7 @@
         name: 'authentication',
         data(){
             return {
-                //个人信息-基本信息
+                /*----------个人信息----------*/
                 individualInfor:[
                     {
                         name:'姓名',
@@ -482,9 +529,18 @@
                     ]
                 },
                 iTheBank:'',
-
-
-
+                iUploadPhotos:{
+                    idCard:{
+                        status:7,
+                        progress:0,
+                        loading:false,
+                        fileTitle:'请选择上传图片',
+                        dom:'iImg1',
+                        src:null
+                    }
+                },
+                iPhotoError1:false,
+                /*----------企业信息----------*/
                 viewImg:null,
                 photoShow:false,
                 data:{
@@ -608,7 +664,7 @@
                         }
                     ]
                 },
-                //联系人信息
+                //企业信息-联系人信息
                 contacts:[
                     {
                         name:'姓名',
@@ -758,6 +814,9 @@
             legalIdCardError:function(){
                 return (this.uploadPhotos.legalIdCard.progress < 100)
             },
+            idCardError:function(){
+                return (this.iUploadPhotos.idCard.progress < 100)
+            },
             serverUrl:function(){
                 return $api.serverUrl;
             }
@@ -818,6 +877,8 @@
                     this.iBank.lists[1].model = data.depositPersonName;
                     let bankCardNum = data.bankCardNum+'';
                     this.iBank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
+                    this.iUploadPhotos.idCard.src = data.individualIdFrontViewPath;
+                    this.iUploadPhotos.idCard.progress = 100;
                 }
             },
             gainBank(){
@@ -919,10 +980,12 @@
                 let obj = {};
                 if(parm == 1){
                     obj = this.uploadPhotos.legalIdCard;
-                }else if(parm > 4){
+                }else if(parm > 4 && parm < 7){
                     obj = this.uploadPhotos.linkIdCard[parm-5];
                 }else if((parm > 1) && (parm <= 4)){
                     obj = this.uploadPhotos.qualification[parm-2];
+                }else if(parm == 7){
+                    obj = this.iUploadPhotos.idCard;
                 }
                 return obj;
             },
@@ -951,11 +1014,6 @@
                     parmData.compContactWay = contactWay.model;
                     parmData.channelEmail = companyMail.model;
                     parmData.compAddress = companyAddress.model;
-                    if(!valiRealName(parmData.compLegalPerson)){
-                        calPerson.error = true;
-                        this.setScrollTop(calPerson.dom);
-                        return
-                    }
                     if(parmData.compOrganizationCode.length>10){
                         //统一社会信用代码
                         if(!checkSocialCreditCode(parmData.compOrganizationCode)){
@@ -1035,11 +1093,6 @@
                     parmData.linkmanEmail = concatMail.model;
                     parmData.linkmanIdNum = concatIdCard.model;
                     parmData.linkmanSocialSignal = concatTencent.model;
-                    if(!valiRealName(concatName.model)){
-                        concatName.error = true;
-                        this.setScrollTop(concatName.dom);
-                        return
-                    }
                     if(!checkPhone(concatNumber.model)){
                         concatNumber.error = true;
                         this.setScrollTop(concatNumber.dom);
@@ -1082,10 +1135,22 @@
                     parmData.individualIdNum = individualIdNum.model;
                     parmData.channelAppName = channelAppName.model;
 
+                    //电话验证
+                    if(!checkPhone(channelPhone.model)){
+                        channelPhone.error = true;
+                        this.setScrollTop(channelPhone.dom);
+                        return
+                    }
                     //邮箱验证
-                    if(!checkMail(parmData.channelEmail)){
+                    if(!checkMail(channelEmail.model)){
                         channelEmail.error = true;
-                        this.setScrollTop(channelEmail.dom)
+                        this.setScrollTop(channelEmail.dom);
+                        return
+                    }
+                    //身份证验证
+                    if(!valiIdCard(individualIdNum.model)){
+                        individualIdNum.error = true;
+                        this.setScrollTop(individualIdNum.dom);
                         return
                     }
                     /*--------------个人信息-银行账户信息--------------*/
@@ -1122,9 +1187,16 @@
                         this.setScrollTop(bankCard.dom)
                         return
                     }
-                }
-                console.log(parmData);
 
+                    if(this.idCardError){
+                        this.iPhotoError1 = true;
+                        this.setScrollTop(this.iUploadPhotos.idCard.dom)
+                        return;
+                    }
+                    parmData.individualIdFrontViewPath = this.iUploadPhotos.idCard.src;
+                }
+
+                console.log(parmData);
                 this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
