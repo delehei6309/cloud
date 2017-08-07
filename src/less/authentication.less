@@ -186,6 +186,18 @@
                         width:300px;
                         margin-right: 20px;
                         text-align: right;
+                        position: relative;
+                        &:before{
+                            content: "*";
+                            display: block;
+                            width:20px;
+                            height: 20px;
+                            line-height: 20px;
+                            text-align: center;
+                            position: absolute;
+                            color:#D0011B;
+                            font-size: 16px;
+                        }
                     }
                     .infor-center,.infor-right{
                         font-size: 14px;

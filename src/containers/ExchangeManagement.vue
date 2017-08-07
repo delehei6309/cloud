@@ -10,7 +10,7 @@
                         <div>
                             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
                             <b-form-input type="text" v-model="inputVal"></b-form-input>
-                            <span>产品状态</span>
+                            <span>状态</span>
                             <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                         </div>
                         <div class="input-wrap" flex>
@@ -52,7 +52,7 @@
                             <template v-if="item.value == 1">app(IOS)</template>
                             <template v-if="item.value == 2">app(安卓)</template>
                             <template v-if="item.value == 3">微信</template>
-                            <template v-if="item.value == 0">--</template>
+                            <template v-if="item.value == 0">其他</template>
                         </template>
                         <template slot="organization" scope="item">
                             {{item.value || '--'}}
@@ -65,9 +65,9 @@
                             <template v-if="item.value == 5">已到期兑付</template>
                             <template v-if="item.value == 9">已撤消</template>
                         </template>
-                        <!-- <template slot="userUuid" scope="item">
-                            <a class="look-over" @click.stop="lookOver(item.item)">查看协议</a>
-                        </template> -->
+                        <template slot="subcontractFilepath" scope="item">
+                            <template v-if="(item.item.orderStatus == 3) || (item.item.orderStatus == 4) || (item.item.orderStatus == 5)"><a class="look-over" @click.stop="lookOver(item.value)">查看协议</a></template>
+                        </template>
                     </b-table>
                 </div>
 
@@ -83,10 +83,11 @@
         <div class="look-over-box" v-show="lookOverShow">
             <div class="look-over-shadow"></div>
             <div class="look-over-wrap" flex="dir:top">
+                <span class="span-close" @click.stop="lookOverShow = false">×</span>
                 <h6>查看协议</h6>
                 <div class="content" flex="dir:top  box:mean" flex-box="1">
-                    <div flex="dir:top main:center" v-if="SubscriptionAgreemen"><a href="">《认购协议》</a></div>
-                    <div flex="dir:top main:center"><a href="">《转让协议》</a></div>
+                    <div flex="dir:top main:center"><a :href="agreementSrc" target="_view">《认购协议》</a></div>
+                    <!-- <div flex="dir:top main:center"><a href="">《转让协议》</a></div> -->
                 </div>
                 <div class="box-bottom"><b-btn class="btn" @click.stop="lookOverShow = false">关闭</b-btn></div>
             </div>
@@ -105,7 +106,7 @@
             return {
                 count:0,
                 lookOverShow:false,
-                SubscriptionAgreemen:false,
+                agreementSrc:'',
                 dateStart:null,
                 dateEnd:null,
                 selectedBase: 1,
@@ -161,7 +162,7 @@
                     transactionChannel: { label: '下单渠道' },
                     organization: { label: '所属机构' },
                     orderStatus: { label: '状态' },
-                    //userUuid: { label: '操作' },
+                    subcontractFilepath: { label: '操作' },
                 },
                 currentPage: 1,
                 perPage: 10,
@@ -186,13 +187,8 @@
             }
         },
         methods: {
-            lookOver(item){
-                let {orderStatus} = item;
-                if(orderStatus <= 2){
-                    this.SubscriptionAgreemen = false;
-                }else{
-                    this.SubscriptionAgreemen = true;
-                }
+            lookOver(src){
+                this.agreementSrc = src || '';
                 this.lookOverShow = true;
             },
             change(){
