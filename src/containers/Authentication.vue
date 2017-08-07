@@ -573,7 +573,7 @@
                     parm:''
                 },
                 date:null,
-                channelType:1,
+                channelType:2,
                 theBank:'',
                 companyInfor:[
                     {
@@ -883,8 +883,8 @@
                     let bankCardNum = data.bankCardNum+'';
                     this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
 
-                    //this.largePaymentNum = data.largePaymentNum;//开户行大额支付行号
-                    //this.bank.lists[3].model = data.largePaymentNum;
+                    this.largePaymentNum = data.largePaymentNum;//开户行大额支付行号
+                    this.bank.lists[3].model = data.largePaymentNum;
 
                     this.contacts[0].model = data.linkmanName;
                     this.contacts[1].model = data.linkmanPhone;
@@ -1197,7 +1197,6 @@
                         return
                     }
                     parmData.depositBank = this.iTheBank;//开户银行
-                    console.log(this.iBank.address);
                     if((this.iBank.address.province == '\u8BF7\u9009\u62E9') || (this.iBank.address.province == null)){
                         this.iBank.address.error = true;
                         this.setScrollTop(this.iBank.address.dom)
@@ -1230,8 +1229,6 @@
                     }
                     parmData.individualIdFrontViewPath = this.iUploadPhotos.idCard.src;
                 }
-
-                console.log(parmData);
                 this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
