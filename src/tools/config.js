@@ -11,6 +11,6 @@ export const telNumber = '400-640-3606';
 export const nodeTestApi = `${protocol}//market-test.zj-hf.cn`;
 export const nodeProductionApi = `${protocol}//market.zj-hf.cn`;
 
-export const sysDev='http://10.10.10.98:8686';
+export const sysDev='http://account.zj-hf.cn:8686';
 export const sysTest='http://10.10.10.98:8686';
 export const sysProduction='http://10.10.10.98:8686';

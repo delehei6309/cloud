@@ -30,7 +30,7 @@ let $query = (data) => {
     return str.join('&');
 };
 let get = (path, data = {}) => {
-    //data.callSystemID = '1005';
+    data.callSystemID = '1004';
     data.t = new Date().getTime();
     let url = '';
     if (/http/.test(path)) {
@@ -66,7 +66,6 @@ let getSys = (path, data = {}) => {
 };
 import  {logout} from './operation';
 let post = (path, data = {}) => {
-    data.callSystemID = '1005';
     let url = '';
     if (/http/.test(path)) {
         url = `${path}`;
@@ -81,7 +80,9 @@ let post = (path, data = {}) => {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         params: {
-            t: new Date().getTime()
+            t: new Date().getTime(),
+            callSystemID:'1004'
+
         },
         withCredentials: true,
         dataType:'json',
