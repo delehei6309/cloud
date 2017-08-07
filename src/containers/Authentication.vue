@@ -177,8 +177,8 @@
                             </li>
                             <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
                                 <template v-if="item.dom == 'bank-list4'">
-                                    <div class="infor-left no-required" v-if="!disabled && !item.model">{{item.name}}{{disabled}}</div>
-                                    <div class="infor-center" v-if="!disabled && !item.model">
+                                    <div class="infor-left no-required" v-if="!disabled && !largePaymentNum">{{item.name}}</div>
+                                    <div class="infor-center" v-if="!disabled && !largePaymentNum">
                                         <input type="text"
                                                :placeholder="'请输入'+item.name"
                                                v-model="item.model"
@@ -188,7 +188,7 @@
                                                :disabled="disabled"
                                         />
                                     </div>
-                                    <div class="infor-right" v-if="!disabled && !item.model">
+                                    <div class="infor-right" v-if="!disabled && !largePaymentNum">
                                         <span v-show="item.error">！可空，最高输入12位</span>
                                     </div>
                                 </template>
@@ -379,8 +379,8 @@
                             </li>
                             <li flex v-for="(item,index) in iBank.lists" :key="index" :class="item.dom">
                                 <template v-if="item.dom == 'iBank-list4'">
-                                    <div class="infor-left no-required" v-if="!disabled && !item.model">{{item.name}}</div>
-                                    <div class="infor-center" v-if="!disabled && !item.model">
+                                    <div class="infor-left no-required" v-if="!disabled && !largePaymentNum">{{item.name}}</div>
+                                    <div class="infor-center" v-if="!disabled && !largePaymentNum">
                                         <input type="text"
                                                :placeholder="'请输入'+item.name"
                                                v-model="item.model"
@@ -390,7 +390,7 @@
                                                :disabled="disabled"
                                         />
                                     </div>
-                                    <div class="infor-right" v-if="!disabled && !item.model">
+                                    <div class="infor-right" v-if="!disabled && !largePaymentNum">
                                         <span v-show="item.error">！可空，最高输入12位</span>
                                     </div>
                                 </template>
@@ -798,7 +798,8 @@
                 submitError:'您提交的证件照片不清晰，与原公司名称对不上！',
                 channelUuid:this.$route.query.channelUuid,
                 ajaxUrl:'/channel/insert',
-                btnDisabled:false
+                btnDisabled:false,
+                largePaymentNum:'',
             }
         },
         created(){
@@ -881,6 +882,10 @@
                     this.bank.lists[1].model = data.depositPersonName;
                     let bankCardNum = data.bankCardNum+'';
                     this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
+
+                    //this.largePaymentNum = data.largePaymentNum;//开户行大额支付行号
+                    //this.bank.lists[3].model = data.largePaymentNum;
+
                     this.contacts[0].model = data.linkmanName;
                     this.contacts[1].model = data.linkmanPhone;
                     this.contacts[2].model = data.linkmanEmail;
@@ -903,6 +908,10 @@
                     this.iBank.lists[1].model = data.depositPersonName;
                     let bankCardNum = data.bankCardNum+'';
                     this.iBank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
+
+                    this.largePaymentNum = data.largePaymentNum;//开户行大额支付行号
+                    this.bank.lists[3].model = data.largePaymentNum;
+
                     this.iUploadPhotos.idCard.src = data.individualIdFrontViewPath;
                     this.iUploadPhotos.idCard.progress = 100;
                 }
@@ -1226,9 +1235,10 @@
                 this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
-                        if(this.channelUuid){
+                        if(!this.channelUuid){
                             this.stateShow = true;
                             this.stateErrorShow = false;
+                            this.authenticationShow =false;
                         }else{
                             this.$router.go(0);
                         }
@@ -1240,7 +1250,7 @@
             },
             listCheck(arr){
                 for(let obj of arr){
-                    let model = obj.model.replace(/\s+/g, "");
+                    let model = (''+(obj.model)).replace(/\s+/g, "");
                     if(obj.dom == 'bank-list4'){
                         return false;
                     }
