@@ -1,6 +1,17 @@
 @charset "UTF-8";
 @import "variables";
 .data-statistics{
+    .clear-both{
+        zoom:1;
+        &:after{
+            content: "";
+            display: block;
+            width:0;
+            height:0;
+            overflow: hidden;
+            clear: both;
+        }
+    }
     padding:20px;
     .statistics-tab{
         .statistics-tab-btn{
@@ -21,18 +32,24 @@
     .statistics-table{
         padding-top:10px;
         .table-head{
-            overflow: hidden;
+            margin-bottom: 15px;
             .tab-out{
                 float: right;margin-left: 10px;
-                button{
+                a{
                     background-color: @bg-botton-active;
                     height:30px;
+                    line-height: 30px;
                     color:#fff;
+                    font-size: .7rem;
+                    padding:0;
+                    text-align: center;
+                    width:76px;
                 }
                 
             }
             .tab-search{
                 line-height: 30px;float: right;
+                margin-right: 15px;
                 .input-date{
                     width:120px;
                     margin:0 10px;
@@ -44,6 +61,13 @@
                         line-height: 30px;
                         &:hover { box-shadow: 0 0 10px rgba(79, 151, 235, .8) inset;}
                     }
+                }
+                button{
+                    background-color: @bg-botton-active;
+                    height:30px;
+                    color:#fff;
+                    width:76px;
+                    margin-left: 5px;
                 }
                 
             }
