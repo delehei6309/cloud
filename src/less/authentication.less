@@ -190,6 +190,7 @@
                         width:300px;
                         margin-right: 20px;
                         text-align: right;
+                        position: relative;
                     }
                     .infor-center,.infor-right{
                         font-size: 14px;
@@ -427,6 +428,21 @@
                 width:0;height:0;
                 background:none;
             }
+        }
+    }
+    .infor-left,.idcard .upload-text,.qualification .upload-text>p:first-child,.contacts .upload-text{
+        &:before{
+            content: "*";
+            padding-right: 10px;
+            color:#D0011B;
+            font-size: 16px;
+        }
+    }
+    .no-required{
+        &:before{
+            content: "" !important;
+            padding:0 !important;
+            font-size: 0 !important;
         }
     }
 }
