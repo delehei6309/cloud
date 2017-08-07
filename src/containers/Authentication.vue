@@ -41,7 +41,7 @@
                         <ul class="common-lists">
                             <li flex v-for="(item,index) in companyInfor" :key="index" :class="item.dom">
                                 <template v-if="index == 3">
-                                    <div class="infor-left">{{item.name}}</div>
+                                    <div class="infor-left institution-code">{{item.name}}<span>（组织机构代码）</span></div>
                                     <div class="infor-center">
                                         <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength"
                                                :disabled="disabled"
@@ -77,7 +77,7 @@
                         <h6>资质认证信息</h6>
                         <div class="upload">
                             <div class="idcard" flex :class="uploadPhotos.legalIdCard.dom">
-                                <div class="upload-text">上传法人代表身份证</div>
+                                <div class="upload-text"><span v-if="!disabled">上传</span><span>法人代表身份证</span></div>
                                 <div class="idcard-box upload-img-box" :class="{uploading:uploadPhotos.legalIdCard.progress<=0}">
                                     <span class="span-bg"
                                           :style="{height:uploadPhotos.legalIdCard.progress+'%'}"
@@ -107,8 +107,8 @@
                             <div class="qualification">
                                 <div flex>
                                     <div class="upload-text">
-                                        <p>上传公司资质</p>
-                                        <p class="text-last">(三证合一只需上传一张)</p>
+                                        <p><span v-if="!disabled">上传</span><span>公司资质</span></p>
+                                        <p class="text-last" v-if="!disabled">(三证合一只需上传一张)</p>
                                     </div>
                                     <div class="qualification-box" flex>
                                         <div class="license imgs" v-for="(item,index) in uploadPhotos.qualification" :key="index"
@@ -142,7 +142,7 @@
                                 <div class="upload-error">
                                     <span v-show="licenseError && photoError2">！请上传营业执照证件照，大小不超过2M</span>
                                 </div>
-                                <div class="tips">
+                                <div class="tips" v-if="!disabled">
                                     温馨提示: <br>
                                     1、2M以内，JPG/PNG格式的图片 <br>
                                     2、要求上传的证件信息清晰无遮挡
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="bank-card">
-                        <h6>银行账户信息<span>（请确保正确填写银行账户信息，便于结款准确到账）</span></h6>
+                        <h6>银行账户信息<span v-if="!disabled">（请确保正确填写银行账户信息，便于结款准确到账）</span></h6>
                         <ul class="common-lists">
                             <li flex :class="bank.type.dom">
                                 <div class="infor-left">账户类型</div>
@@ -176,39 +176,52 @@
                                 <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
                             </li>
                             <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
-                                <div class="infor-left" :class="{'no-required':item.dom == 'bank-list4'}">{{item.name}}</div>
-                                <div class="infor-center">
-                                    <input type="text"
-                                           v-if="index==2"
-                                           :placeholder="'请输入'+item.name"
-                                           v-model="item.model"
-                                           :maxlength="item.maxlength"
-                                           @focus="item.error=false"
-                                           @blur="item.model.length<1 ? item.error=true : ''"
-                                           @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
-                                           @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
-                                           @input="gainBank"
-                                           :disabled="disabled"
-                                    />
-                                    <input type="text"
-                                           v-else
-                                           :placeholder="'请输入'+item.name"
-                                           v-model="item.model"
-                                           :maxlength="item.maxlength"
-                                           @focus="item.error=false"
-                                           @blur="item.model.length<1 ? item.error=true : ''"
-                                           :disabled="disabled"
-                                    />
-                                </div>
-                                <div class="infor-right" v-show="item.error">
-                                    <template v-if="item.dom == 'bank-list4'">
-                                        <span>！可空，最高输入12位</span>
-                                    </template>
-                                    <template v-else>
+                                <template v-if="item.dom == 'bank-list4'">
+                                    <div class="infor-left no-required" v-if="!disabled && !item.model">{{item.name}}{{disabled}}</div>
+                                    <div class="infor-center" v-if="!disabled && !item.model">
+                                        <input type="text"
+                                               :placeholder="'请输入'+item.name"
+                                               v-model="item.model"
+                                               :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               :disabled="disabled"
+                                        />
+                                    </div>
+                                    <div class="infor-right" v-if="!disabled && !item.model">
+                                        <span v-show="item.error">！可空，最高输入12位</span>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="infor-left">{{item.name}}</div>
+                                    <div class="infor-center">
+                                        <input type="text"
+                                               v-if="index==2"
+                                               :placeholder="'请输入'+item.name"
+                                               v-model="item.model"
+                                               :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                               @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                               @input="gainBank"
+                                               :disabled="disabled"
+                                        />
+                                        <input type="text"
+                                               v-else
+                                               :placeholder="'请输入'+item.name"
+                                               v-model="item.model"
+                                               :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               :disabled="disabled"
+                                        />
+                                    </div>
+                                    <div class="infor-right" v-show="item.error">
                                         <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
                                         <span v-else>！请输入正确的{{item.name}}</span>
-                                    </template>
-                                </div>
+                                    </div>
+                                </template>
                             </li>
                         </ul>
                         <p class="the-bank">{{theBank}}</p>
@@ -245,7 +258,7 @@
                         </ul>
                         <div class="upload-photo" >
                             <div flex :class="uploadPhotos.linkIdCard[0].dom">
-                                <div class="upload-text">上传联系人身份证照</div>
+                                <div class="upload-text"><span v-if="!disabled">上传</span><span>联系人身份证照</span></div>
                                 <div class="upload-img-box" :class="{front:index==0,contrary:index==1,uploading:item.progress<=0}" v-for="(item,index) in uploadPhotos.linkIdCard" :key="index">
                                     <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
                                     <span class="span-percent" v-if="item.progress>0 && item.progress<100">上传中{{parseInt(item.progress)}}%</span>
@@ -272,7 +285,7 @@
                             <div class="upload-error">
                                 <span v-show="linkIdCardError && photoError3">！请上传身份证件照，大小不超过2M</span>
                             </div>
-                            <div class="tips">
+                            <div class="tips" v-if="!disabled">
                                 温馨提示: <br>
                                 1、2M以内，JPG/PNG格式的图片 <br>
                                 2、要求上传的证件信息清晰无遮挡
@@ -303,7 +316,7 @@
                             <div class="content-upload">
                                 <div class="upload">
                                     <div class="idcard" flex :class="iUploadPhotos.idCard.dom">
-                                        <div class="upload-text">上传手持身份证正面照</div>
+                                        <div class="upload-text"><span v-if="disabled">上传</span><span>手持身份证正面照</span></div>
                                         <div class="idcard-box upload-img-box" :class="{uploading:iUploadPhotos.idCard.progress<=0}">
                                             <span class="span-bg"
                                               :style="{height:iUploadPhotos.idCard.progress+'%'}"
@@ -332,7 +345,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tips">
+                            <div class="tips" v-if="!disabled">
                                 温馨提示: <br>
                                 1、2M以内，JPG/PNG格式的图片 <br>
                                 2、联系人手持身份证正面进行拍照，要求五官可见，证件信息清晰无遮挡
@@ -340,7 +353,7 @@
                         </ul>
                     </div>
                     <div class="bank-card">
-                        <h6>银行账户信息<span>（请确保正确填写银行账户信息，便于结款准确到账）</span></h6>
+                        <h6>银行账户信息<span v-if="!disabled">（请确保正确填写银行账户信息，便于结款准确到账）</span></h6>
                         <ul class="common-lists">
                             <li flex :class="iBank.type.dom">
                                 <div class="infor-left">账户类型</div>
@@ -365,39 +378,52 @@
                                 <div class="infor-right" v-show="iBank.address.error">！请选择开户地址</div>
                             </li>
                             <li flex v-for="(item,index) in iBank.lists" :key="index" :class="item.dom">
-                                <div class="infor-left" :class="{'no-required':item.dom == 'iBank-list4'}">{{item.name}}</div>
-                                <div class="infor-center">
-                                    <input type="text"
-                                           v-if="index==2"
-                                           :placeholder="'请输入'+item.name"
-                                           v-model="item.model"
-                                           :maxlength="item.maxlength"
-                                           @focus="item.error=false"
-                                           @blur="item.model.length<1 ? item.error=true : ''"
-                                           @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
-                                           @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
-                                           @input="iGainBank"
-                                           :disabled="disabled"
-                                    />
-                                    <input type="text"
-                                           v-else
-                                           :placeholder="'请输入'+item.name"
-                                           v-model="item.model"
-                                           :maxlength="item.maxlength"
-                                           @focus="item.error=false"
-                                           @blur="item.model.length<1 ? item.error=true : ''"
-                                           :disabled="disabled"
-                                    />
-                                </div>
-                                <div class="infor-right" v-show="item.error">
-                                    <template v-if="item.dom == 'iBank-list4'">
-                                        <span>！可空，最高输入12位</span>
-                                    </template>
-                                    <template v-else>
+                                <template v-if="item.dom == 'iBank-list4'">
+                                    <div class="infor-left no-required" v-if="!disabled && !item.model">{{item.name}}</div>
+                                    <div class="infor-center" v-if="!disabled && !item.model">
+                                        <input type="text"
+                                               :placeholder="'请输入'+item.name"
+                                               v-model="item.model"
+                                               :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               :disabled="disabled"
+                                        />
+                                    </div>
+                                    <div class="infor-right" v-if="!disabled && !item.model">
+                                        <span v-show="item.error">！可空，最高输入12位</span>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="infor-left">{{item.name}}</div>
+                                    <div class="infor-center">
+                                        <input type="text"
+                                               v-if="index==2"
+                                               :placeholder="'请输入'+item.name"
+                                               v-model="item.model"
+                                               :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                               @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                               @input="iGainBank"
+                                               :disabled="disabled"
+                                        />
+                                        <input type="text"
+                                               v-else
+                                               :placeholder="'请输入'+item.name"
+                                               v-model="item.model"
+                                               :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               :disabled="disabled"
+                                        />
+                                    </div>
+                                    <div class="infor-right" v-show="item.error">
                                         <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
                                         <span v-else>！请输入正确的{{item.name}}</span>
-                                    </template>
-                                </div>
+                                    </div>
+                                </template>
                             </li>
                         </ul>
                         <p class="the-bank">{{iTheBank}}</p>
@@ -1073,11 +1099,11 @@
                     parmData.depositPersonName = accountName.model;
                     parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
                     parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
-                    if(!valiRealName(parmData.depositPersonName)){
+                    /*if(!valiRealName(parmData.depositPersonName)){
                         accountName.error = true;
                         this.setScrollTop(accountName.dom)
                         return
-                    }
+                    }*/
                     if(bankCard.model.length<16){
                         bankCard.error = true;
                         this.setScrollTop(bankCard.dom)
@@ -1177,11 +1203,11 @@
                     parmData.depositPersonName = accountName.model;
                     parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
                     parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
-                    if(!valiRealName(parmData.depositPersonName)){
+                    /*if(!valiRealName(parmData.depositPersonName)){
                         accountName.error = true;
                         this.setScrollTop(accountName.dom)
                         return
-                    }
+                    }*/
                     if(bankCard.model.length<16){
                         bankCard.error = true;
                         this.setScrollTop(bankCard.dom)
@@ -1200,7 +1226,12 @@
                 this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
-                        this.$router.go(0);
+                        if(this.channelUuid){
+                            this.stateShow = true;
+                            this.stateErrorShow = false;
+                        }else{
+                            this.$router.go(0);
+                        }
                     }else{
                         Toast(msg.msg);
                         this.btnDisabled = false;

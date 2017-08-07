@@ -192,6 +192,17 @@
                         text-align: right;
                         position: relative;
                     }
+                    .institution-code{
+                        position: relative;
+                        span{
+                            font-size: 12px;
+                            position: absolute;
+                            right:0;
+                            bottom:0;
+                            line-height: 1em;
+                            color:#888;
+                        }
+                    }
                     .infor-center,.infor-right{
                         font-size: 14px;
                     }
@@ -419,7 +430,7 @@
         ,.authentication-content > div .common-lists li .infor-center .select-area .cols .select-view,.authentication-content .upload-img-box,
         .authentication-content .select-box select,
         .authentication-content > div .common-lists li .infor-center .select-area .cols select, .authentication .authentication-content > div .common-lists li .infor-center .select-area .cols .select-view{
-            border-color: #fff;
+            border-color: #dedede;
             cursor: auto;
         }
         .authentication-content .select-box .select-view
@@ -443,6 +454,15 @@
             content: "" !important;
             padding:0 !important;
             font-size: 0 !important;
+        }
+    }
+    .boxs-disabled{
+        .infor-left,.idcard .upload-text,.qualification .upload-text>p:first-child,.contacts .upload-text{
+            &:before{
+                content: "" !important;
+                padding:0 !important;
+                font-size: 0 !important;
+            }
         }
     }
 }
