@@ -16,6 +16,7 @@
     "vue-core-image-upload": "^2.3.5",
     "vue-date": "^1.1.7",
     "vue-highcharts": "^0.0.10",
+    "vue-json-excel": "0.0.7",
     "vue-router": "^2.3.1",
     "vuex": "^2.3.1"
   },

@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="btn-warp">
-                        <button class="btn-primary btn-submit" @click.stop="login">登录</button>
+                        <button class="btn-primary btn-submit" @click.stop="login">{{loginText}}</button>
                     </div>
                 </div>
 
@@ -49,45 +49,53 @@
                         <label class="label" for="re-phone" flex-box="0" flex="cross:center">
                             <img src="../images/login/phone.png">
                         </label>
-                        <input flex-box="1" id="re-phone" class="form-input" placeholder="手机号"/>
+                        <input flex-box="1" id="re-phone" v-model.trim="username"
+                               class="form-input" placeholder="手机号"/>
+                    </div>
+                    <div flex v-show="imageCaptcha">
+                        <div class="form-item short-item" flex flex-box="0">
+                            <label class="label" for="img-code" flex-box="0" flex="cross:center">
+                                <img src="../images/login/img-code.png">
+                            </label>
+                            <input flex-box="1" v-model.trim="inputCode"
+                                   id="img-code" class="form-input" placeholder="图形验证码"/>
+                        </div>
+                        <div class="code-item" flex-box="1">
+                            <button class="btn-img-code">{{imageCaptcha}}</button>
+                        </div>
                     </div>
                     <div flex>
                         <div class="form-item short-item" flex flex-box="0">
                             <label class="label" for="msg-code" flex-box="0" flex="cross:center">
                                 <img src="../images/login/msg-code.png">
                             </label>
-                            <input flex-box="1" id="msg-code" class="form-input" placeholder="验证码"/>
+                            <input flex-box="1" id="msg-code" v-model.trim="numberCaptcha"
+                                   class="form-input" placeholder="验证码"/>
                         </div>
                         <div class="code-item" flex-box="1">
-                            <button class="btn-primary btn-get-code">获取验证码</button>
+                            <button v-if="verifyTimeLeft<1" class="btn-primary btn-get-code" @click.stop="getVerify">{{verifyText}}</button>
+                            <button v-else="verifyTimeLeft<1" class="btn-default btn-text" disabled>{{verifyTimeLeft}}
+                            </button>
                         </div>
                     </div>
 
-                    <div flex>
-                        <div class="form-item short-item" flex flex-box="0">
-                            <label class="label" for="img-code" flex-box="0" flex="cross:center">
-                                <img src="../images/login/img-code.png">
-                            </label>
-                            <input flex-box="1" id="img-code" class="form-input" placeholder="图形验证码"/>
-                        </div>
-                        <div class="code-item" flex-box="1">
-                            <button class="btn-img-code">bnh4</button>
-                        </div>
-                    </div>
+
                     <div class="form-item" flex>
                         <label class="label" for="re-password" flex-box="0" flex="cross:center">
                             <img src="../images/login/password.png">
                         </label>
-                        <input flex-box="1" type="hidden" name="re-password" class="form-input" placeholder="密码"/>
-                        <input flex-box="1" type="password" name="re-password"
+                        <input flex-box="1" type="hidden" v-model.trim="password"
+                               name="re-password" class="form-input" placeholder="密码"/>
+                        <input flex-box="1" type="password" v-model.trim="password"
+                               name="re-password"
                                id="re-password" class="form-input" placeholder="请设置6~20位数字与字母组合密码"/>
                     </div>
                     <div class="text-hint" flex="main:justify">
-                        <span class="err-info">手机号不能为空</span>
+                        <span class="err-info">{{errInfo}}</span>
                     </div>
 
                     <div class="btn-warp">
-                        <button class="btn-primary btn-submit">注册</button>
+                        <button class="btn-primary btn-submit" @click.stop="register">注册</button>
                     </div>
                 </div>
 
@@ -113,7 +121,15 @@
                 tab: 1,
                 username: '',
                 password: '',
-                errInfo: ''
+                errInfo: '',
+                cellPhoneNumber: '',
+                inputCode: '',
+                imageCaptcha: '',
+                verifyTimeLeft: 0,
+                verifyText: '获取验证码',
+                loginText:'登录',
+                timer: null,
+                numberCaptcha: ''
             }
         },
         created(){
@@ -125,9 +141,7 @@
             IndexHeader,
             IndexFooter
         },
-        computed: {
-
-        },
+        computed: {},
         methods: {
             checkUserName(){
                 if (!this.username) {
@@ -153,19 +167,126 @@
                 this.errInfo = '密码为（6~20位数字和字母）';
                 return false;
             },
+            getVerify(){
+                if (!this.checkUserName()) {
+                    return false;
+                }
+
+                let data = {
+                    cellPhoneNumber: this.username,
+                    getType: 'num'
+                }
+                if (this.imageCaptcha && !this.inputCode) {
+                    this.errInfo = '请输入图片验证码';
+                    return false;
+                }
+                else {
+                    data.imgCaptcha = this.inputCode;
+                }
+                this.verifyTimeLeft = 59;
+                this.timeCount();
+                this.verifyText = '重新发送';
+                $api.postSys('/a/sys/user/captcha/register', data)
+                    .then(res => {
+                        console.log(res);
+                        if (res.code == 200) {
+                            return false;
+                        }
+                        this.clearTimeCount();
+                        if (res.code == 1210) {
+                            this.errInfo = '获取短信验证码失败';
+                            return false;
+                        }
+                        if (res.code == 1211) {
+                            this.errInfo = '请输入图片验证码';
+                            this.imageCaptcha = res.data.imageCaptcha;
+                            return false;
+                        }
+                        if (res.code == 1212) {
+                            if (this.imageCaptcha) {
+                                this.errInfo = '图片验证码错误';
+                            } else {
+                                this.errInfo = '请输入图片验证码';
+                            }
+                            this.imageCaptcha = res.data.imageCaptcha;
+                            return false;
+                        }
+                        if (res.code == 1215) {
+                            this.errInfo = '手机号不正确';
+                            return false;
+                        }
+                        if (res.code == 1216) {
+                            this.errInfo = '该手机号已注册';
+                            return false;
+                        }
+                        this.errInfo = res.msg;
+                    })
+            },
+            timeCount(){
+                this.timer = setTimeout(() => {
+                    this.verifyTimeLeft = this.verifyTimeLeft - 1;
+                    if (this.verifyTimeLeft >= 1) {
+                        this.timeCount();
+                    }
+                }, 1000);
+            },
+            clearTimeCount(){
+                this.verifyTimeLeft = 0;
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                }
+            },
             login(){
                 if (!this.checkUserName() || !this.checkPassword()) {
                     return false;
                 }
-               let {username,password} =this;
-                $api.postSys('/a/login',{username,password})
+                let {username, password} = this;
+                this.loginText='登录中...'
+                $api.postSys('/a/login', {username, password})
                     .then(res => {
+                        this.loginText='登录'
                         if (res.code == 200) {
                             this.$router.push('/home');
                         } else {
                             this.errInfo = res.msg;
                         }
                     })
+            },
+            register(){
+                if (!this.checkUserName()) {
+                    return false;
+                }
+                if (!this.numberCaptcha) {
+                    this.errInfo = '请输入短信验证码'
+                    return false;
+                }
+                if (!this.checkPassword()) {
+                    return false;
+                }
+                let cellPhoneNumber = this.username;
+                let numCaptcha = this.numberCaptcha;
+                let password = this.password;
+                $api.postSys('/a/sys/user/register/create', {cellPhoneNumber, numCaptcha, password})
+                    .then(res => {
+                        if (res.code == 200) {
+                            this.$router.push('/menus/authentication');
+                            return false;
+                        }
+                        if (res.code == 1201) {
+                            this.errInfo = '请输入正确的手机号';
+                            return false;
+
+                        }
+                        if (res.code == 1203) {
+                            this.errInfo = '密码为（6~20位数字和字母）';
+                            return false;
+                        }
+                        if (res.code == 1204) {
+                            this.errInfo = '该手机号已注册，可直接登录';
+                            return false;
+                        }
+                        this.errInfo = res.msg;
+                    });
             }
         },
         watch: {

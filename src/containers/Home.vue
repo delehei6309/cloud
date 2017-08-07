@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="information" flex="dir:right">
-            <div class="infor-div" @click.stop="inforLink">
+            <div class="infor-div" @click.stop="">
                 <span class="infor-inner">信息</span>
                 <span class="infor-count">2</span>
             </div>
@@ -9,10 +9,10 @@
         <div class="content">
             <div class="table">
                 <ul flex="box:mean" >
-                    <li v-for="(item,index) in tableList" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
-                        <div class="table-text" v-html="item.text"></div>
+                    <li v-for="(item,index) in lists" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
+                        <div class="table-text" v-html="listText[index]"></div>
                         <div class="table-data">{{item.today}}</div>
-                        <div v-if="index==1" class="table-rate red" :class="{green:item.today>=item.yesterday}">{{(item.today-item.yesterday) | }}</div>
+                        <div v-if="item.name !='countRegisterUser'" class="table-rate red" :class="{green:item.today<item.yesterday}">{{(item.today-item.yesterday)}}</div>
                     </li>
                 </ul>
             </div>
@@ -35,39 +35,10 @@
         name: 'home',
         data(){
             return {
+                merchantNum:'00000',
                 tab:0,
-                tableList:[
-                    {
-                        today:364,
-                        yesterday:534,
-                        text:'总注册量',
-                        rate:'+4'
-                    },
-                    {
-                        today:0.35,
-                        yesterday:0.16,
-                        text:'次日留存',
-                        rate:'-0.8%'
-                    },
-                    {
-                        today:8,
-                        yesterday:7,
-                        text:'下单笔数<i>（今）</i>',
-                        rate:'-4'
-                    },
-                    {
-                        today:8000,
-                        yesterday:12000,
-                        text:'募集总额<i>（今）</i>',
-                        rate:'+400'
-                    },
-                    {
-                        today:24,
-                        yesterday:30,
-                        text:'到期笔数<i>（今）</i>',
-                        rate:'+5'
-                    }
-                ],
+                lists:null,
+                listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>','到期笔数<i>（今）</i>'],
                 options:{
                     title: {
                         text: '',
@@ -78,7 +49,7 @@
                         x: -20
                     },
                     xAxis: {
-                        categories: ['00', '03', '06', '09', '12', '15','18', '21']
+                        categories: ['00', '01', '02', '03', '04', '05','06', '07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
                     },
                     yAxis: {
                         title: {
@@ -104,13 +75,13 @@
                     series: [
                         {
                             name: '今日',
-                            data: [7.0, 6.9, 9.5, 14.5, 180],
+                            data: [],
                             color:'#4990E2',
                             lineWidth:1
                         },
                         {
                             name: '昨日',
-                            data: [1, 8, 17, 23, 27, 32, 46, 54],
+                            data: [],
                             color:'#D0011B',
                             lineWidth:1
                         }
@@ -123,24 +94,10 @@
         },
         created(){
             timeDeal();
-            $api.get('/count/indexCount').then(msg=>{
+            $api.get('/count/indexCount',{merchantNum:this.merchantNum}).then(msg=>{
                 if(msg.code == 200){
-                    let data = msg.data;
-                    this.tableList[0].today = data.countRegisterUser.todayUserCount || 0;
-                    this.tableList[0].yesterday = data.countRegisterUser.yesterdayUserCount || 0;
-                    console.log(data.nextDayRemains)
-                    this.tableList[1].today = data.nextDayRemains.todayRemains;
-                    this.tableList[1].yesterday = data.nextDayRemains.yesRemains;
-
-                    this.tableList[2].today = data.countOrderNumber.todayOrderCount || 0;
-                    this.tableList[2].yesterday = data.countOrderNumber.yesterdayOrderCount || 0;
-
-                    this.tableList[3].today = data.sumPaidAmountByHours.todayUserCount || 0;
-                    this.tableList[3].yesterday = data.sumPaidAmountByHours.yesterdayUserCount || 0;
-
-                    this.tableList[4].today = data.countExpiringDateNumber.todaySumPaidAmount || 0;
-                    this.tableList[4].yesterday = data.countExpiringDateNumber.yesterdaySumPaidAmount || 0;
-                    console.log(this.tableList)
+                    this.lists = msg.data;
+                    this.setOption(this.tab);
                 }
             });
         },
@@ -148,11 +105,32 @@
         methods: {
             change(index){
                 this.tab = index;
-                let chart = this.$refs.highcharts.chart;
-                chart.series[0].setData([10,12,11,23,33]);
+                this.setOption(index);
             },
             inforLink(){
                 this.$router.push('/information');
+            },
+            setOption(tab){
+                let todayList = this.lists[tab].todayList;
+                let yesterdayList = this.lists[tab].yesterdayList;
+                this.supplement(yesterdayList);
+                this.options.series[0].data = this.supplement(todayList);
+                this.options.series[0].data = this.supplement(yesterdayList);
+            },
+            supplement(arr){
+                let setNormal = (str) =>{
+                    let _str = (''+str).substr(0,1);
+                    _str == '0' ? str = (''+str).substr(1,1) : '';
+                    return str;
+                }
+                let thatArr = [];
+                for(let i=0;i<24;i++){
+                    thatArr.push(0);
+                }
+                arr.forEach(({hours,totalCount}) =>{
+                    thatArr[setNormal(hours)] = totalCount;
+                });
+                return thatArr;
             }
         },
         destroyed(){
