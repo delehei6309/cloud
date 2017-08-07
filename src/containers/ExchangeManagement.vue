@@ -30,7 +30,10 @@
                         <template slot="productPeriod" scope="item">
                             <template>{{item.value}}</template><template v-if="item.item.productPeriodType == 'D'">天</template><template v-if="item.item.productPeriodType == 'W'">周</template><template v-if="item.item.productPeriodType == 'M'">月</template><template v-if="item.item.productPeriodType == 'Y'">天</template>
                         </template>
-                        <template slot="transactionTime" scope="item">
+                        <template slot="createTime" scope="item">
+                            {{item.value | timeFormat}}
+                        </template>
+                        <template slot="payedTime" scope="item">
                             {{item.value | timeFormat}}
                         </template>
                         <template slot="productAnnualInterestRate" scope="item">
@@ -157,7 +160,8 @@
                     marketingAmount: { label: '红包金额（元）' },
                     paidAmount: { label: '支付金额（元）' },
                     expectedProfitAmount: { label: '预计到期收益（元）' },
-                    transactionTime: { label: '支付时间' },
+                    createTime: { label: '创建时间' },
+                    payedTime: { label: '支付时间' },
                     transactionChannel: { label: '下单渠道' },
                     organization: { label: '所属机构' },
                     orderStatus: { label: '状态' },
