@@ -300,7 +300,7 @@
                                 <div class="infor-right" v-show="iBank.address.error">！请选择开户地址</div>
                             </li>
                             <li flex v-for="(item,index) in iBank.lists" :key="index" :class="item.dom">
-                                <div class="infor-left">{{item.name}}</div>
+                                <div class="infor-left" :class="{'no-required':item.dom == 'iBank-list4'}">{{item.name}}</div>
                                 <div class="infor-center">
                                     <input type="text"
                                            v-if="index==2"
@@ -326,7 +326,7 @@
                                 </div>
                                 <div class="infor-right" v-show="item.error">
                                     <template v-if="item.dom == 'iBank-list4'">
-                                        <span>可空，最高输入12位</span>
+                                        <span>！可空，最高输入12位</span>
                                     </template>
                                     <template v-else>
                                         <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
