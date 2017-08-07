@@ -17,7 +17,7 @@
                         <button :class="{'active':channelType == 1}" @click.stop="channelType=1">个人</button>
                     </div>
                 </div>
-                <div class="authentication-content">
+                <div class="authentication-content" v-show="channelType == 2">
                     <div class="content-infor">
                         <h6>企业信息</h6>
                         <ul class="common-lists">
@@ -26,12 +26,12 @@
                                     <div class="infor-left">{{item.name}}</div>
                                     <div class="infor-center">
                                         <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength"
-                                            :disabled="disabled"
-                                            @focus="item.error=false" 
-                                            @blur="item.model.length<1 ? item.error=true : ''"
-                                            @keyup="item.model = item.model.replace(/\s+/g, '')" 
-                                            @afterpaste="item.model = item.model.replace(/\s+/g, '')"
-                                            >
+                                               :disabled="disabled"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               @keyup="item.model = item.model.replace(/\s+/g, '')"
+                                               @afterpaste="item.model = item.model.replace(/\s+/g, '')"
+                                        >
                                     </div>
                                     <div class="infor-right" v-show="item.error">
                                         <span v-if="item.model.length<1">！统一社会信用代码不能为空</span>
@@ -41,11 +41,11 @@
                                 <template v-else>
                                     <div class="infor-left">{{item.name}}</div>
                                     <div class="infor-center">
-                                        <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength" 
-                                            :disabled="disabled"
-                                            @focus="item.error=false" 
-                                            @blur="item.model.length<1 ? item.error=true : ''"
-                                            >
+                                        <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength"
+                                               :disabled="disabled"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                        >
                                     </div>
                                     <div class="infor-right" v-show="item.error">
                                         <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
@@ -61,13 +61,13 @@
                             <div class="idcard" flex :class="uploadPhotos.legalIdCard.dom">
                                 <div class="upload-text">上传法人代表身份证</div>
                                 <div class="idcard-box upload-img-box" :class="{uploading:uploadPhotos.legalIdCard.progress<=0}">
-                                    <span class="span-bg" 
-                                        :style="{height:uploadPhotos.legalIdCard.progress+'%'}" 
-                                        v-show="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100"></span>
-                                    <span class="span-percent" 
-                                        v-if="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100">上传中{{parseInt(uploadPhotos.legalIdCard.progress)}}%</span>
+                                    <span class="span-bg"
+                                          :style="{height:uploadPhotos.legalIdCard.progress+'%'}"
+                                          v-show="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100"></span>
+                                    <span class="span-percent"
+                                          v-if="uploadPhotos.legalIdCard.progress>0 && uploadPhotos.legalIdCard.progress<100">上传中{{parseInt(uploadPhotos.legalIdCard.progress)}}%</span>
                                     <span class="span-percent perent-img" v-if="uploadPhotos.legalIdCard.progress>=100"
-                                        @click.stop="viewImg=uploadPhotos.legalIdCard.src;photoShow=true">
+                                          @click.stop="viewImg=uploadPhotos.legalIdCard.src;photoShow=true">
                                         <img :src="uploadPhotos.legalIdCard.src">
                                     </span>
                                     <vue-core-image-upload
@@ -93,14 +93,14 @@
                                         <p class="text-last">(三证合一只需上传一张)</p>
                                     </div>
                                     <div class="qualification-box" flex>
-                                        <div class="license imgs" v-for="(item,index) in uploadPhotos.qualification" :key="index" 
-                                            :class="item.dom" 
-                                            v-if="item.src || !disabled">
+                                        <div class="license imgs" v-for="(item,index) in uploadPhotos.qualification" :key="index"
+                                             :class="item.dom"
+                                             v-if="item.src || !disabled">
                                             <div class="upload-img-box" :class="{uploading:item.progress<=0}">
                                                 <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
                                                 <span v-if="item.progress>0 && item.progress<100" class="span-percent">上传中{{parseInt(item.progress)}}%</span>
                                                 <span v-if="item.progress>=100" class="span-percent perent-img"
-                                                    @click.stop="viewImg=item.src;photoShow=true">
+                                                      @click.stop="viewImg=item.src;photoShow=true">
                                                     <img :src="item.src">
                                                 </span>
                                                 <vue-core-image-upload
@@ -113,7 +113,7 @@
                                                     :max-file-size="2097152"
                                                     :url="`${serverUrl}/channel/file/upload`"
                                                     @imageuploaded="imageuploaded"
-                                                    @imagechanged = "imagechanged(item.status)" 
+                                                    @imagechanged = "imagechanged(item.status)"
                                                     @errorhandle ="errorhandle">
                                                 </vue-core-image-upload>
                                             </div>
@@ -135,13 +135,13 @@
                                 <div class="infor-center">
                                     <div class="select-box">
                                         <b-form-select class="mb-3"
-                                            v-model="bank.type.selected"
-                                            @change.native="selectChange(1)" 
-                                            :options="bank.type.options"
-                                            :disabled="disabled">
+                                                       v-model="bank.type.selected"
+                                                       @change.native="selectChange(1)"
+                                                       :options="bank.type.options"
+                                                       :disabled="disabled">
                                         </b-form-select>
                                         <div class="select-view">{{bank.type.options[bank.type.selected].text}}</div>
-                                    </div> 
+                                    </div>
                                 </div>
                                 <div class="infor-right" v-show="bank.type.error">！请选择账户类型</div>
                             </li>
@@ -155,27 +155,27 @@
                             <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
                                 <div class="infor-left">{{item.name}}</div>
                                 <div class="infor-center">
-                                    <input type="text" 
-                                        v-if="index==2"
-                                        :placeholder="'请输入'+item.name" 
-                                        v-model="item.model" 
-                                        :maxlength="item.maxlength" 
-                                        @focus="item.error=false" 
-                                        @blur="item.model.length<1 ? item.error=true : ''"
-                                        @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')" 
-                                        @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
-                                        @input="gainBank"
-                                        :disabled="disabled"
-                                        />
-                                    <input type="text" 
-                                        v-else
-                                        :placeholder="'请输入'+item.name" 
-                                        v-model="item.model" 
-                                        :maxlength="item.maxlength" 
-                                        @focus="item.error=false" 
-                                        @blur="item.model.length<1 ? item.error=true : ''"
-                                        :disabled="disabled"
-                                        />
+                                    <input type="text"
+                                           v-if="index==2"
+                                           :placeholder="'请输入'+item.name"
+                                           v-model="item.model"
+                                           :maxlength="item.maxlength"
+                                           @focus="item.error=false"
+                                           @blur="item.model.length<1 ? item.error=true : ''"
+                                           @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                           @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                           @input="gainBank"
+                                           :disabled="disabled"
+                                    />
+                                    <input type="text"
+                                           v-else
+                                           :placeholder="'请输入'+item.name"
+                                           v-model="item.model"
+                                           :maxlength="item.maxlength"
+                                           @focus="item.error=false"
+                                           @blur="item.model.length<1 ? item.error=true : ''"
+                                           :disabled="disabled"
+                                    />
                                 </div>
                                 <div class="infor-right" v-show="item.error">
                                     <template v-if="item.dom == 'bank-list4'">
@@ -197,22 +197,22 @@
                                 <div class="infor-left">{{item.name}}</div>
                                 <div class="infor-center">
                                     <template v-if="index==1">
-                                        <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
-                                        @focus="item.error=false" 
-                                        @blur="item.model.length<1 ? item.error=true : ''"
-                                        @keyup="item.model = item.model.replace(/\D/g,'')" 
-                                        @afterpaste="item.model = item.model.replace(/\D/g,'')"
-                                        :disabled="disabled"
+                                        <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               @keyup="item.model = item.model.replace(/\D/g,'')"
+                                               @afterpaste="item.model = item.model.replace(/\D/g,'')"
+                                               :disabled="disabled"
                                         >
                                     </template>
                                     <template v-else>
-                                        <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength" 
-                                        @focus="item.error=false" 
-                                        @blur="item.model.length<1 ? item.error=true : ''"
-                                        :disabled="disabled"
+                                        <input type="text" :placeholder="'请输入'+item.name"  v-model="item.model" :maxlength="item.maxlength"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                               :disabled="disabled"
                                         >
                                     </template>
-                                    
+
                                 </div>
                                 <div class="infor-right" v-show="item.error">
                                     <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
@@ -227,7 +227,7 @@
                                     <span class="span-bg" :style="{height:item.progress+'%'}" v-show="item.progress>0 && item.progress<100"></span>
                                     <span class="span-percent" v-if="item.progress>0 && item.progress<100">上传中{{parseInt(item.progress)}}%</span>
                                     <span class="span-percent perent-img" v-if="item.progress>=100"
-                                        @click.stop="viewImg=item.src;photoShow=true">
+                                          @click.stop="viewImg=item.src;photoShow=true">
                                         <img :src="item.src">
                                     </span>
                                     <i>{{item.text}}</i>
@@ -251,6 +251,93 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="authentication-content" v-show="channelType == 1">
+                    <div class="content-infor">
+                        <h6>基本信息</h6>
+                        <ul class="common-lists">
+                            <li flex v-for="(item,index) in individualInfor" :key="index" :class="item.dom">
+                                <template>
+                                    <div class="infor-left">{{item.name}}</div>
+                                    <div class="infor-center">
+                                        <input type="text" :placeholder="item.placeholder" v-model="item.model" :maxlength="item.maxlength"
+                                               :disabled="disabled"
+                                               @focus="item.error=false"
+                                               @blur="item.model.length<1 ? item.error=true : ''"
+                                        >
+                                    </div>
+                                    <div class="infor-right" v-show="item.error">
+                                        <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
+                                        <span v-else>！请输入正确的{{item.name}}</span>
+                                    </div>
+                                </template>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bank-card">
+                        <h6>银行账户信息<span>（请确保正确填写银行账户信息，便于结款准确到账）</span></h6>
+                        <ul class="common-lists">
+                            <li flex :class="iBank.type.dom">
+                                <div class="infor-left">账户类型</div>
+                                <div class="infor-center">
+                                    <div class="select-box">
+                                        <b-form-select class="mb-3"
+                                                       v-model="iBank.type.selected"
+                                                       @change.native="iSelectChange(1)"
+                                                       :options="iBank.type.options"
+                                                       :disabled="disabled">
+                                        </b-form-select>
+                                        <div class="select-view">{{iBank.type.options[iBank.type.selected].text}}</div>
+                                    </div>
+                                </div>
+                                <div class="infor-right" v-show="iBank.type.error">！请选择账户类型</div>
+                            </li>
+                            <li flex :class="iBank.address.dom">
+                                <div class="infor-left">开户地址</div>
+                                <div class="infor-center" flex>
+                                    <areas @select="iSelect" :disabled="disabled" :addressCity="iBank.address.city" :addressProvince="iBank.address.province"></areas>
+                                </div>
+                                <div class="infor-right" v-show="iBank.address.error">！请选择开户地址</div>
+                            </li>
+                            <li flex v-for="(item,index) in iBank.lists" :key="index" :class="item.dom">
+                                <div class="infor-left">{{item.name}}</div>
+                                <div class="infor-center">
+                                    <input type="text"
+                                           v-if="index==2"
+                                           :placeholder="'请输入'+item.name"
+                                           v-model="item.model"
+                                           :maxlength="item.maxlength"
+                                           @focus="item.error=false"
+                                           @blur="item.model.length<1 ? item.error=true : ''"
+                                           @keyup="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                           @afterpaste="item.model = item.model.replace(/\D/g,'').replace(/....(?!$)/g, '$& ')"
+                                           @input="iGainBank"
+                                           :disabled="disabled"
+                                    />
+                                    <input type="text"
+                                           v-else
+                                           :placeholder="'请输入'+item.name"
+                                           v-model="item.model"
+                                           :maxlength="item.maxlength"
+                                           @focus="item.error=false"
+                                           @blur="item.model.length<1 ? item.error=true : ''"
+                                           :disabled="disabled"
+                                    />
+                                </div>
+                                <div class="infor-right" v-show="item.error">
+                                    <template v-if="item.dom == 'iBank-list4'">
+                                        <span>可空，最高输入12位</span>
+                                    </template>
+                                    <template v-else>
+                                        <span v-if="item.model.length<1">！{{item.name}}不能为空</span>
+                                        <span v-else>！请输入正确的{{item.name}}</span>
+                                    </template>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="the-bank">{{iTheBank}}</p>
+                    </div>
+
                 </div>
             </div>
             <div class="submit-btn" flex="main:center" v-if="!disabled">
@@ -295,13 +382,113 @@
         name: 'authentication',
         data(){
             return {
+                //个人信息-基本信息
+                individualInfor:[
+                    {
+                        name:'姓名',
+                        placeholder: '请输入姓名',
+                        dom:'i-dom1',
+                        maxlength:30,
+                        error:false,
+                        model:''
+                    },{
+                        name:'手机号',
+                        placeholder: '请输入手机号',
+                        dom:'i-dom2',
+                        maxlength:11,
+                        error:false,
+                        model:''
+                    },{
+                        name:'邮箱',
+                        placeholder: '请输入邮箱',
+                        dom:'i-dom3',
+                        maxlength:30,
+                        error:false,
+                        model:''
+                    },{
+                        name:'身份证号',
+                        placeholder: '请输入身份证号',
+                        dom:'i-dom4',
+                        maxlength:30,
+                        error:false,
+                        model:''
+                    },{
+                        name:'APP名称',
+                        placeholder: '请输入APP名称',
+                        dom:'i-dom5',
+                        maxlength:8,
+                        error:false,
+                        model:''
+                    }
+                ],
+                iBank:{
+                    type:{
+                        error:false,
+                        dom:'iBank1',
+                        selected:0,
+                        options:[
+                            {
+                                text:'请选择',
+                                value:0
+                            },
+                            {
+                                text:'企业账户',
+                                value:1
+                            },
+                            {
+                                text:'个人账户',
+                                value:2
+                            }
+                        ]
+                    },
+                    address:{
+                        province:null,
+                        city:null,
+                        error:false,
+                        dom:'iBank2'
+                    },
+                    lists:[
+                        {
+                            name:'支行名称',
+                            maxlength:30,
+                            error:false,
+                            dom:'iBank-list1',
+                            model:''
+                        },
+                        {
+                            name:'账户户名',
+                            maxlength:30,
+                            error:false,
+                            dom:'iBank-list2',
+                            model:''
+                        },
+                        {
+                            name:'银行账号',
+                            maxlength:24,
+                            error:false,
+                            dom:'iBank-list3',
+                            model:''
+                        },
+                        {
+                            name:'开户行大额支付行号',
+                            maxlength:12,
+                            error:false,
+                            dom:'iBank-list4',
+                            model:''
+                        }
+                    ]
+                },
+                iTheBank:'',
+
+
+
                 viewImg:null,
                 photoShow:false,
                 data:{
                     parm:''
                 },
                 date:null,
-                channelType:2,
+                channelType:1,
                 theBank:'',
                 companyInfor:[
                     {
@@ -473,7 +660,7 @@
                             loading:false,
                             fileTitle:'请选择上传图片',
                             dom:'img2',
-                            src:null 
+                            src:null
                         },
                         {
                             status:3,
@@ -482,7 +669,7 @@
                             loading:false,
                             fileTitle:'请选择上传图片',
                             dom:'img2',
-                            src:null 
+                            src:null
                         },
                         {
                             status:4,
@@ -491,7 +678,7 @@
                             loading:false,
                             dom:'img2',
                             fileTitle:'请选择上传图片',
-                            src:null 
+                            src:null
                         }
                     ],
                     linkIdCard:[
@@ -583,41 +770,52 @@
             },
             creatData(data){
                 this.channelType = data.channelType;
-                this.companyInfor[0].model = data.compFullName;
-                this.companyInfor[1].model = data.compLegalPerson;
-                this.companyInfor[2].model = data.channelAppName;
-                this.companyInfor[3].model = data.compOrganizationCode;
-                this.companyInfor[4].model = data.compContactWay;
-                this.companyInfor[5].model = data.channelEmail;
-                this.companyInfor[6].model = data.compAddress;
-
-                this.uploadPhotos.legalIdCard.src = data.legalPersonIdImgPath;
-                this.uploadPhotos.legalIdCard.progress = 100;
-                this.uploadPhotos.qualification[0].src = data.businessLicenceImgPath;
-                this.uploadPhotos.qualification[0].progress = 100;
-                this.uploadPhotos.qualification[1].src = data.orgCodeImgPath;
-                this.uploadPhotos.qualification[1].progress = 100;
-                this.uploadPhotos.qualification[2].src = data.taxRegImgPath;
-                this.uploadPhotos.qualification[2].progress = 100;
-
-                this.bank.type.selected = data.accountType || 0;
-                this.bank.address.province = data.depositBankProvince;
-                this.bank.address.city = data.depositBankCity;
-                this.bank.lists[0].model = data.subBranch;
-                this.bank.lists[1].model = data.depositPersonName;
-                let bankCardNum = data.bankCardNum+'';
-                this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
-
-                this.contacts[0].model = data.linkmanName;
-                this.contacts[1].model = data.linkmanPhone;
-                this.contacts[2].model = data.linkmanEmail;
-                this.contacts[3].model = data.linkmanIdNum;
-                this.contacts[4].model = data.linkmanSocialSignal || '';
-
-                this.uploadPhotos.linkIdCard[0].src = data.linkmanIdFrontViewPath;
-                this.uploadPhotos.linkIdCard[0].progress = 100;
-                this.uploadPhotos.linkIdCard[1].src = data.linkmanIdBackViewPath;
-                this.uploadPhotos.linkIdCard[1].progress = 100;
+                if(this.channelType == 2){
+                    this.companyInfor[0].model = data.compFullName;
+                    this.companyInfor[1].model = data.compLegalPerson;
+                    this.companyInfor[2].model = data.channelAppName;
+                    this.companyInfor[3].model = data.compOrganizationCode;
+                    this.companyInfor[4].model = data.compContactWay;
+                    this.companyInfor[5].model = data.channelEmail;
+                    this.companyInfor[6].model = data.compAddress;
+                    this.uploadPhotos.legalIdCard.src = data.legalPersonIdImgPath;
+                    this.uploadPhotos.legalIdCard.progress = 100;
+                    this.uploadPhotos.qualification[0].src = data.businessLicenceImgPath;
+                    this.uploadPhotos.qualification[0].progress = 100;
+                    this.uploadPhotos.qualification[1].src = data.orgCodeImgPath;
+                    this.uploadPhotos.qualification[1].progress = 100;
+                    this.uploadPhotos.qualification[2].src = data.taxRegImgPath;
+                    this.uploadPhotos.qualification[2].progress = 100;
+                    this.bank.type.selected = data.accountType || 0;
+                    this.bank.address.province = data.depositBankProvince;
+                    this.bank.address.city = data.depositBankCity;
+                    this.bank.lists[0].model = data.subBranch;
+                    this.bank.lists[1].model = data.depositPersonName;
+                    let bankCardNum = data.bankCardNum+'';
+                    this.bank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
+                    this.contacts[0].model = data.linkmanName;
+                    this.contacts[1].model = data.linkmanPhone;
+                    this.contacts[2].model = data.linkmanEmail;
+                    this.contacts[3].model = data.linkmanIdNum;
+                    this.contacts[4].model = data.linkmanSocialSignal || '';
+                    this.uploadPhotos.linkIdCard[0].src = data.linkmanIdFrontViewPath;
+                    this.uploadPhotos.linkIdCard[0].progress = 100;
+                    this.uploadPhotos.linkIdCard[1].src = data.linkmanIdBackViewPath;
+                    this.uploadPhotos.linkIdCard[1].progress = 100;
+                }else{
+                    this.individualInfor[0].model = data.individualName;
+                    this.individualInfor[1].model = data.channelPhone;
+                    this.individualInfor[2].model = data.channelEmail;
+                    this.individualInfor[3].model = data.individualIdNum;
+                    this.individualInfor[4].model = data.channelAppName;
+                    this.iBank.type.selected = data.accountType || 0;
+                    this.iBank.address.province = data.depositBankProvince;
+                    this.iBank.address.city = data.depositBankCity;
+                    this.iBank.lists[0].model = data.subBranch;
+                    this.iBank.lists[1].model = data.depositPersonName;
+                    let bankCardNum = data.bankCardNum+'';
+                    this.iBank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
+                }
             },
             gainBank(){
                 let bankCardNum = this.bank.lists[2].model.replace(/\s+/g, "");
@@ -628,6 +826,21 @@
                     $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
                         if(msg.code == 200){
                             this.theBank = msg.data.depositBank;
+                        }else{
+                            Toast(msg.msg);
+                        }
+                    });
+                }
+            },
+            iGainBank(){
+                let bankCardNum = this.iBank.lists[2].model.replace(/\s+/g, "");
+                if(bankCardNum.length<6){
+                    this.iTheBank = '';
+                }
+                if(bankCardNum.length == 6){
+                    $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
+                        if(msg.code == 200){
+                            this.iTheBank = msg.data.depositBank;
                         }else{
                             Toast(msg.msg);
                         }
@@ -695,8 +908,8 @@
                     }
                     height += rate;
                     this.photo(status).progress = height;
-                    setTimeout(things,20) 
-                }  
+                    setTimeout(things,20)
+                }
                 things();
             },
             photo(parm){
@@ -720,140 +933,195 @@
                 if(this.btnDisabled){
                     return
                 }
+                let parmData = '';
                 /*--------------企业信息--------------*/
-                if(this.listCheck(this.companyInfor)){
-                    return
-                }
-                let parmData = {channelType:this.channelType,channelUuid:this.channelUuid};
-                let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
-                parmData.compFullName = fullName.model;
-                parmData.compLegalPerson = calPerson.model;
-                parmData.channelAppName = appName.model;
-                parmData.compOrganizationCode = institutionCode.model;//组织机构代码校验
-                parmData.compContactWay = contactWay.model;
-                parmData.channelEmail = companyMail.model;
-                parmData.compAddress = companyAddress.model;
-                if(!valiRealName(parmData.compLegalPerson)){
-                    calPerson.error = true;
-                    this.setScrollTop(calPerson.dom);
-                    return
-                }
-                if(parmData.compOrganizationCode.length>10){
-                    //统一社会信用代码
-                    if(!checkSocialCreditCode(parmData.compOrganizationCode)){
-                        institutionCode.error = true;
-                        this.setScrollTop(institutionCode.dom)
+                if(this.channelType == 2) {
+                    if(this.listCheck(this.companyInfor)){
                         return
                     }
-                }else{
-                    if(!isValidOrgCode(parmData.compOrganizationCode)){
-                        institutionCode.error = true;
-                        this.setScrollTop(institutionCode.dom)
+                    parmData = {channelType:this.channelType,channelUuid:this.channelUuid};
+                    let [fullName,calPerson,appName,institutionCode,contactWay,companyMail,companyAddress] = this.companyInfor;
+                    parmData.compFullName = fullName.model;
+                    parmData.compLegalPerson = calPerson.model;
+                    parmData.channelAppName = appName.model;
+                    parmData.compOrganizationCode = institutionCode.model;//组织机构代码校验
+                    parmData.compContactWay = contactWay.model;
+                    parmData.channelEmail = companyMail.model;
+                    parmData.compAddress = companyAddress.model;
+                    if(!valiRealName(parmData.compLegalPerson)){
+                        calPerson.error = true;
+                        this.setScrollTop(calPerson.dom);
+                        return
+                    }
+                    if(parmData.compOrganizationCode.length>10){
+                        //统一社会信用代码
+                        if(!checkSocialCreditCode(parmData.compOrganizationCode)){
+                            institutionCode.error = true;
+                            this.setScrollTop(institutionCode.dom)
+                            return
+                        }
+                    }else{
+                        if(!isValidOrgCode(parmData.compOrganizationCode)){
+                            institutionCode.error = true;
+                            this.setScrollTop(institutionCode.dom)
+                            return
+                        }
+                    }
+                    //邮箱验证
+                    if(!checkMail(parmData.channelEmail)){
+                        companyMail.error = true;
+                        this.setScrollTop(companyMail.dom)
+                        return
+                    }
+                    /*--------------上传资质----------------*/
+                    if(this.legalIdCardError){
+                        this.photoError1 = true;
+                        this.setScrollTop(this.uploadPhotos.legalIdCard.dom)
+                        return;
+                    }
+                    parmData.legalPersonIdImgPath = this.uploadPhotos.legalIdCard.src;
+                    //上传资质
+                    if(this.licenseError){
+                        this.photoError2 = true;
+                        this.setScrollTop(this.uploadPhotos.qualification[0].dom)
+                        return
+                    }
+                    parmData.businessLicenceImgPath = this.uploadPhotos.qualification[0].src;
+                    parmData.orgCodeImgPath = this.uploadPhotos.qualification[1].src;
+                    parmData.taxRegImgPath = this.uploadPhotos.qualification[2].src;
+                    /*--------------银行卡信息----------------*/
+                    parmData.accountType = this.bank.type.selected;//账户类型
+                    let [branchName,accountName,bankCard,largePayment] = this.bank.lists
+                    if(parmData.accountType == 0){
+                        this.bank.type.error = true;
+                        this.setScrollTop(this.bank.type.dom)
+                        return
+                    }
+                    parmData.depositBank = this.theBank;//开户银行
+                    if((this.bank.address.province == '\u8BF7\u9009\u62E9') || (this.bank.address.province == null)){
+                        this.bank.address.error = true;
+                        this.setScrollTop(this.bank.address.dom)
+                        return
+                    }
+                    let bankProvince = this.bank.address.province,bankCity = this.bank.address.city;
+                    parmData.depositAddress = (bankProvince + '-' + bankCity);//开户地址
+                    if(this.listCheck(this.bank.lists)){
+                        return
+                    }
+                    parmData.subBranch = branchName.model;
+                    parmData.depositPersonName = accountName.model;
+                    parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
+                    parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
+                    if(!valiRealName(parmData.depositPersonName)){
+                        accountName.error = true;
+                        this.setScrollTop(accountName.dom)
+                        return
+                    }
+                    if(bankCard.model.length<16){
+                        bankCard.error = true;
+                        this.setScrollTop(bankCard.dom)
+                        return
+                    }
+                    /*-----------------------------联系人信息----------------------------------------*/
+                    if(this.listCheck(this.contacts)){
+                        return
+                    }
+                    let [concatName,concatNumber,concatMail,concatIdCard,concatTencent] = this.contacts;
+                    parmData.linkmanName = concatName.model;
+                    parmData.linkmanPhone = concatNumber.model;
+                    parmData.linkmanEmail = concatMail.model;
+                    parmData.linkmanIdNum = concatIdCard.model;
+                    parmData.linkmanSocialSignal = concatTencent.model;
+                    if(!valiRealName(concatName.model)){
+                        concatName.error = true;
+                        this.setScrollTop(concatName.dom);
+                        return
+                    }
+                    if(!checkPhone(concatNumber.model)){
+                        concatNumber.error = true;
+                        this.setScrollTop(concatNumber.dom);
+                        return
+                    }
+                    if(!checkMail(concatMail.model)){
+                        concatMail.error = true;
+                        this.setScrollTop(concatMail.dom);
+                        return
+                    }
+                    if(!valiIdCard(concatIdCard.model)){
+                        concatIdCard.error = true;
+                        this.setScrollTop(concatIdCard.dom);
+                        return
+                    }
+                    if(!checkTencent(concatTencent.model)){
+                        concatTencent.error = true;
+                        this.setScrollTop(concatTencent.dom);
+                        return
+                    }
+                    if(this.linkIdCardError){
+                        this.photoError3 = true;
+                        this.setScrollTop(this.uploadPhotos.linkIdCard[0].dom)
+                        return
+                    }
+                    parmData.linkmanIdFrontViewPath = this.uploadPhotos.linkIdCard[0].src;//正
+                    parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
+                } else {
+                /*--------------个人信息--------------*/
+                    if(this.listCheck(this.individualInfor)) {
+                        return
+                    }
+                    parmData = {channelType:this.channelType,channelUuid:this.channelUuid};
+
+                    /*--------------个人信息-基本信息--------------*/
+                    let [individualName,channelPhone,channelEmail,individualIdNum,channelAppName] = this.individualInfor;
+                    parmData.individualName = individualName.model;
+                    parmData.channelPhone = channelPhone.model;
+                    parmData.channelEmail = channelEmail.model;
+                    parmData.individualIdNum = individualIdNum.model;
+                    parmData.channelAppName = channelAppName.model;
+
+                    //邮箱验证
+                    if(!checkMail(parmData.channelEmail)){
+                        channelEmail.error = true;
+                        this.setScrollTop(channelEmail.dom)
+                        return
+                    }
+                    /*--------------个人信息-银行账户信息--------------*/
+                    parmData.accountType = this.iBank.type.selected;//账户类型
+                    let [branchName,accountName,bankCard,largePayment] = this.iBank.lists
+                    if(parmData.accountType == 0){
+                        this.iBank.type.error = true;
+                        this.setScrollTop(this.iBank.type.dom)
+                        return
+                    }
+                    parmData.depositBank = this.iTheBank;//开户银行
+                    console.log(this.iBank.address);
+                    if((this.iBank.address.province == '\u8BF7\u9009\u62E9') || (this.iBank.address.province == null)){
+                        this.iBank.address.error = true;
+                        this.setScrollTop(this.iBank.address.dom)
+                        return
+                    }
+                    let bankProvince = this.iBank.address.province,bankCity = this.iBank.address.city;
+                    parmData.depositAddress = (bankProvince + '-' + bankCity);//开户地址
+                    if(this.listCheck(this.iBank.lists)){
+                        return
+                    }
+                    parmData.subBranch = branchName.model;
+                    parmData.depositPersonName = accountName.model;
+                    parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
+                    parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
+                    if(!valiRealName(parmData.depositPersonName)){
+                        accountName.error = true;
+                        this.setScrollTop(accountName.dom)
+                        return
+                    }
+                    if(bankCard.model.length<16){
+                        bankCard.error = true;
+                        this.setScrollTop(bankCard.dom)
                         return
                     }
                 }
-                //邮箱验证
-                if(!checkMail(parmData.channelEmail)){
-                    companyMail.error = true;
-                    this.setScrollTop(companyMail.dom)
-                    return 
-                }
+                console.log(parmData);
 
-                /*--------------上传资质----------------*/
-                if(this.legalIdCardError){
-                    this.photoError1 = true;
-                    this.setScrollTop(this.uploadPhotos.legalIdCard.dom)
-                    return;
-                }
-
-                parmData.legalPersonIdImgPath = this.uploadPhotos.legalIdCard.src;
-                //上传资质
-                if(this.licenseError){
-                    this.photoError2 = true;
-                    this.setScrollTop(this.uploadPhotos.qualification[0].dom)
-                    return
-                }
-
-                parmData.businessLicenceImgPath = this.uploadPhotos.qualification[0].src;
-                parmData.orgCodeImgPath = this.uploadPhotos.qualification[1].src;
-                parmData.taxRegImgPath = this.uploadPhotos.qualification[2].src;
-                /*--------------银行卡信息----------------*/
-                parmData.accountType = this.bank.type.selected;//账户类型
-                let [branchName,accountName,bankCard,largePayment] = this.bank.lists
-                if(parmData.accountType == 0){
-                    this.bank.type.error = true;
-                    this.setScrollTop(this.bank.type.dom)
-                    return 
-                }
-                parmData.depositBank = this.theBank;//开户银行
-                if((this.bank.address.province == '\u8BF7\u9009\u62E9') || (this.bank.address.province == null)){
-                    this.bank.address.error = true;
-                    this.setScrollTop(this.bank.address.dom)
-                    return 
-                }
-                let bankProvince = this.bank.address.province,bankCity = this.bank.address.city;
-                parmData.depositAddress = (bankProvince + '-' + bankCity);//开户地址
-
-                if(this.listCheck(this.bank.lists)){
-                    return
-                }
-                parmData.subBranch = branchName.model;
-                parmData.depositPersonName = accountName.model;
-                parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
-                parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
-                if(!valiRealName(parmData.depositPersonName)){
-                    accountName.error = true;
-                    this.setScrollTop(accountName.dom)
-                    return
-                }
-                if(bankCard.model.length<16){
-                    bankCard.error = true;
-                    this.setScrollTop(bankCard.dom)
-                    return
-                }
-                /*-----------------------------联系人信息----------------------------------------*/
-                if(this.listCheck(this.contacts)){
-                    return
-                }
-
-                let [concatName,concatNumber,concatMail,concatIdCard,concatTencent] = this.contacts;
-                parmData.linkmanName = concatName.model;
-                parmData.linkmanPhone = concatNumber.model;
-                parmData.linkmanEmail = concatMail.model;
-                parmData.linkmanIdNum = concatIdCard.model;
-                parmData.linkmanSocialSignal = concatTencent.model;
-                if(!valiRealName(concatName.model)){
-                    concatName.error = true;
-                    this.setScrollTop(concatName.dom);
-                    return
-                }
-                if(!checkPhone(concatNumber.model)){
-                    concatNumber.error = true;
-                    this.setScrollTop(concatNumber.dom);
-                    return
-                }
-                if(!checkMail(concatMail.model)){
-                    concatMail.error = true;
-                    this.setScrollTop(concatMail.dom);
-                    return
-                }
-                if(!valiIdCard(concatIdCard.model)){
-                    concatIdCard.error = true;
-                    this.setScrollTop(concatIdCard.dom);
-                    return
-                }
-                if(!checkTencent(concatTencent.model)){
-                    concatTencent.error = true;
-                    this.setScrollTop(concatTencent.dom);
-                    return
-                }
-                if(this.linkIdCardError){
-                    this.photoError3 = true;
-                    this.setScrollTop(this.uploadPhotos.linkIdCard[0].dom)
-                    return
-                }
-                parmData.linkmanIdFrontViewPath = this.uploadPhotos.linkIdCard[0].src;//正
-                parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
                 this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
                     if(msg.code == 200){
@@ -886,21 +1154,34 @@
                     this.bank.type.error = !this.bank.type.selected
                 })
             },
+            iSelectChange(){
+                setTimeout(()=>{
+                    this.iBank.type.error = !this.iBank.type.selected
+                })
+            },
             bankCardFormat(){
                 this.bankCard = this.bankCard.replace(/\D/g, '').replace(/....(?!$)/g, '$& ');
             },
             select(re){
                 if(re.pro.name == '\u8BF7\u9009\u62E9'){
-                        this.bank.address.error = true;
-                    }else{
-                        this.bank.address.error = false;
-                    }
+                    this.bank.address.error = true;
+                }else{
+                    this.bank.address.error = false;
+                }
                 this.bank.address.province = re.pro.name;
-                this.bank.address.city = re.city.name;  
+                this.bank.address.city = re.city.name;
+            },
+            iSelect(re){
+                if(re.pro.name == '\u8BF7\u9009\u62E9'){
+                    this.iBank.address.error = true;
+                }else{
+                    this.iBank.address.error = false;
+                }
+                this.iBank.address.province = re.pro.name;
+                this.iBank.address.city = re.city.name;
             }
         },
         destroyed(){
-
         }
     }
 </script>
