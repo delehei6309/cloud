@@ -947,7 +947,11 @@
                 }
             },
             errorhandle(error){
-                Toast('上传图片大小不要超过2M！');
+                if(error.indexOf('TOO LARGER MAX') != -1){
+                    Toast('上传图片大小不要超过2M！');
+                }else if(error.indexOf('TYPE ERROR') != -1){
+                    Toast('请上传JPG/PNG格式的图片！');
+                }
             },
             imageuploaded(res){
                 if(res.code == 200){
