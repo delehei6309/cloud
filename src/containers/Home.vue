@@ -41,7 +41,7 @@
         name: 'home',
         data(){
             return {
-                merchantNum:'00000',
+                merchantNum:this.$route.query.merchantNum,
                 tab:0,
                 lists:null,
                 listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>','到期笔数<i>（今）</i>'],
