@@ -32,12 +32,20 @@
             </div>
             <div class="statistics-tabox">
                 <div class="tabox-tbody">
-                    <b-table :items="items" :fields="fields"  bordered>
+                    <b-table :items="items" :fields="fields" bordered @sort-changed="sortingChanged" @sort-compare="sortCompare">
                         <!-- <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
                         <template slot="userUuid" scope="item">
                             <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
                         </template> -->
                     </b-table>
+                </div>
+                <div class="justify-content-center paging" flex-box="0" flex="main:center">
+                    <div flex>
+                        <div>
+                            <b-pagination prev-text="上一页" next-text="下一页" hide-goto-end-buttons size="md" :total-rows="count" :per-page='pageSize' v-model="pageNo" @change="changePage"></b-pagination>
+                        </div>
+                        <div class="total"><span>共{{ Math.ceil(count / pageSize) }}页</span><span>共{{ count }}条</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,8 +64,13 @@
         name: 'data-statistics',
         data(){
             return {
+                sortBy:'registerCount',
+                count:100,
+                pageNo:1,
+                pageSize:10,
                 dateStart:null,
                 dateEnd:null,
+                sortStyle:'',//排序：desc 降序，asc升序
                 tab:0,
                 merchantNum:'00000',//商户号
                 list:[
@@ -78,7 +91,7 @@
                     },
                     {
                         id:3,
-                        "text":'开户量',
+                        "text":'实名认证数',
                         array:[]
                     },
                     {
@@ -146,88 +159,53 @@
                     ]
                 },
                 fields: {
-                    date: { label: '日期' },
-                    registerCout:{label:'注册量'},
-                    activeUser: { label: '活跃用户' },
-                    startUpTime: { label: '启动次数' },
-                    cout1: { label: '投资转化量' },
-                    cout2: { label: '次日留存率' },
-                    cout3: { label: '订单笔数' },
-                    cout4: { label: '产品到期用户数' }
+                    days: { label: '日期' },
+                    registerCount:{label:'注册量',sortable:true,},
+                    //activeUserCout:{label:'活跃用户'},
+                    startCount: { label: '启动次数' },
+                    openAccountCount: { label: '实名认证数' },
+                    conPercent: { label: '投资转化量' },
+                    //cout2: { label: '次日留存率' },
+                    orderCount: { label: '订单笔数' },
+                    sumPaidAmount: { label: '募集金额' },
+                    expUserQuantity: { label: '产品到期用户数' }
                 },
                 excel:{
                     fileName:'表格.xls',
                     title:{
-                        date:  '日期',
-                        registerCout:'注册量',
-                        activeUser:  '活跃用户' ,
-                        startUpTime: '启动次数',
-                        cout1:  '投资转化量',
-                        cout2:  '次日留存率',
-                        cout3:'订单笔数',
-                        cout4: '产品到期用户数'
+                        '日期':  'String',
+                        '注册量':'String',
+                        //'活跃用户':'String',
+                        '启动次数':  'String',
+                        '实名认证数':  'String',
+                        '投资转化量':  'String',
+                        //'次日留存率':  'String',
+                        '订单笔数':'String',
+                        '募集金额':'String',
+                        '产品到期用户数': 'String'
                     }
                 },
-                items:[
-                    {
-                        date:123,
-                        registerCout:'注册量',
-                        activeUser:'东方不败',
-                        startUpTime:'张三丰',
-                        cout1:'罗纳尔迪尼奥',
-                        cout2:'马里奥',
-                        cout3:'爱新觉罗',
-                        cout4:'叶赫那拉'
-                    },
-                    {
-                        date:123,
-                        registerCout:'注册量',
-                        activeUser:'东方不败',
-                        startUpTime:'张三丰',
-                        cout1:'罗纳尔迪尼奥',
-                        cout2:'马里奥',
-                        cout3:'爱新觉罗',
-                        cout4:'叶赫那拉'
-                    },
-                    {
-                        date:123,
-                        registerCout:'注册量',
-                        activeUser:'东方不败',
-                        startUpTime:'张三丰',
-                        cout1:'罗纳尔迪尼奥',
-                        cout2:'马里奥',
-                        cout3:'爱新觉罗',
-                        cout4:'叶赫那拉'
-                    },
-                    {
-                        date:123,
-                        registerCout:'注册量',
-                        activeUser:'东方不败',
-                        startUpTime:'张三丰',
-                        cout1:'罗纳尔迪尼奥',
-                        cout2:'马里奥',
-                        cout3:'爱新觉罗',
-                        cout4:'叶赫那拉'
-                    },
-                    {
-                        date:123,
-                        registerCout:'注册量',
-                        activeUser:'东方不败',
-                        startUpTime:'张三丰',
-                        cout1:'罗纳尔迪尼奥',
-                        cout2:'马里奥',
-                        cout3:'爱新觉罗',
-                        cout4:'叶赫那拉'
-                    }
-                ]
+                items:[],
+                filter:null
             }
         },
         created(){
             this.getRegisterCount();
+            this.getTable();
         },
         components: { datepicker },
         computed: {},
         methods: {
+            sortCompare(){
+                console.log(666)
+            },
+            sortingChanged(ctx){
+                console.log(ctx)
+                return false;
+            },
+            changePage(){
+                console.log(this)
+            },
             change(index){
                 if(index == this.tab){
                     return false;
@@ -257,9 +235,24 @@
                 }
             },
             search(){
-                let {dateStart,dateEnd} = this;
-                let start = new Date(dateStart);
-                console.log(start,dateEnd);
+                this.getTable();
+            },
+            getTable(){
+                $api.get('/count/statisticsReport',{
+                    merchantNum:this.merchantNum,
+                    statisticsReportDateFrom:this.dateStart,
+                    statisticsReportDateTo:this.dateEnd,
+                    pageSize:this.pageSize,
+                    pageNo:this.pageNo,
+                    sortStyle:this.sortStyle,
+                    orderBy:this.orderBy
+
+                }).then(msg=>{
+                    if(msg.code == 200){
+                        console.log('ok');
+                        this.items = msg.data;
+                    }
+                });
             },
             //总注册量
             getRegisterCount(){
@@ -335,11 +328,12 @@
             },
             arrayPush(days,count,index){
                 days = days.substr(5,5);
-                console.log(days)
+                //console.log(days)
                 let x = '';
                 index%4 == 0 ? x = days : '';
                 this.options.xAxis.categories.push(x);
-                this.options.series[0].data.push(count);
+                this.options.series[0].data.push(Number(count));
+                //console.log(count)
             }
         },
         destroyed(){

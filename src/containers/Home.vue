@@ -1,11 +1,11 @@
 <template>
     <div class="home">
-        <div class="information" flex="dir:right">
+        <!-- <div class="information" flex="dir:right">
             <div class="infor-div" @click.stop="">
                 <span class="infor-inner">信息</span>
                 <span class="infor-count">2</span>
             </div>
-        </div>
+        </div> -->
         <div class="content">
             <div class="table">
                 <ul flex="box:mean" >
@@ -41,7 +41,7 @@
         name: 'home',
         data(){
             return {
-                merchantNum:'00000',
+                merchantNum:this.$route.query.merchantNum,
                 tab:0,
                 lists:null,
                 listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>','到期笔数<i>（今）</i>'],
