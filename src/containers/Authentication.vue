@@ -485,7 +485,7 @@
                         name:'身份证号',
                         placeholder: '请输入身份证号',
                         dom:'i-dom4',
-                        maxlength:30,
+                        maxlength:18,
                         error:false,
                         model:''
                     },{
