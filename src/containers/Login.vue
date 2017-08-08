@@ -127,7 +127,7 @@
                 imageCaptcha: '',
                 verifyTimeLeft: 0,
                 verifyText: '获取验证码',
-                loginText:'登录',
+                loginText: '登录',
                 timer: null,
                 numberCaptcha: ''
             }
@@ -164,7 +164,7 @@
                 if (reg.test(this.password)) {
                     return true;
                 }
-                this.errInfo = '密码为（6~20位数字和字母）';
+                this.errInfo = '请输入6~20位数字和字母组合密码';
                 return false;
             },
             getVerify(){
@@ -216,7 +216,7 @@
                             return false;
                         }
                         if (res.code == 1216) {
-                            this.errInfo = '该手机号已注册';
+                            this.errInfo = '该手机号已注册，可直接登录';
                             return false;
                         }
                         this.errInfo = res.msg;
@@ -241,10 +241,10 @@
                     return false;
                 }
                 let {username, password} = this;
-                this.loginText='登录中...'
+                this.loginText = '登录中...'
                 $api.postSys('/a/login', {username, password})
                     .then(res => {
-                        this.loginText='登录'
+                        this.loginText = '登录'
                         if (res.code == 200) {
                             this.$router.push('/home');
                         } else {
@@ -278,7 +278,7 @@
 
                         }
                         if (res.code == 1203) {
-                            this.errInfo = '密码为（6~20位数字和字母）';
+                            this.errInfo = '请输入6~20位数字和字母组合密码';
                             return false;
                         }
                         if (res.code == 1204) {
@@ -291,6 +291,7 @@
         },
         watch: {
             $route () {
+                this.errInfo = '';
                 if (this.$route.query.tab == 'register') {
                     this.tab = 2;
                 } else {
