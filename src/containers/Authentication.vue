@@ -341,7 +341,7 @@
                                                 @errorhandle ="errorhandle" >
                                             </vue-core-image-upload>
                                         </div>
-                                        <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传法人身份证照，大小不超过2M</div>
+                                        <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传手持身份证正面照，大小不超过2M</div>
                                     </div>
                                 </div>
                             </div>
