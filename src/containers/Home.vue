@@ -1,11 +1,11 @@
 <template>
     <div class="home">
-        <div class="information" flex="dir:right">
+        <!-- <div class="information" flex="dir:right">
             <div class="infor-div" @click.stop="">
                 <span class="infor-inner">信息</span>
                 <span class="infor-count">2</span>
             </div>
-        </div>
+        </div> -->
         <div class="content">
             <div class="table">
                 <ul flex="box:mean" >
