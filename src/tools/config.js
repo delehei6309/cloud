@@ -4,8 +4,8 @@
 let protocol = window.location.protocol;
 //export const devUrl = 'http://10.10.10.168:8079';//本地
 export const devUrl = 'http://10.10.10.98:8079';
-//export const devUrl = 'http://47.93.34.197:8079';
-export const testUrl = `${protocol}//47.93.34.197:8079`;
+//export const devUrl = 'http://47.93.8.25:8079';
+export const testUrl = `${protocol}//47.93.8.25:8079`;
 export const productionUrl = `${protocol}//zj-weixin.zj-hf.cn`;
 export const telNumber = '400-640-3606';
 export const nodeTestApi = `${protocol}//market-test.zj-hf.cn`;
