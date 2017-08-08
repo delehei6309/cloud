@@ -12,7 +12,13 @@
                     <li v-for="(item,index) in lists" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
                         <div class="table-text" v-html="listText[index]"></div>
                         <div class="table-data">{{item.today}}</div>
-                        <div v-if="item.name !='countRegisterUser'" class="table-rate red" :class="{green:item.today<item.yesterday}">{{(item.today-item.yesterday)}}</div>
+                        <div 
+                            v-if="item.name !='countRegisterUser'"
+                            class="table-rate red" 
+                            :class="{green:item.today<item.yesterday}">
+                                <template v-if="item.today>=item.yesterday">+{{item.today-item.yesterday}}</template>
+                                <template v-else>{{item.today-item.yesterday}}</template>
+                            </div>
                     </li>
                 </ul>
             </div>
@@ -49,11 +55,11 @@
                         x: -20
                     },
                     xAxis: {
-                        categories: ['00', '01', '02', '03', '04', '05','06', '07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
+                        categories: ['00', '', '', '03', '', '','06', '','','09','','','12','','','15','','','18','','','21','','']
                     },
                     yAxis: {
                         title: {
-                            text: '注册数量（个）'
+                            text: ''
                         },
                         plotLines: [{
                             value: 0,
@@ -62,7 +68,7 @@
                         }]
                     },
                     tooltip: {
-                        valueSuffix: '个',
+                        valueSuffix: '',
                         crosshairs: true,
                         shared: true
                     },
@@ -113,11 +119,11 @@
             setOption(tab){
                 let todayList = this.lists[tab].todayList;
                 let yesterdayList = this.lists[tab].yesterdayList;
-                this.supplement(yesterdayList);
-                this.options.series[0].data = this.supplement(todayList);
-                this.options.series[0].data = this.supplement(yesterdayList);
+                //this.supplement(yesterdayList);
+                this.options.series[0].data = this.supplement('today',todayList);
+                this.options.series[1].data = this.supplement('yesterday',yesterdayList);
             },
-            supplement(arr){
+            supplement(day,arr){
                 let setNormal = (str) =>{
                     let _str = (''+str).substr(0,1);
                     _str == '0' ? str = (''+str).substr(1,1) : '';
@@ -125,7 +131,17 @@
                 }
                 let thatArr = [];
                 for(let i=0;i<24;i++){
-                    thatArr.push(0);
+                    if(day == 'yesterday'){
+                        thatArr.push(0);
+                    }else{
+                        let hours = new Date().getHours();
+                        if(i<=hours){
+                            thatArr.push(0);
+                        }else{
+                            thatArr.push('');
+                        }
+                    }
+                    
                 }
                 arr.forEach(({hours,totalCount}) =>{
                     thatArr[setNormal(hours)] = totalCount;
