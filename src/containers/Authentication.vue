@@ -341,7 +341,7 @@
                                                 @errorhandle ="errorhandle" >
                                             </vue-core-image-upload>
                                         </div>
-                                        <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传法人身份证照，大小不超过2M</div>
+                                        <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传手持身份证正面照，大小不超过2M</div>
                                     </div>
                                 </div>
                             </div>
@@ -947,7 +947,11 @@
                 }
             },
             errorhandle(error){
-                Toast('上传图片大小不要超过2M！');
+                if(error.indexOf('TOO LARGER MAX') != -1){
+                    Toast('上传图片大小不要超过2M！');
+                }else if(error.indexOf('TYPE ERROR') != -1){
+                    Toast('请上传JPG/PNG格式的图片！');
+                }
             },
             imageuploaded(res){
                 if(res.code == 200){
@@ -1188,6 +1192,12 @@
                         this.setScrollTop(individualIdNum.dom);
                         return
                     }
+                    //图片验证
+                    if(this.idCardError){
+                        this.iPhotoError1 = true;
+                        this.setScrollTop(this.iUploadPhotos.idCard.dom)
+                        return;
+                    }
                     /*--------------个人信息-银行账户信息--------------*/
                     parmData.accountType = this.iBank.type.selected;//账户类型
                     let [branchName,accountName,bankCard,largePayment] = this.iBank.lists
@@ -1221,12 +1231,6 @@
                         this.setScrollTop(bankCard.dom)
                         return
                     }
-
-                    if(this.idCardError){
-                        this.iPhotoError1 = true;
-                        this.setScrollTop(this.iUploadPhotos.idCard.dom)
-                        return;
-                    }
                     parmData.individualIdFrontViewPath = this.iUploadPhotos.idCard.src;
                 }
                 this.btnDisabled = true;//不可重复提交
@@ -1248,7 +1252,7 @@
             listCheck(arr){
                 for(let obj of arr){
                     let model = (''+(obj.model)).replace(/\s+/g, "");
-                    if(obj.dom == 'bank-list4'){
+                    if(obj.dom == 'bank-list4' || obj.dom == 'iBank-list4'){
                         return false;
                     }
                     if(model.length < 1){
