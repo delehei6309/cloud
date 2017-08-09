@@ -269,7 +269,7 @@
                 $api.postSys('/a/sys/user/register/create', {cellPhoneNumber, numCaptcha, password})
                     .then(res => {
                         if (res.code == 200) {
-                            this.$router.push('/menus/authentication');
+                            this.login()
                             return false;
                         }
                         if (res.code == 1201) {
