@@ -4,7 +4,8 @@
             <div class="statistics-tab-btn" flex="box:mean">
                 <button v-for="(item,index) in list" :key="index"
                     :class="{'active':tab == index}"
-                    @click.stop="change(index)">{{item.text}}</button>
+                    @click.stop="change(index)"
+                    v-if="index!=1">{{item.text}}</button>
             </div>
         </div>
         <div class="statistics-charts">
@@ -15,10 +16,7 @@
         <div class="statistics-table">
             <div class="table-head clear-both">
                 <div class="tab-out">
-                    <download-excel class="btn btn-default"
-                        :fields="excel.title"
-                        :data="items"
-                        :name="excel.fileName">导出Excel</download-excel>
+                    <button @click.stop="outExcel">导出Excel</button>
                 </div>
                 <div class="tab-search" flex>
                     <div class="date-text">创建时间：</div>
@@ -32,12 +30,28 @@
             </div>
             <div class="statistics-tabox">
                 <div class="tabox-tbody">
-                    <b-table :items="items" :fields="fields" bordered @sort-changed="sortingChanged" @sort-compare="sortCompare">
-                        <!-- <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
-                        <template slot="userUuid" scope="item">
-                            <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
-                        </template> -->
-                    </b-table>
+                    <table class="table b-table table-bordered">
+                        <thead>
+                            <tr>
+                                <th v-for="(item,index) in tabHead" :key="index"
+                                    :class="{'sorting':item.sortable,'sorting_desc':item.sortable=='desc','sorting_asc':item.sortable=='asc'}"
+                                    @click.stop="sortChange(item.sortable,index,item.value)"
+                                    >{{item.text}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,index) in items">
+                                <td>{{item.days}}</td>
+                                <td>{{item.registerCount}}</td>
+                                <td>{{item.startCount}}</td>
+                                <td>{{item.openAccountCount}}</td>
+                                <td>{{item.conPercent}}</td>
+                                <td>{{item.orderCount}}</td>
+                                <td>{{item.sumPaidAmount}}</td>
+                                <td>{{item.expUserQuantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="justify-content-center paging" flex-box="0" flex="main:center">
                     <div flex>
@@ -64,13 +78,13 @@
         name: 'data-statistics',
         data(){
             return {
-                sortBy:'registerCount',
-                count:100,
+                count:0,
                 pageNo:1,
                 pageSize:10,
-                dateStart:null,
-                dateEnd:null,
-                sortStyle:'',//排序：desc 降序，asc升序
+                dateStart:'',
+                dateEnd:'',
+                sortStyle:'asc',//排序：desc 降序，asc升序
+                orderBy:'conPercent',
                 tab:0,
                 merchantNum:'00000',//商户号
                 list:[
@@ -158,33 +172,46 @@
                         }
                     ]
                 },
-                fields: {
-                    days: { label: '日期' },
-                    registerCount:{label:'注册量',sortable:true,},
-                    //activeUserCout:{label:'活跃用户'},
-                    startCount: { label: '启动次数' },
-                    openAccountCount: { label: '实名认证数' },
-                    conPercent: { label: '投资转化量' },
-                    //cout2: { label: '次日留存率' },
-                    orderCount: { label: '订单笔数' },
-                    sumPaidAmount: { label: '募集金额' },
-                    expUserQuantity: { label: '产品到期用户数' }
-                },
-                excel:{
-                    fileName:'表格.xls',
-                    title:{
-                        '日期':  'String',
-                        '注册量':'String',
-                        //'活跃用户':'String',
-                        '启动次数':  'String',
-                        '实名认证数':  'String',
-                        '投资转化量':  'String',
-                        //'次日留存率':  'String',
-                        '订单笔数':'String',
-                        '募集金额':'String',
-                        '产品到期用户数': 'String'
+                tabHead:[
+                    {
+                        value:'days',
+                        text:'日期'
+                    },
+                    {
+                        value:'days',
+                        text:'注册量'
+                    },
+                    {
+                        value:'startCount',
+                        text:'启动次数',
+                        sortable:true
+                    },
+                    {
+                        value:'openAccountCount',
+                        text:'实名认证数',
+                        sortable:true
+                    },
+                    {
+                        value:'conPercent',
+                        text:'投资转化量',
+                        sortable:true
+                    },
+                    {
+                        value:'orderCount',
+                        text:'订单笔数',
+                        sortable:true
+                    },
+                    {
+                        value:'sumPaidAmount',
+                        text:'募集金额',
+                        sortable:true
+                    },
+                    {
+                        value:'expUserQuantity',
+                        text:'产品到期用户数',
+                        sortable:true
                     }
-                },
+                ],
                 items:[],
                 filter:null
             }
@@ -196,15 +223,20 @@
         components: { datepicker },
         computed: {},
         methods: {
-            sortCompare(){
+            //导出excell
+            outExcel(){
                 console.log(666)
             },
-            sortingChanged(ctx){
-                console.log(ctx)
-                return false;
+            sortChange(sort,index,orderBy){
+                sort == 'desc' ? this.tabHead[index].sortable = 'asc' : this.tabHead[index].sortable = 'desc';
+                this.sortStyle = this.tabHead[index].sortable;
+                this.orderBy = orderBy;
+                this.getTable();
             },
             changePage(){
-                console.log(this)
+                this.$nextTick(()=>{
+                    this.getTable();
+                });
             },
             change(index){
                 if(index == this.tab){
@@ -240,8 +272,8 @@
             getTable(){
                 $api.get('/count/statisticsReport',{
                     merchantNum:this.merchantNum,
-                    statisticsReportDateFrom:this.dateStart,
-                    statisticsReportDateTo:this.dateEnd,
+                    statisticsReportDateFrom:this.dateStart || null,
+                    statisticsReportDateTo:this.dateEnd || null,
                     pageSize:this.pageSize,
                     pageNo:this.pageNo,
                     sortStyle:this.sortStyle,
@@ -249,8 +281,8 @@
 
                 }).then(msg=>{
                     if(msg.code == 200){
-                        console.log('ok');
-                        this.items = msg.data;
+                        this.items = msg.data.returnList;
+                        this.count = msg.data.count;
                     }
                 });
             },
@@ -266,7 +298,7 @@
                     }
                 });
             },
-            //开户量
+            //实名认证数
             getTotalCount(){
                 $api.get('/count/countOpenAccountUserByMonth',{merchantNum:this.merchantNum}).then(msg=>{
                     if(msg.code == 200){
@@ -274,7 +306,7 @@
                         this.list[3].array.forEach(({days,totalCount},index) =>{
                             this.arrayPush(days,totalCount,index);
                         });
-                        this.options.series[0].name = '开户量';
+                        this.options.series[0].name = '实名认证数';
                     }
                 });
             },
@@ -329,8 +361,8 @@
             arrayPush(days,count,index){
                 days = days.substr(5,5);
                 //console.log(days)
-                let x = '';
-                index%4 == 0 ? x = days : '';
+                let x = days;
+                //index%4 == 0 ? x = days : '';
                 this.options.xAxis.categories.push(x);
                 this.options.series[0].data.push(Number(count));
                 //console.log(count)
