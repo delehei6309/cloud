@@ -73,8 +73,12 @@
                         shared: true,
                         useHTML: true,
                         formatter: function () {
-                            var x = Number( this.x)+'-'+(Number(this.x)+1),
-                                y1 = this.y,
+                            var x0 = Number( this.x);
+                            var x = Number( this.x)+'-'+(Number(this.x)+1);
+                            if(x0 == 23){
+                                x = Number( this.x)+'-00';
+                            }
+                            var y1 = this.y,
                                 y2 = null;
                             if(this.points.length>1){
                                 y2 = this.points[1].y;
