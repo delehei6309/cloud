@@ -55,7 +55,7 @@
                         x: -20
                     },
                     xAxis: {
-                        categories: ['00', '', '', '03', '', '','06', '','','09','','','12','','','15','','','18','','','21','','']
+                        categories: ['00', '01', '02', '03', '04', '05','06', '07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
                     },
                     yAxis: {
                         title: {
@@ -70,7 +70,27 @@
                     tooltip: {
                         valueSuffix: '',
                         crosshairs: true,
-                        shared: true
+                        shared: true,
+                        useHTML: true,
+                        formatter: function () {
+                            var x0 = Number( this.x);
+                            var x = Number( this.x)+'-'+(Number(this.x)+1);
+                            if(x0 == 23){
+                                x = Number( this.x)+'-00';
+                            }
+                            var y1 = this.y,
+                                y2 = null;
+                            if(this.points.length>1){
+                                y2 = this.points[1].y;
+                                var table = '时间：<b>' + x +'</b></br>'
+                                            +this.points[0].series.name+'：<b>' + y1 + '</b></br>'
+                                            +this.points[1].series.name+'：<b>' + y2 + '</b>';
+                            }else{
+                                table = '<b>时间：' + x +'</b></br>'
+                                    +this.points[0].series.name+'：<b>' + y1 + '</b></br>';
+                            }
+                            return table;
+                        }
                     },
                     credits: {
                         enabled: false//去掉地址
@@ -83,13 +103,15 @@
                             name: '今日',
                             data: [],
                             color:'#4990E2',
-                            lineWidth:1
+                            lineWidth:1,
+                            mySign:'today'
                         },
                         {
                             name: '昨日',
                             data: [],
-                            color:'#D0011B',
-                            lineWidth:1
+                            color:'#D08166',
+                            lineWidth:1,
+                            mySign:'yesterday'
                         }
                     ]
                 }
