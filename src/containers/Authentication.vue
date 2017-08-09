@@ -177,8 +177,8 @@
                             </li>
                             <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
                                 <template v-if="item.dom == 'bank-list4'">
-                                    <div class="infor-left no-required" v-if="!disabled && !largePaymentNum">{{item.name}}</div>
-                                    <div class="infor-center" v-if="!disabled && !largePaymentNum">
+                                    <div class="infor-left no-required" v-if="!disabled || (largePaymentNum && disabled)">{{item.name}}</div>
+                                    <div class="infor-center" v-if="!disabled || (largePaymentNum && disabled)">
                                         <input type="text"
                                                :placeholder="'请输入'+item.name"
                                                v-model="item.model"
@@ -188,7 +188,7 @@
                                                :disabled="disabled"
                                         />
                                     </div>
-                                    <div class="infor-right" v-if="!disabled && !largePaymentNum">
+                                    <div class="infor-right" v-if="!disabled || (largePaymentNum && disabled)">
                                         <span v-show="item.error">！可空，最高输入12位</span>
                                     </div>
                                 </template>
@@ -379,8 +379,8 @@
                             </li>
                             <li flex v-for="(item,index) in iBank.lists" :key="index" :class="item.dom">
                                 <template v-if="item.dom == 'iBank-list4'">
-                                    <div class="infor-left no-required" v-if="!disabled && !largePaymentNum">{{item.name}}</div>
-                                    <div class="infor-center" v-if="!disabled && !largePaymentNum">
+                                    <div class="infor-left no-required" v-if="!disabled || (largePaymentNum && disabled)">{{item.name}}</div>
+                                    <div class="infor-center" v-if="!disabled || (largePaymentNum && disabled)">
                                         <input type="text"
                                                :placeholder="'请输入'+item.name"
                                                v-model="item.model"
@@ -390,7 +390,7 @@
                                                :disabled="disabled"
                                         />
                                     </div>
-                                    <div class="infor-right" v-if="!disabled && !largePaymentNum">
+                                    <div class="infor-right" v-if="!disabled || (largePaymentNum && disabled)">
                                         <span v-show="item.error">！可空，最高输入12位</span>
                                     </div>
                                 </template>
@@ -910,7 +910,7 @@
                     this.iBank.lists[2].model = bankCardNum.replace(/....(?!$)/g, '$& ');
 
                     this.largePaymentNum = data.largePaymentNum;//开户行大额支付行号
-                    this.bank.lists[3].model = data.largePaymentNum;
+                    this.iBank.lists[3].model = data.largePaymentNum;
 
                     this.iUploadPhotos.idCard.src = data.individualIdFrontViewPath;
                     this.iUploadPhotos.idCard.progress = 100;
@@ -1110,8 +1110,8 @@
                     }
                     parmData.subBranch = branchName.model;
                     parmData.depositPersonName = accountName.model;
-                    parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
-                    parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
+                    parmData.bankCardNum = (''+(bankCard.model)).replace(/\s+/g, "");
+                    parmData.largePaymentNum = (''+(largePayment.model)).replace(/\s+/g, "");
                     /*if(!valiRealName(parmData.depositPersonName)){
                         accountName.error = true;
                         this.setScrollTop(accountName.dom)
@@ -1219,8 +1219,8 @@
                     }
                     parmData.subBranch = branchName.model;
                     parmData.depositPersonName = accountName.model;
-                    parmData.bankCardNum = bankCard.model.replace(/\s+/g, "");
-                    parmData.largePaymentNum = largePayment.model.replace(/\s+/g, "");
+                    parmData.bankCardNum = (''+(bankCard.model)).replace(/\s+/g, "");
+                    parmData.largePaymentNum = (''+(largePayment.model)).replace(/\s+/g, "");
                     /*if(!valiRealName(parmData.depositPersonName)){
                         accountName.error = true;
                         this.setScrollTop(accountName.dom)
