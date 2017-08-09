@@ -14,17 +14,18 @@
 
                     <div class="form-item" flex v-show="imageCaptcha">
                         <label class="label" flex-box="0">图形验证码</label>
-                        <input class="form-input short-input" flex-box="0" placeholder="请输入图形验证码">
-                        <button class="btn-img">{{imageCaptcha}}</button>
+                        <input class="form-input short-input" v-model="inputCode"
+                               flex-box="0" placeholder="请输入图形验证码">
+                        <button class="btn-img" @click.stop="getImageCode">{{imageCaptcha}}</button>
                         <span class="err-info" flex-box="1" v-show="errImage">{{errImage}}</span>
                     </div>
 
                     <div class="form-item" flex>
-                        <label class="label" flex-box="0">图形验证码</label>
+                        <label class="label" flex-box="0">短信验证码</label>
                         <input class="form-input short-input" v-model.trim="numberCaptcha"
-                               flex-box="0" placeholder="请输入图形验证码">
+                               flex-box="0" placeholder="请输入短信验证码">
                         <button v-if="verifyTimeLeft<1" class="btn-primary btn-msg" @click.stop="getVerify">{{verifyText}}</button>
-                        <button v-else="verifyTimeLeft<1" class="btn-default btn-text">{{verifyTimeLeft}}</button>
+                        <button v-else="verifyTimeLeft<1" class="btn-default btn-text" disabled>{{verifyTimeLeft}}</button>
                         <span class="err-info" flex-box="1" v-show="errCode">{{errCode}}</span>
                     </div>
 
@@ -36,7 +37,7 @@
 
                     <div class="form-item" flex>
                         <label class="label" flex-box="0"></label>
-                        <button class="btn-primary btn-submit">找回密码</button>
+                        <button class="btn-primary btn-submit" @click.stop="resetPassword">找回密码</button>
 
                     </div>
                 </div>
@@ -72,10 +73,12 @@
                 errImage: '',
                 errCode: '',
                 errNumber: '',
-                errPass: ''
+                errPass: '',
+                uuid: ''
             }
         },
         created(){
+            this.getImageCode();
         },
         computed: {},
         methods: {
@@ -105,22 +108,32 @@
                 this.setInfo('errPass', '密码为（6~20位数字和字母');
                 return false;
             },
+            getImageCode(){
+                $api.postSys('/a/sys/user/captcha/resetpwd', {
+                    getType: 'img',
+                    uuid: this.uuid
+                }).then(res => {
+                    if (res.code == 200) {
+                        this.imageCaptcha = res.data.imageCaptcha;
+                        this.uuid = res.data.uuid;
+                    }
+                });
+            },
             getVerify(){
                 if (!this.checkUserName()) {
                     return false;
                 }
+                if (!this.inputCode) {
+                    this.setInfo('errImage', '请输入图片验证码');
+                    return false
+                }
 
                 let data = {
                     cellPhoneNumber: this.username,
-                    getType: 'num'
+                    getType: 'num',
+                    uuid: this.uuid
                 }
-                if (this.imageCaptcha && !this.inputCode) {
-                    this.setInfo('errImage', '请输入图片验证码');
-                    return false;
-                }
-                else {
-                    data.imgCaptcha = this.inputCode;
-                }
+                data.imgCaptcha = this.inputCode;
                 this.verifyTimeLeft = 59;
                 this.timeCount();
                 this.verifyText = '重新发送';
@@ -128,16 +141,15 @@
                     .then(res => {
                         console.log(res);
                         if (res.code == 200) {
+                            this.setInfo();
                             return false;
                         }
                         this.clearTimeCount();
                         if (res.code == 1210) {
-
                             this.setInfo('errCode', '获取短信验证码失败');
                             return false;
                         }
                         if (res.code == 1211) {
-
                             this.setInfo('errImage', '请输入图片验证码');
                             this.imageCaptcha = res.data.imageCaptcha;
                             return false;
@@ -183,7 +195,57 @@
                 this.errCode = '';
                 this.errNumber = '';
                 this.errPass = '';
-                this[key] = value;
+                if (key) {
+                    this[key] = value;
+                }
+
+            },
+            resetPassword(){
+                if (!this.checkUserName()) {
+                    return false;
+                }
+                if (!this.inputCode) {
+                    this.setInfo('errImage', '请输入图片验证码');
+                    return false
+                }
+                if (!this.numberCaptcha) {
+                    this.setInfo('errCode', '请输入短信验证码');
+                    return false;
+                }
+                if (!this.checkPassword()) {
+                    return false;
+                }
+                let data = {
+                    cellPhoneNumber: this.username,
+                    numCaptcha: this.numberCaptcha,
+                    uuid: this.uuid,
+                    password: this.password
+                };
+                $api.postSys('/a/sys/user/pwd/reset', data)
+                    .then(res => {
+                        if (res.code == 200) {
+                            this.login();
+                            return false;
+                        }
+                        if (res.code == 1234) {
+                            this.setInfo('errCode', '该手机号未注册，请先去注册');
+                            return false;
+                        }
+                        if (res.code == 1235) {
+                            this.setInfo('errCode', '验证码错误或失效');
+                            return false;
+                        }
+                    });
+            },
+            login(){
+
+                let {username, password} = this;
+                $api.postSys('/a/login', {username, password})
+                    .then(res => {
+                        if (res.code == 200) {
+                            this.$router.push('/home');
+                        }
+                    })
             }
         },
         destroyed(){
