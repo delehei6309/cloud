@@ -99,7 +99,7 @@
                         show: true,
                         child: [
                             {
-                                path: '/menus/data-statistics',
+                                path: '/menus/data-statistics?merchantNum=00000',
                                 text: '整体概况'
                             }
                         ],

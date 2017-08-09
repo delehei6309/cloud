@@ -76,17 +76,17 @@
                             var x0 = Number( this.x);
                             var x = Number( this.x)+'-'+(Number(this.x)+1);
                             if(x0 == 23){
-                                x = Number( this.x)+'-00';
+                                x = Number( this.x)+'-0';
                             }
                             var y1 = this.y,
                                 y2 = null;
                             if(this.points.length>1){
                                 y2 = this.points[1].y;
-                                var table = '时间：<b>' + x +'</b></br>'
+                                var table = '时间：<b>' + x +'点</b></br>'
                                             +this.points[0].series.name+'：<b>' + y1 + '</b></br>'
                                             +this.points[1].series.name+'：<b>' + y2 + '</b>';
                             }else{
-                                table = '<b>时间：' + x +'</b></br>'
+                                table = '时间：<b>' + x +'点</b></br>'
                                     +this.points[0].series.name+'：<b>' + y1 + '</b></br>';
                             }
                             return table;
