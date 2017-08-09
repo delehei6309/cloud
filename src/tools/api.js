@@ -51,8 +51,15 @@ let get = (path, data = {}) => {
         if (response.status == 200) {
             return response.data;
         }
+        return {};
+    }).then(data => {
+        if (data.code == 1220) {
+            logout();
+        }
+        return data;
     }).catch(err => {
         console.log('err--->')
+        console.log(err)
     })
 
 };
@@ -81,11 +88,11 @@ let post = (path, data = {}) => {
         },
         params: {
             t: new Date().getTime(),
-            callSystemID:'1004'
+            callSystemID: '1004'
 
         },
         withCredentials: true,
-        dataType:'json',
+        dataType: 'json',
         data: $query(data)
     }).then(response => {
         if (response.status == 200) {
@@ -94,7 +101,7 @@ let post = (path, data = {}) => {
             return {};
         }
     }).then(data => {
-        if (data.code == 401) {
+        if (data.code == 1220) {
             logout();
         }
         return data;
