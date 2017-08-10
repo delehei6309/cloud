@@ -249,6 +249,9 @@
                     case 0:
                         this.getRegisterCount();
                     break;
+                    case 2:
+                        this.getStartCount();
+                    break;
                     case 3:
                         this.getTotalCount();
                     break;
@@ -293,7 +296,7 @@
             },
             //总注册量
             getRegisterCount(){
-                $api.get('/count/countRegisterUserByMonth',{merchantNum:this.merchantNum}).then(msg=>{
+                $api.get('/count/countRegisterUserByMonth').then(msg=>{
                     if(msg.code == 200){
                         this.list[0].array = msg.data;
                         this.list[0].array.forEach(({days,registerCount},index) =>{
@@ -303,9 +306,21 @@
                     }
                 });
             },
+            //启动次数
+            getStartCount(){
+                $api.get('/count/startCountByMonth').then(msg=>{
+                    if(msg.code == 200){
+                        this.list[2].array = msg.data;
+                        this.list[2].array.forEach(({days,startCount},index) =>{
+                            this.arrayPush(days,startCount,index);
+                        });
+                        this.options.series[0].name = '启动次数';
+                    }
+                });
+            },
             //实名认证数
             getTotalCount(){
-                $api.get('/count/countOpenAccountUserByMonth',{merchantNum:this.merchantNum}).then(msg=>{
+                $api.get('/count/countOpenAccountUserByMonth').then(msg=>{
                     if(msg.code == 200){
                         this.list[3].array = msg.data;
                         this.list[3].array.forEach(({days,totalCount},index) =>{
@@ -317,7 +332,7 @@
             },
             //投资转化量
             getConPercent(){
-                $api.get('/count/conPercentByMonth',{merchantNum:this.merchantNum}).then(msg=>{
+                $api.get('/count/conPercentByMonth').then(msg=>{
                     if(msg.code == 200){
                         this.list[4].array = msg.data;
                         this.list[4].array.forEach(({days,conPercent},index) =>{
@@ -329,7 +344,7 @@
             },
             //订单笔数
             getOrderCount(){
-                $api.get('/count/countOrderNumberByMonths',{merchantNum:this.merchantNum}).then(msg=>{
+                $api.get('/count/countOrderNumberByMonths').then(msg=>{
                     if(msg.code == 200){
                         this.list[5].array = msg.data;
                         this.list[5].array.forEach(({days,orderCount},index) =>{
@@ -341,7 +356,7 @@
             },
             //募集金额
             getSumPaidAmount(){
-                $api.get('/count/countPaidAmountByMonths',{merchantNum:this.merchantNum}).then(msg=>{
+                $api.get('/count/countPaidAmountByMonths').then(msg=>{
                     if(msg.code == 200){
                         this.list[6].array = msg.data;
                         this.list[6].array.forEach(({days,sumPaidAmount},index) =>{
