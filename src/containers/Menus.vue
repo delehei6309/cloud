@@ -45,7 +45,7 @@
         data(){
             return {
                 animateHeight: false,
-                userInfo:{},
+                userInfo: {},
                 menus: [
                     {
                         path: '/menus/authentication?channelUuid=',
@@ -136,6 +136,14 @@
                 $api.getSys('/a/sys/menu/userMenus')
                     .then(res => {
                         console.log(res);
+                        if (res.code == 200) {
+                            if (res.data && res.data.menuList) {
+                                return;
+                            }
+                            else {
+                                this.menus = this.menus.slice(0, 1);
+                            }
+                        }
                     })
             },
             getInfo(){
