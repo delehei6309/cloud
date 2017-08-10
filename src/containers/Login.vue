@@ -19,7 +19,7 @@
                         <label class="label" for="phone" flex-box="0" flex="cross:center">
                             <img src="../images/login/phone.png">
                         </label>
-                        <input flex-box="1" v-model.trim="username"
+                        <input flex-box="1" v-model.trim="username" maxlength="11"
                                id="phone" class="form-input" placeholder="手机号"/>
                     </div>
 
@@ -29,7 +29,7 @@
                         </label>
                         <input flex-box="1" v-model.trim="password"
                                type="hidden" name="password" class="form-input" placeholder="密码"/>
-                        <input flex-box="1" v-model.trim="password"
+                        <input flex-box="1" v-model.trim="password" maxlength="20"
                                type="password" name="password" id="password" class="form-input"
                                placeholder="密码"/>
                     </div>
@@ -49,7 +49,7 @@
                         <label class="label" for="re-phone" flex-box="0" flex="cross:center">
                             <img src="../images/login/phone.png">
                         </label>
-                        <input flex-box="1" id="re-phone" v-model.trim="username"
+                        <input flex-box="1" id="re-phone" v-model.trim="username" maxlength="11"
                                class="form-input" placeholder="手机号"/>
                     </div>
                     <div flex v-show="imageCaptcha">
@@ -57,7 +57,7 @@
                             <label class="label" for="img-code" flex-box="0" flex="cross:center">
                                 <img src="../images/login/img-code.png">
                             </label>
-                            <input flex-box="1" v-model.trim="inputCode"
+                            <input flex-box="1" v-model.trim="inputCode" maxlength="4"
                                    id="img-code" class="form-input" placeholder="图形验证码"/>
                         </div>
                         <div class="code-item" flex-box="1">
@@ -69,7 +69,7 @@
                             <label class="label" for="msg-code" flex-box="0" flex="cross:center">
                                 <img src="../images/login/msg-code.png">
                             </label>
-                            <input flex-box="1" id="msg-code" v-model.trim="numberCaptcha"
+                            <input flex-box="1" id="msg-code" v-model.trim="numberCaptcha" maxlength="20"
                                    class="form-input" placeholder="验证码"/>
                         </div>
                         <div class="code-item" flex-box="1">
@@ -87,7 +87,7 @@
                         <input flex-box="1" type="hidden" v-model.trim="password"
                                name="re-password" class="form-input" placeholder="密码"/>
                         <input flex-box="1" type="password" v-model.trim="password"
-                               name="re-password"
+                               name="re-password" maxlength="20"
                                id="re-password" class="form-input" placeholder="请设置6~20位数字与字母组合密码"/>
                     </div>
                     <div class="text-hint" flex="main:justify">
@@ -190,6 +190,7 @@
                     .then(res => {
                         console.log(res);
                         if (res.code == 200) {
+                            this.errInfo = '';
                             return false;
                         }
                         this.clearTimeCount();

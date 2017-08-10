@@ -25,19 +25,20 @@
                         <input class="form-input short-input" v-model.trim="numberCaptcha"
                                flex-box="0" placeholder="请输入短信验证码">
                         <button v-if="verifyTimeLeft<1" class="btn-primary btn-msg" @click.stop="getVerify">{{verifyText}}</button>
-                        <button v-else="verifyTimeLeft<1" class="btn-default btn-text" disabled>{{verifyTimeLeft}}</button>
+                        <button v-else="verifyTimeLeft<1" class="btn-default btn-text" disabled>{{verifyTimeLeft}}
+                        </button>
                         <span class="err-info" flex-box="1" v-show="errCode">{{errCode}}</span>
                     </div>
 
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">设置新密码</label>
-                        <input class="form-input" flex-box="0" v-model.trim="password" placeholder="请输入密码">
+                        <input class="form-input" type="password" flex-box="0" v-model.trim="password" placeholder="请输入密码">
                         <span v-show="errPass" class="err-info" flex-box="1">{{errPass}}</span>
                     </div>
 
                     <div class="form-item" flex>
                         <label class="label" flex-box="0"></label>
-                        <button class="btn-primary btn-submit" @click.stop="resetPassword">找回密码</button>
+                        <button class="btn-primary btn-submit" @click.stop="resetPassword">重置密码</button>
 
                     </div>
                 </div>
@@ -54,6 +55,7 @@
     import IndexFooter from '../components/IndexFooter';
     import '../less/forget-password.less';
     import $api from '../tools/api';
+    import Toast from '../components/Toast';
     export default {
         components: {
             IndexFooter,
@@ -84,7 +86,7 @@
         methods: {
             checkUserName(){
                 if (!this.username) {
-                    this.setInfo('errNumber', '请输入手机号');
+                    this.setInfo('errNumber', '手机号不能为空');
                     return false;
                 }
                 let reg = /^1[3578]\d{9}/;
@@ -105,7 +107,7 @@
                 if (reg.test(this.password)) {
                     return true;
                 }
-                this.setInfo('errPass', '密码为（6~20位数字和字母');
+                this.setInfo('errPass', '请设置6~20位数字和字母组合密码');
                 return false;
             },
             getImageCode(){
@@ -142,6 +144,7 @@
                         console.log(res);
                         if (res.code == 200) {
                             this.setInfo();
+
                             return false;
                         }
                         this.clearTimeCount();
@@ -170,7 +173,7 @@
                             return false;
                         }
                         if (res.code == 1223 || res.code == 1216) {
-                            this.setInfo('errNumber', '该手机号未注册');
+                            this.setInfo('errNumber', '该手机号未注册,请先去注册');
                             return false;
                         }
                         this.setInfo('errCode', res.msg);
@@ -224,7 +227,7 @@
                 $api.postSys('/a/sys/user/pwd/reset', data)
                     .then(res => {
                         if (res.code == 200) {
-                            this.login();
+                            Toast('重置密码成功')
                             return false;
                         }
                         if (res.code == 1234) {
