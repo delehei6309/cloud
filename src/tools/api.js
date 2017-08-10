@@ -5,7 +5,6 @@ import 'babel-polyfill';
 import axios from 'axios';
 import * as config from './config';
 let serverUrl = config.devUrl;
-let nodeUrl = config.nodeTestApi;
 let sysUrl = config.sysDev;
 if (process.env.kingold == 'test') {
     serverUrl = config.testUrl;
@@ -13,7 +12,6 @@ if (process.env.kingold == 'test') {
 }
 if (process.env.kingold == 'production') {
     serverUrl = config.productionUrl;
-    nodeUrl = config.nodeProductionApi;
     sysUrl = config.sysProduction;
 }
 let $query = (data) => {
@@ -63,10 +61,7 @@ let get = (path, data = {}) => {
     })
 
 };
-let getNode = (path, data = {}) => {
-    let url = `${nodeUrl + path}`
-    return get(url, data);
-};
+
 let getSys = (path, data = {}) => {
     let url = `${sysUrl + path}`
     return get(url, data);
@@ -110,10 +105,7 @@ let post = (path, data = {}) => {
     })
 
 };
-let postNode = (path, data = {}) => {
-    let url = `${nodeUrl + path}`;
-    return post(url, data);
-};
+
 let postSys = (path, data = {}) => {
     let url = `${sysUrl + path}`;
     return post(url, data);
@@ -121,8 +113,6 @@ let postSys = (path, data = {}) => {
 const $api = {
     get,
     post,
-    getNode,
-    postNode,
     getSys,
     postSys,
     serverUrl

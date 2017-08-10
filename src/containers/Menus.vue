@@ -163,6 +163,7 @@
         created(){
             this.getMenus();
             this.getInfo();
+            $api.get('/channel/getUser')
 
         }
     }
