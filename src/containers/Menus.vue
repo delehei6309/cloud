@@ -40,74 +40,75 @@
     import '../less/menus.less';
     import $api from '../tools/api';
     import {logout} from '../tools/operation';
+    let menus = [
+        {
+            path: '/menus/authentication?channelUuid=',
+            class: 'icon-authentication',
+            text: '资质认证',
+            show: false,
+            child: [],
+            allPath: []
+        },
+        {
+            path: '',
+            class: 'icon-user',
+            text: '用户管理',
+            show: true,
+            child: [
+                {
+                    path: '/menus/user-infor?registerMerchantNum=00000',
+                    text: '用户信息'
+                }
+            ],
+            allPath: ['/menus/user-infor', '/menus/user-infor-detail']
+        },
+        {
+            path: '',
+            text: '产品管理',
+            class: 'icon-product',
+            show: true,
+            child: [
+                {
+                    path: '/menus/product-management?merchantNum=00000',
+                    text: '定期产品管理'
+                }
+            ],
+            allPath: ['/menus/product-management', '/menus/product-detail']
+        },
+        {
+            path: '',
+            text: '交易管理',
+            class: 'icon-exchange',
+            show: true,
+            child: [
+                {
+                    path: '/menus/exchange-management?belongMerchantNum=00000',
+                    text: '定期订单管理'
+                }
+            ],
+            allPath: ['/menus/exchange-management']
+        },
+        {
+            path: '',
+            text: '数据统计',
+            class: 'icon-statistics',
+            show: true,
+            child: [
+                {
+                    path: '/menus/data-statistics?merchantNum=00000',
+                    text: '整体概况'
+                }
+            ],
+            allPath: ['/menus/data-statistics']
+        }
+    ]
     export default {
         name: 'menus',
         data(){
             return {
                 animateHeight: false,
                 userInfo: {},
-                menus: [
-                    {
-                        path: '/menus/authentication?channelUuid=',
-                        class: 'icon-authentication',
-                        text: '资质认证',
-                        show: false,
-                        child: [],
-                        allPath: []
-                    },
-                    {
-                        path: '',
-                        class: 'icon-user',
-                        text: '用户管理',
-                        show: true,
-                        child: [
-                            {
-                                path: '/menus/user-infor?registerMerchantNum=00000',
-                                text: '用户信息'
-                            }
-                        ],
-                        allPath: ['/menus/user-infor', '/menus/user-infor-detail']
-                    },
-                    {
-                        path: '',
-                        text: '产品管理',
-                        class: 'icon-product',
-                        show: true,
-                        child: [
-                            {
-                                path: '/menus/product-management?merchantNum=00000',
-                                text: '定期产品管理'
-                            }
-                        ],
-                        allPath: ['/menus/product-management', '/menus/product-detail']
-                    },
-                    {
-                        path: '',
-                        text: '交易管理',
-                        class: 'icon-exchange',
-                        show: true,
-                        child: [
-                            {
-                                path: '/menus/exchange-management?belongMerchantNum=00000',
-                                text: '定期订单管理'
-                            }
-                        ],
-                        allPath: ['/menus/exchange-management']
-                    },
-                    {
-                        path: '',
-                        text: '数据统计',
-                        class: 'icon-statistics',
-                        show: true,
-                        child: [
-                            {
-                                path: '/menus/data-statistics?merchantNum=00000',
-                                text: '整体概况'
-                            }
-                        ],
-                        allPath: ['/menus/data-statistics']
-                    }
-                ]
+                menus: []
             }
         },
         components: {
@@ -138,10 +139,11 @@
                         console.log(res);
                         if (res.code == 200) {
                             if (res.data && res.data.menuList) {
+                                this.menus = menus;
                                 return;
                             }
                             else {
-                                this.menus = this.menus.slice(0, 1);
+                                this.menus = menus.slice(0, 1);
                             }
                         }
                     })
