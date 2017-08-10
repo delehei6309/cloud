@@ -84,7 +84,7 @@
                 dateStart:'',
                 dateEnd:'',
                 sortStyle:'asc',//排序：desc 降序，asc升序
-                orderBy:'conPercent',
+                orderBy:'',
                 tab:0,
                 merchantNum:this.$route.query.merchantNum,//商户号
                 list:[
@@ -267,9 +267,14 @@
                 }
             },
             search(){
+                this.orderBy = '';
+                this.sortStyle = '';
+                this.pageNo = 1;
                 this.getTable();
             },
             getTable(){
+                let orderBy = this.orderBy.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+                console.log(orderBy);
                 $api.get('/count/statisticsReport',{
                     merchantNum:this.merchantNum,
                     statisticsReportDateFrom:this.dateStart || null,
@@ -277,7 +282,7 @@
                     pageSize:this.pageSize,
                     pageNo:this.pageNo,
                     sortStyle:this.sortStyle,
-                    orderBy:this.orderBy
+                    orderBy:orderBy
 
                 }).then(msg=>{
                     if(msg.code == 200){
