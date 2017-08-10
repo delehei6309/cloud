@@ -61,7 +61,7 @@
                                    id="img-code" class="form-input" placeholder="图形验证码"/>
                         </div>
                         <div class="code-item" flex-box="1">
-                            <button class="btn-img-code">{{imageCaptcha}}</button>
+                            <button class="btn-img-code" @click.stop="getCode">{{imageCaptcha}}</button>
                         </div>
                     </div>
                     <div flex>
@@ -166,6 +166,23 @@
                 }
                 this.errInfo = '请输入6~20位数字和字母组合密码';
                 return false;
+            },
+            getCode(){
+                if (!this.checkUserName()) {
+                    return false;
+                }
+                let data = {
+                    cellPhoneNumber: this.username,
+                    getType: 'img'
+                }
+                $api.postSys('/a/sys/user/captcha/register', data)
+                    .then(res => {
+                        if (res.code == 200) {
+                            this.errInfo = '';
+                            this.imageCaptcha = res.data.imageCaptcha;
+                        }
+                    })
+
             },
             getVerify(){
                 if (!this.checkUserName()) {
