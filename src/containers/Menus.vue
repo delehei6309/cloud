@@ -42,7 +42,7 @@
     import {logout} from '../tools/operation';
     let menus = [
         {
-            path: '/menus/authentication?channelUuid=',
+            path: '/menus/authentication',
             class: 'icon-authentication',
             text: '资质认证',
             show: false,
@@ -56,7 +56,7 @@
             show: true,
             child: [
                 {
-                    path: '/menus/user-infor?registerMerchantNum=00000',
+                    path: '/menus/user-infor',
                     text: '用户信息'
                 }
             ],
@@ -69,7 +69,7 @@
             show: true,
             child: [
                 {
-                    path: '/menus/product-management?merchantNum=00000',
+                    path: '/menus/product-management',
                     text: '定期产品管理'
                 }
             ],
@@ -82,7 +82,7 @@
             show: true,
             child: [
                 {
-                    path: '/menus/exchange-management?belongMerchantNum=00000',
+                    path: '/menus/exchange-management',
                     text: '定期订单管理'
                 }
             ],
@@ -95,7 +95,7 @@
             show: true,
             child: [
                 {
-                    path: '/menus/data-statistics?merchantNum=00000',
+                    path: '/menus/data-statistics',
                     text: '整体概况'
                 }
             ],
