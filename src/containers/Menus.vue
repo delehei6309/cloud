@@ -1,6 +1,6 @@
 <template>
     <div>
-        <cloud-header></cloud-header>
+        <cloud-header :userInfo="userInfo"></cloud-header>
         <div class="menu-warp" flex="main:justify">
             <div class="menus" flex-box="0">
                 <div class="menus-list" v-for="(item,index) in menus" :key="index">
@@ -39,11 +39,13 @@
     import CloudFooter from '../components/CloudFooter';
     import '../less/menus.less';
     import $api from '../tools/api';
+    import {logout} from '../tools/operation';
     export default {
         name: 'menus',
         data(){
             return {
                 animateHeight: false,
+                userInfo:{},
                 menus: [
                     {
                         path: '/menus/authentication?channelUuid=',
@@ -135,10 +137,22 @@
                     .then(res => {
                         console.log(res);
                     })
+            },
+            getInfo(){
+                return $api.getSys('/a/sys/user/current')
+                    .then(res => {
+                        if (res.code == 1220) {
+                            logout()
+                        }
+                        if (res.code == 200) {
+                            this.userInfo = res.data;
+                        }
+                    })
             }
         },
         created(){
             this.getMenus();
+            this.getInfo();
 
         }
     }

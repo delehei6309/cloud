@@ -5,11 +5,11 @@
             <div class="form-warp">
                 <div class="tabs" flex="box:mean">
                     <div class="tab" :class="{'active':tab==1}"
-                         @click.stop="tab=1" flex-box="1">
+                         @click.stop="tab=1; errInfo = '';" flex-box="1">
                         登录
                     </div>
                     <div class="tab" :class="{'active':tab==2}"
-                         @click.stop="tab=2"
+                         @click.stop="tab=2;errInfo = '';"
                          flex-box="1">
                         免费注册
                     </div>
