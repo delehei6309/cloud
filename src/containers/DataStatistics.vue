@@ -86,7 +86,7 @@
                 sortStyle:'asc',//排序：desc 降序，asc升序
                 orderBy:'conPercent',
                 tab:0,
-                merchantNum:'00000',//商户号
+                merchantNum:this.$route.query.merchantNum,//商户号
                 list:[
                     {   
                         id:0,
