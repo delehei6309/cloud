@@ -287,7 +287,8 @@
                 $api.postSys('/a/sys/user/register/create', {cellPhoneNumber, numCaptcha, password})
                     .then(res => {
                         if (res.code == 200) {
-                            this.login()
+                            this.errInfo = '';
+                            this.tab = 1;
                             return false;
                         }
                         if (res.code == 1201) {
