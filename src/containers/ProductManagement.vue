@@ -76,7 +76,7 @@
         name: 'user-infor',
         data(){
             return {
-                merchantNum:this.$route.query.merchantNum,
+                //merchantNum:this.$route.query.merchantNum,
                 count:0,
                 dateStart:null,
                 dateEnd:null,
@@ -181,8 +181,7 @@
                     productCode:this.productCode,
                     productAbbrName:this.productAbbrName,
                     productOpenTimeFrom:this.dateStart,
-                    productOpenTimeTo:this.dateEnd,
-                    merchantNum:this.merchantNum
+                    productOpenTimeTo:this.dateEnd
                 }
                 $api.get('/product/fixedIncome/list',parm).then(msg => {
                     if(msg.code == 200){

@@ -16,7 +16,6 @@ import ProductDetail  from '../containers/ProductDetail';
 import ExchangeManagement  from '../containers/ExchangeManagement';
 import ForgetPassword from '../containers/ForgetPassword';
 import DataStatistics from '../containers/DataStatistics';
-import Test from '../containers/Test';
 const title = '开放平台';
 let routes = [
     {
@@ -119,14 +118,6 @@ let routes = [
             {
                 path:'/information',
                 component:Information,
-                meta: {
-                    title: title,
-                },
-            },
-            {
-                path:'test',
-                name:'test',
-                component:Test,
                 meta: {
                     title: title,
                 },

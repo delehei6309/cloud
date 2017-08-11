@@ -796,7 +796,7 @@
                 disabled:false,
                 channelData:null,
                 submitError:'您提交的证件照片不清晰，与原公司名称对不上！',
-                channelUuid:this.$route.query.channelUuid,
+                //channelUuid:this.$route.query.channelUuid,
                 ajaxUrl:'/channel/insert',
                 btnDisabled:false,
                 largePaymentNum:'',
@@ -804,29 +804,33 @@
         },
         created(){
             //先查询当前操作状态
-            if(!this.channelUuid){
+            /*if(!this.channelUuid){
                 this.authenticationShow = true;
                 return
-            }
-            $api.get('/channel/'+this.channelUuid).then(msg=>{
+            }*/
+            $api.get('/channel/get').then(msg=>{
                 if(msg.code == 200){
                     const data = msg.data;
-                    this.stateShow = true;
-                    if(data.certAuditingStatus == 1){//已通过
-                        this.stateShow = false;
+                    if(data.certificationStatus == 1){//已认证
+                        this.stateShow = true;
+                        if(data.certAuditingStatus == 1){//已通过
+                            this.stateShow = false;
+                            this.authenticationShow = true;
+                            this.disabled = true;
+                            this.creatData(data);
+                        }else if(data.certAuditingStatus == 2){//未通过;
+                            $api.get('/channel/cred/').then(msg =>{
+                                if(msg.code == 200){
+                                    this.channelData = data;
+                                    this.stateErrorShow = true
+                                    this.submitError = msg.data.auditingRemark;
+                                }
+                            })
+                        }else{//审核中
+                            console.log('sss')
+                        }
+                    }else if(data.certificationStatus == 0){
                         this.authenticationShow = true;
-                        this.disabled = true;
-                        this.creatData(data);
-                    }else if(data.certAuditingStatus == 2){//未通过;
-                        $api.get('/channel/cred/'+this.channelUuid).then(msg =>{
-                            if(msg.code == 200){
-                                this.channelData = data;
-                                this.stateErrorShow = true
-                                this.submitError = msg.data.auditingRemark;
-                            }
-                        })
-                    }else{//审核中
-                        console.log('sss')
                     }
                 }
             });

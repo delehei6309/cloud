@@ -41,7 +41,7 @@
         name: 'home',
         data(){
             return {
-                merchantNum:this.$route.query.merchantNum,
+                //merchantNum:this.$route.query.merchantNum,
                 tab:0,
                 lists:null,
                 listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>','到期笔数<i>（今）</i>'],
@@ -122,7 +122,7 @@
         },
         created(){
             timeDeal();
-            $api.get('/count/indexCount',{merchantNum:this.merchantNum}).then(msg=>{
+            $api.get('/count/indexCount').then(msg=>{
                 console.log('msg---->',msg)
                 if(msg.code == 200){
                     this.lists = msg.data;

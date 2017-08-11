@@ -15,6 +15,15 @@
         </div>
         <div class="statistics-table">
             <div class="table-head clear-both">
+                <!-- <form id="searchForm" modelAttribute="merchantSearch" action="http://open-service-dev.zj-wm.cn:8079/count/exportExcelReport" method="get" class="breadcrumb form-search">
+                    <input type="text" name="statisticsReportDateFrom">
+                    <input type="text" name="statisticsReportDateTo">
+                    <input type="text" name="sortStyle">
+                    <input type="text" name="sortCloumn">
+                    <ul class="ul-form">
+                        <li class="btns"><input id="btnSubmit" class="btn btn-info" type="submit" value="导出Excel"/></li>
+                    </ul>
+                </form> -->
                 <div class="tab-out">
                     <button @click.stop="outExcel">导出Excel</button>
                 </div>
@@ -34,8 +43,8 @@
                         <thead>
                             <tr>
                                 <th v-for="(item,index) in tabHead" :key="index"
-                                    :class="{'sorting':item.sortable,'sorting_desc':item.sortable=='desc','sorting_asc':item.sortable=='asc'}"
-                                    @click.stop="sortChange(item.sortable,index,item.value)"
+                                    :class="{'sorting':item.sortStyle,'sorting_desc':item.sortStyle=='desc','sorting_asc':item.sortStyle=='asc'}"
+                                    @click.stop="sortChange(item.sortStyle,index,item.value)"
                                     >{{item.text}}</th>
                             </tr>
                         </thead>
@@ -45,9 +54,9 @@
                                 <td>{{item.registerCount}}</td>
                                 <td>{{item.startCount}}</td>
                                 <td>{{item.openAccountCount}}</td>
-                                <td>{{item.conPercent}}</td>
+                                <td>{{item.conPercent | translatePate}}</td>
                                 <td>{{item.orderCount}}</td>
-                                <td>{{item.sumPaidAmount}}</td>
+                                <td>{{item.sumPaidAmount | currencyFormat}}</td>
                                 <td>{{item.expUserQuantity}}</td>
                             </tr>
                         </tbody>
@@ -68,12 +77,9 @@
 
 <script>
     import '../less/data-statistics.less';
-    import Vue from 'vue';
     import VueHighcharts from 'vue-highcharts';
     import datepicker from 'vue-date';
     import $api from '../tools/api';
-    import JsonExcel from 'vue-json-excel';
-    Vue.component('downloadExcel', JsonExcel);
     export default {
         name: 'data-statistics',
         data(){
@@ -83,10 +89,10 @@
                 pageSize:10,
                 dateStart:'',
                 dateEnd:'',
-                sortStyle:'asc',//排序：desc 降序，asc升序
-                orderBy:'',
+                sortStyle:'',//排序：desc 降序，asc升序
+                sortCloumn:'',
                 tab:0,
-                merchantNum:this.$route.query.merchantNum,//商户号
+                //merchantNum:this.$route.query.merchantNum,//商户号
                 list:[
                     {   
                         id:0,
@@ -184,32 +190,32 @@
                     {
                         value:'startCount',
                         text:'启动次数',
-                        sortable:true
+                        sortStyle:true
                     },
                     {
                         value:'openAccountCount',
                         text:'实名认证数',
-                        sortable:true
+                        sortStyle:true
                     },
                     {
                         value:'conPercent',
                         text:'投资转化量',
-                        sortable:true
+                        sortStyle:true
                     },
                     {
                         value:'orderCount',
                         text:'订单笔数',
-                        sortable:true
+                        sortStyle:true
                     },
                     {
                         value:'sumPaidAmount',
                         text:'募集金额',
-                        sortable:true
+                        sortStyle:true
                     },
                     {
                         value:'expUserQuantity',
                         text:'产品到期用户数',
-                        sortable:true
+                        sortStyle:true
                     }
                 ],
                 items:[],
@@ -225,12 +231,30 @@
         methods: {
             //导出excell
             outExcel(){
-                console.log(666)
+                console.log(666);
+                let sortCloumn = this.sortCloumn.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+                $api.get('/count/exportExcelReport',{
+                    statisticsReportDateFrom:this.dateStart || null,
+                    statisticsReportDateTo:this.dateEnd || null,
+                    sortStyle:this.sortStyle,
+                    sortCloumn:sortCloumn
+
+                }).then(msg=>{
+                    console.log(msg)
+                    if(msg.code == 200){
+                        console.log(msg);
+                    }
+                });
             },
-            sortChange(sort,index,orderBy){
-                sort == 'desc' ? this.tabHead[index].sortable = 'asc' : this.tabHead[index].sortable = 'desc';
-                this.sortStyle = this.tabHead[index].sortable;
-                this.orderBy = orderBy;
+            sortChange(sort,index,sortCloumn){
+                this.tabHead.forEach((val,inx)=>{
+                    if(val.sortStyle){
+                        val.sortStyle = true;
+                    }
+                });
+                sort == 'desc' ? this.tabHead[index].sortStyle = 'asc' : this.tabHead[index].sortStyle = 'desc';
+                this.sortStyle = this.tabHead[index].sortStyle;
+                this.sortCloumn = sortCloumn;
                 this.getTable();
             },
             changePage(){
@@ -270,22 +294,26 @@
                 }
             },
             search(){
-                this.orderBy = '';
+                this.sortCloumn = '';
                 this.sortStyle = '';
+                this.tabHead.forEach((val,inx)=>{
+                    if(val.sortStyle){
+                        val.sortStyle = true;
+                    }
+                });
                 this.pageNo = 1;
                 this.getTable();
             },
             getTable(){
-                let orderBy = this.orderBy.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
-                console.log(orderBy);
+                let sortCloumn = this.sortCloumn.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+                console.log(sortCloumn);
                 $api.get('/count/statisticsReport',{
-                    merchantNum:this.merchantNum,
                     statisticsReportDateFrom:this.dateStart || null,
                     statisticsReportDateTo:this.dateEnd || null,
                     pageSize:this.pageSize,
                     pageNo:this.pageNo,
                     sortStyle:this.sortStyle,
-                    orderBy:orderBy
+                    sortCloumn:sortCloumn
 
                 }).then(msg=>{
                     if(msg.code == 200){
@@ -368,7 +396,7 @@
             },
             //产品到期用户数
             getUserCount(){
-                $api.get('/count/countProductExpiringUserByMonth',{merchantNum:this.merchantNum}).then(msg=>{
+                $api.get('/count/countProductExpiringUserByMonth').then(msg=>{
                     if(msg.code == 200){
                         this.list[7].array = msg.data;
                         this.list[7].array.forEach(({days,userCount},index) =>{
