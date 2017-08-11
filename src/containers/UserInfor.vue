@@ -41,7 +41,7 @@
         name: 'user-infor',
         data(){
             return {
-                registerMerchantNum:this.$route.query.registerMerchantNum,
+                //registerMerchantNum:this.$route.query.registerMerchantNum,
                 selectedBase: 1,
                 inputVal: '',
                 count:0,
@@ -99,7 +99,7 @@
                     pageSize:this.perPage,
                     investorMobile:this.investorMobile,
                     userId:this.userId,
-                    registerMerchantNum:this.registerMerchantNum
+                    //registerMerchantNum:this.registerMerchantNum
                 }
                 $api.get('/user/investor/list',parm).then(msg => {
                     if(msg.code == 200){

@@ -15,16 +15,14 @@
         </div>
         <div class="statistics-table">
             <div class="table-head clear-both">
-                
                 <div class="tab-out">
-                    <form id="searchForm" modelAttribute="merchantSearch" action="http://open-service-dev.zj-wm.cn:8079/count/exportExcelReport" method="get" class="breadcrumb form-search">
+                    <form id="searchForm" modelAttribute="merchantSearch" :action="serverUrlOut" method="get">
                         <input type="hidden" name="statisticsReportDateFrom" v-model="dateStartEx">
                         <input type="hidden" name="statisticsReportDateTo" v-model="dateEndEx">
                         <input type="hidden" name="sortStyle" v-model="sortStyle">
                         <input type="hidden" name="sortCloumn" v-model="sortCloumn">
-                        <input id="btnSubmit" class="btn btn-info" type="submit" value="导出Excel"/>
+                        <input  type="submit" value="导出Excel"/>
                     </form>
-                    <!-- <button @click.stop="outExcel">导出Excel</button> -->
                 </div>
                 <div class="tab-search" flex>
                     <div class="date-text">创建时间：</div>
@@ -83,6 +81,7 @@
         name: 'data-statistics',
         data(){
             return {
+                serverUrlOut:'',
                 count:0,
                 pageNo:1,
                 pageSize:10,
@@ -224,6 +223,7 @@
             }
         },
         created(){
+            this.serverUrlOut = $api.serverUrl+'/count/exportExcelReport';
             this.getRegisterCount();
             this.getTable();
         },
