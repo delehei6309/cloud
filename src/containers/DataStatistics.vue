@@ -15,17 +15,16 @@
         </div>
         <div class="statistics-table">
             <div class="table-head clear-both">
-                <!-- <form id="searchForm" modelAttribute="merchantSearch" action="http://open-service-dev.zj-wm.cn:8079/count/exportExcelReport" method="get" class="breadcrumb form-search">
-                    <input type="text" name="statisticsReportDateFrom">
-                    <input type="text" name="statisticsReportDateTo">
-                    <input type="text" name="sortStyle">
-                    <input type="text" name="sortCloumn">
-                    <ul class="ul-form">
-                        <li class="btns"><input id="btnSubmit" class="btn btn-info" type="submit" value="导出Excel"/></li>
-                    </ul>
-                </form> -->
+                
                 <div class="tab-out">
-                    <button @click.stop="outExcel">导出Excel</button>
+                    <form id="searchForm" modelAttribute="merchantSearch" action="http://open-service-dev.zj-wm.cn:8079/count/exportExcelReport" method="get" class="breadcrumb form-search">
+                        <input type="hidden" name="statisticsReportDateFrom" v-model="dateStartEx">
+                        <input type="hidden" name="statisticsReportDateTo" v-model="dateEndEx">
+                        <input type="hidden" name="sortStyle" v-model="sortStyle">
+                        <input type="hidden" name="sortCloumn" v-model="sortCloumn">
+                        <input id="btnSubmit" class="btn btn-info" type="submit" value="导出Excel"/>
+                    </form>
+                    <!-- <button @click.stop="outExcel">导出Excel</button> -->
                 </div>
                 <div class="tab-search" flex>
                     <div class="date-text">创建时间：</div>
@@ -89,6 +88,8 @@
                 pageSize:10,
                 dateStart:'',
                 dateEnd:'',
+                dateStartEx:'',
+                dateEndEx:'',
                 sortStyle:'',//排序：desc 降序，asc升序
                 sortCloumn:'',
                 tab:0,
@@ -296,6 +297,8 @@
             search(){
                 this.sortCloumn = '';
                 this.sortStyle = '';
+                this.dateStartEx = this.dateStart;
+                this.dateEndEx = this.dateEnd;
                 this.tabHead.forEach((val,inx)=>{
                     if(val.sortStyle){
                         val.sortStyle = true;
