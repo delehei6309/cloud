@@ -145,7 +145,7 @@
                         console.log(res);
                         if (res.code == 200) {
                             this.setInfo();
-                            this.$router.replace('/login');
+
 
                             return false;
                         }
@@ -229,7 +229,8 @@
                 $api.postSys('/a/sys/user/pwd/reset', data)
                     .then(res => {
                         if (res.code == 200) {
-                            Toast('重置密码成功')
+                            Toast('重置密码成功');
+                            this.$router.replace('/login');
                             return false;
                         }
                         if (res.code == 1234) {
