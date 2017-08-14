@@ -267,7 +267,16 @@
                     .then(res => {
                         this.loginText = '登录'
                         if (res.code == 200) {
-                            this.$router.push('/home');
+                            this.$store.dispatch('getUserInfo').then(res => {
+                                if (res.code == 200) {
+                                    if (res.data.merchantNumStatus && res.data.merchantNumStatus == 1) {
+                                        this.$router.push('/home');
+
+                                    } else {
+                                        this.$router.push('/menus/authentication');
+                                    }
+                                }
+                            });
                         } else {
                             this.errInfo = res.msg;
                         }
