@@ -7,14 +7,14 @@
                     <div class="title text-center">忘记密码</div>
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">已注册的手机号</label>
-                        <input class="form-input" v-model.trim="username"
+                        <input class="form-input" v-model.trim="username" maxlength="11"
                                flex-box="0" placeholder="请输入手机号">
                         <span v-show="errNumber" class="err-info" flex-box="1">{{errNumber}}</span>
                     </div>
 
                     <div class="form-item" flex v-show="imageCaptcha">
                         <label class="label" flex-box="0">图形验证码</label>
-                        <input class="form-input short-input" v-model="inputCode"
+                        <input class="form-input short-input" v-model="inputCode" maxlength="4"
                                flex-box="0" placeholder="请输入图形验证码">
                         <button class="btn-img" @click.stop="getImageCode">{{imageCaptcha}}</button>
                         <span class="err-info" flex-box="1" v-show="errImage">{{errImage}}</span>
@@ -22,7 +22,7 @@
 
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">短信验证码</label>
-                        <input class="form-input short-input" v-model.trim="numberCaptcha"
+                        <input class="form-input short-input" v-model.trim="numberCaptcha" maxlength="6"
                                flex-box="0" placeholder="请输入短信验证码">
                         <button v-if="verifyTimeLeft<1" class="btn-primary btn-msg" @click.stop="getVerify">{{verifyText}}</button>
                         <button v-else="verifyTimeLeft<1" class="btn-default btn-text" disabled>{{verifyTimeLeft}}
@@ -32,7 +32,8 @@
 
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">设置新密码</label>
-                        <input class="form-input" type="password" flex-box="0" v-model.trim="password" placeholder="请输入密码">
+                        <input class="form-input" type="password" flex-box="0" maxlength="20"
+                               v-model.trim="password" placeholder="请输入密码">
                         <span v-show="errPass" class="err-info" flex-box="1">{{errPass}}</span>
                     </div>
 
@@ -145,6 +146,7 @@
                         if (res.code == 200) {
                             this.setInfo();
 
+
                             return false;
                         }
                         this.clearTimeCount();
@@ -227,11 +229,12 @@
                 $api.postSys('/a/sys/user/pwd/reset', data)
                     .then(res => {
                         if (res.code == 200) {
-                            Toast('重置密码成功')
+                            Toast('重置密码成功');
+                            this.$router.replace('/login');
                             return false;
                         }
                         if (res.code == 1234) {
-                            this.setInfo('errCode', '该手机号未注册，请先去注册');
+                            this.setInfo('errNumber', '该手机号未注册，请先去注册');
                             return false;
                         }
                         if (res.code == 1235) {

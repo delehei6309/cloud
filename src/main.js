@@ -8,11 +8,10 @@ import './less/base.less';
 import App from './App';
 import router from './router';
 import * as filters from './filters';
-import _ from 'lodash/core';
 import store from './store';
 
-_.forEach(filters, (fun, key) => {
-    Vue.filter(key, fun);
+Object.keys(filters).forEach(key=>{
+    Vue.filter(key, filters[key]);
 });
 
 new Vue({

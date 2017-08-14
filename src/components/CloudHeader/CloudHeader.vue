@@ -6,7 +6,7 @@
                 <div>开放平台</div>
             </div>
             <div class="header-right" flex>
-                <div>
+                <div v-if="merchantNumStatus==1">
                     <router-link class="header-home" :to="{path:'/home'}">首页</router-link>
                 </div>
                 <div class="head-username">用户名{{userInfo.loginName | mobileFormat}}</div>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex';
     import './cloud-header.less';
     import Toast from '../Toast';
     import $api from '../../tools/api';
@@ -30,7 +31,11 @@
         props:['userInfo'],
         created(){
         },
-        computed: {},
+        computed: {
+            ...mapState(['merchantNumStatus']),
+
+
+        },
         methods: {
             loginOut(){
 

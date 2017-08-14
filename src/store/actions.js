@@ -7,7 +7,7 @@ const actions = {};
 import $api from '../tools/api';
 // 个人信息
 let getUserInfo = () => {
-    return $api.get('/getUserInfo');
+    return $api.get('/channel/getChannelUser');
 };
 actions.getUserInfo = ({commit}) => {
     return getUserInfo()
