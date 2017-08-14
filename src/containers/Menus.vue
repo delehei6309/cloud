@@ -145,7 +145,7 @@
                             this.menus = menus;
 
                         } else {
-                            this.$router.push('/menus/authentication');
+                            this.$router.replace('/menus/authentication');
                             this.menus = menus.slice(0, 1);
                         }
                     }
