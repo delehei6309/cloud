@@ -144,6 +144,7 @@
                         console.log(res);
                         if (res.code == 200) {
                             this.setInfo();
+                            this.$router.replace('/login');
 
                             return false;
                         }

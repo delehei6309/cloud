@@ -35,9 +35,12 @@
                     </div>
                     <div class="text-hint" flex="main:justify">
                         <span class="err-info">{{errInfo}}</span>
+
+                    </div>
+                    <div class="text-hint" flex="main:justify">
+                        <span class="err-info"></span>
                         <router-link :to="{path:'forget-password'}">忘记密码</router-link>
                     </div>
-
                     <div class="btn-warp">
                         <button class="btn-primary btn-submit" @click.stop="login">{{loginText}}</button>
                     </div>
@@ -69,7 +72,7 @@
                             <label class="label" for="msg-code" flex-box="0" flex="cross:center">
                                 <img src="../images/login/msg-code.png">
                             </label>
-                            <input flex-box="1" id="msg-code" v-model.trim="numberCaptcha" maxlength="20"
+                            <input flex-box="1" id="msg-code" v-model.trim="numberCaptcha" maxlength="6"
                                    class="form-input" placeholder="验证码"/>
                         </div>
                         <div class="code-item" flex-box="1">

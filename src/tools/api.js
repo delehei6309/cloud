@@ -49,6 +49,9 @@ let get = (path, data = {}) => {
         if (response.status == 200) {
             return response.data;
         }
+        if (response.status == 302) {
+            logout();
+        }
         return {};
     }).then(data => {
         if (data.code == 1220) {

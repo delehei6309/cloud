@@ -134,15 +134,14 @@
         },
         methods: {
             getMenus(){
-                $api.getSys('/a/sys/menu/userMenus')
-                    .then(res => {
-                        console.log(res);
-                        if (res.code == 200) {
-                            if (res.data && res.data.menuList) {
+                $api.get('/channel/getChannelUser')
+                    .then(res=>{
+                        if(res.code==200){
+                            if(res.data.merchantNumStatus){
                                 this.menus = menus;
-                                return;
-                            }
-                            else {
+
+                            } else {
+                                this.$router.push('/menus/authentication');
                                 this.menus = menus.slice(0, 1);
                             }
                         }
@@ -163,7 +162,6 @@
         created(){
             this.getMenus();
             this.getInfo();
-            $api.get('/channel/getUser')
 
         }
     }
