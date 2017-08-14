@@ -111,6 +111,11 @@
                 menus: []
             }
         },
+        created(){
+            this.getMenus();
+            this.getInfo();
+
+        },
         components: {
             CloudHeader,
             CloudFooter
@@ -134,18 +139,17 @@
         },
         methods: {
             getMenus(){
-                $api.get('/channel/getChannelUser')
-                    .then(res=>{
-                        if(res.code==200){
-                            if(res.data.merchantNumStatus){
-                                this.menus = menus;
+                this.$store.dispatch('getUserInfo').then(res => {
+                    if (res.code == 200) {
+                        if (res.data.merchantNumStatus && res.data.merchantNumStatus == 1) {
+                            this.menus = menus;
 
-                            } else {
-                                this.$router.push('/menus/authentication');
-                                this.menus = menus.slice(0, 1);
-                            }
+                        } else {
+                            this.$router.push('/menus/authentication');
+                            this.menus = menus.slice(0, 1);
                         }
-                    })
+                    }
+                });
             },
             getInfo(){
                 return $api.getSys('/a/sys/user/current')
@@ -159,10 +163,6 @@
                     })
             }
         },
-        created(){
-            this.getMenus();
-            this.getInfo();
 
-        }
     }
 </script>
