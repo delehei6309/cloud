@@ -266,7 +266,7 @@
                 $api.postSys('/a/login', {username, password})
                     .then(res => {
                         this.loginText = '登录'
-                        if (res.code == 200) {
+                        if (res.code == 200 || res.code == 1221) {
                             this.$store.dispatch('getUserInfo').then(res => {
                                 if (res.code == 200) {
                                     if (res.data.merchantNumStatus && res.data.merchantNumStatus == 1) {
@@ -300,6 +300,8 @@
                     .then(res => {
                         if (res.code == 200) {
                             this.errInfo = '';
+                            this.numberCaptcha = '';
+                            this.password = '';
                             this.tab = 1;
                             return false;
                         }
