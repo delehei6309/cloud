@@ -232,7 +232,6 @@
         methods: {
             //导出excell
             outExcel(){
-                console.log(666);
                 let sortCloumn = this.sortCloumn.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
                 $api.get('/count/exportExcelReport',{
                     statisticsReportDateFrom:this.dateStart || null,
@@ -256,6 +255,7 @@
                 sort == 'desc' ? this.tabHead[index].sortStyle = 'asc' : this.tabHead[index].sortStyle = 'desc';
                 this.sortStyle = this.tabHead[index].sortStyle;
                 this.sortCloumn = sortCloumn;
+                this.pageNo = 1;
                 this.getTable();
             },
             changePage(){
@@ -309,7 +309,6 @@
             },
             getTable(){
                 let sortCloumn = this.sortCloumn.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
-                console.log(sortCloumn);
                 $api.get('/count/statisticsReport',{
                     statisticsReportDateFrom:this.dateStart || null,
                     statisticsReportDateTo:this.dateEnd || null,

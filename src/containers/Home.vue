@@ -10,15 +10,21 @@
             <div class="table">
                 <ul flex="box:mean" >
                     <li v-for="(item,index) in lists" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
-                        <div class="table-text" v-html="listText[index]"></div>
-                        <div class="table-data">{{item.today}}</div>
-                        <div
-                            v-if="item.name !='countRegisterUser'"
-                            class="table-rate red"
-                            :class="{green:item.today<item.yesterday}">
+                        <template v-if="item.name =='countRegisterUser'">
+                            <div class="table-text" v-html="listText[index]"></div>
+                            <div class="table-data">{{item.count}}</div>
+                        </template>
+                        <template v-else>
+                            <div class="table-text" v-html="listText[index]"></div>
+                            <div class="table-data">{{item.today}}</div>
+                            <div
+                                v-if="item.name !='countRegisterUser'"
+                                class="table-rate red"
+                                :class="{green:item.today<item.yesterday}">
                                 <template v-if="item.today>=item.yesterday">+{{item.today-item.yesterday}}</template>
                                 <template v-else>{{item.today-item.yesterday}}</template>
                             </div>
+                        </template>
                     </li>
                 </ul>
             </div>
@@ -126,7 +132,9 @@
                 console.log('msg---->',msg)
                 if(msg.code == 200){
                     this.lists = msg.data;
-                    this.setOption(this.tab);
+                    if(this.lists.length>0){
+                        this.setOption(this.tab);
+                    }
                 }
             });
         },
