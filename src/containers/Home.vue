@@ -125,8 +125,10 @@
             $api.get('/count/indexCount').then(msg=>{
                 console.log('msg---->',msg)
                 if(msg.code == 200){
-                    this.lists = msg.data;
-                    this.setOption(this.tab);
+                    this.lists = [];
+                    if(this.lists.length>0){
+                        this.setOption(this.tab);
+                    }
                 }
             });
         },
