@@ -234,7 +234,7 @@
                             return false;
                         }
                         if (res.code == 1234) {
-                            this.setInfo('errCode', '该手机号未注册，请先去注册');
+                            this.setInfo('errNumber', '该手机号未注册，请先去注册');
                             return false;
                         }
                         if (res.code == 1235) {
