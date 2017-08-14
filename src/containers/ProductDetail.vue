@@ -99,7 +99,7 @@
                 </ul>
                 <ul flex-box="1">
                     <li>起息日：{{productData.productInterestDate || '--'}}</li>
-                    <li>成立日：--</li>
+                    <li>成立日：{{productData.productEstablishmentDate || '--'}}</li>
                 </ul>
                 <ul flex-box="1">
                     <li>到期日：{{productData.productExpiringDate || '--'}}</li>
