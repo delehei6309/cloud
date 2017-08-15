@@ -5,11 +5,11 @@
                 <div class="main-title">中冀汇通</div>
                 <div class="sub-title">国内首家专业智能云服务</div>
                 <div class="copy-info">
-                    2017 Ksyun All Rights Reserved Kingsoft Corp. 北京中冀汇通互联网科技技术有限公司
+                    Copyright@2017 all rights reserved 粤ICP备17086866号-1 深证买单互联网金融服务有限公司
 
                 </div>
                 <div class="copy-info">
-                    京ICP证120829号 京ICP备12032080号-2 京网文（2014）0901-201号
+                    客服电话：400-640-3606
                 </div>
             </div>
             <div class="footer-right" flex-box="0" flex="dir:top">
