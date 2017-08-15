@@ -89,7 +89,7 @@
                 <span class="span-close" @click.stop="lookOverShow = false">×</span>
                 <h6>查看协议</h6>
                 <div class="content" flex="dir:top  box:mean" flex-box="1">
-                    <div flex="dir:top main:center"><a :href="agreementSrc" target="_view">《认购协议》</a></div>
+                    <div flex="dir:top main:center"><a :href="agreementSrc" target="_blank">《认购协议》</a></div>
                     <!-- <div flex="dir:top main:center"><a href="">《转让协议》</a></div> -->
                 </div>
                 <div class="box-bottom"><b-btn class="btn" @click.stop="lookOverShow = false">关闭</b-btn></div>
@@ -192,8 +192,17 @@
         },
         methods: {
             lookOver(src){
-                this.agreementSrc = src || '';
-                this.lookOverShow = true;
+                let fileName = '认购协议';
+                $api.post('/trade/getAccessFileUrl',{
+                    fileName:fileName
+                }).then(msg => {
+                    if(msg.code == 200){
+                        this.agreementSrc = msg.data;
+                        this.lookOverShow = true;
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             },
             change(){
                 setTimeout(()=>{
