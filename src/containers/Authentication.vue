@@ -1157,6 +1157,12 @@
                     }
                     parmData.linkmanIdFrontViewPath = this.uploadPhotos.linkIdCard[0].src;//正
                     parmData.linkmanIdBackViewPath = this.uploadPhotos.linkIdCard[1].src;//反
+
+                    //清空个人信息
+                    parmData.individualName = '';
+                    parmData.channelPhone = '';
+                    parmData.individualIdNum = '';
+                    parmData.individualIdFrontViewPath = '';
                 } else {
                 /*--------------个人信息--------------*/
                     if(this.listCheck(this.individualInfor)) {
@@ -1230,6 +1236,23 @@
                         return
                     }
                     parmData.individualIdFrontViewPath = this.iUploadPhotos.idCard.src;
+
+                    //清空企业信息
+                    parmData.compFullName = '';
+                    parmData.compLegalPerson  = '';
+                    parmData.compOrganizationCode = '';
+                    parmData.compContactWay = '';
+                    parmData.compAddress = '';
+                    parmData.legalPersonIdImgPath = '';
+                    parmData.businessLicenceImgPath = '';
+                    parmData.taxRegImgPath = '';
+                    parmData.linkmanName = '';
+                    parmData.linkmanPhone = '';
+                    parmData.linkmanEmail = '';
+                    parmData.linkmanIdNum = '';
+                    parmData.linkmanSocialSignal = '';
+                    parmData.linkmanIdFrontViewPath = '';
+                    parmData.linkmanIdBackViewPath  = '';
                 }
                 this.btnDisabled = true;//不可重复提交
                 $api.post(this.ajaxUrl,{data:parmData}).then(msg => {
