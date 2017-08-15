@@ -380,7 +380,7 @@
                         this.list[5].array.forEach(({days,orderCount},index) =>{
                             this.arrayPush(days,orderCount,index);
                         });
-                        this.options.series[0].name = '下单用户数';
+                        this.options.series[0].name = '订单笔数';
                     }
                 });
             },
