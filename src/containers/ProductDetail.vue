@@ -99,7 +99,7 @@
                 </ul>
                 <ul flex-box="1">
                     <li>起息日：{{productData.productInterestDate || '--'}}</li>
-                    <li>成立日：--</li>
+                    <li>成立日：{{productData.productEstablishmentDate || '--'}}</li>
                 </ul>
                 <ul flex-box="1">
                     <li>到期日：{{productData.productExpiringDate || '--'}}</li>
@@ -207,7 +207,7 @@
             <h2>渠道结算</h2>
             <div class="main main-bottom" flex="">
                <div class="div-name">比例：</div>
-               <div class="div-rate">--</div>
+               <div class="div-rate">{{productData.channel_charge_rate | translatePate}}</div>
             </div>
         </div>
     </div>
