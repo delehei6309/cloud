@@ -175,21 +175,18 @@
                                 </div>
                                 <div class="infor-right" v-show="bank.address.error">！请选择开户地址</div>
                             </li>
-                            <li flex v-for="(item,index) in bank.lists" :key="index" :class="item.dom">
+                            <li flex v-for="(item,index) in bank.lists" :key="index" :class="{'big-spacing':((item.dom == 'bank-list3') && (theBank != '')), [item.dom]:true}">
                                 <template v-if="item.dom == 'bank-list4'">
                                     <div class="infor-left no-required" v-if="!disabled || (largePaymentNum && disabled)">{{item.name}}</div>
                                     <div class="infor-center" v-if="!disabled || (largePaymentNum && disabled)">
                                         <input type="text"
-                                               :placeholder="'请输入'+item.name"
+                                               :placeholder="'请输入'+item.name+'(可空)'"
                                                v-model="item.model"
                                                :maxlength="item.maxlength"
                                                @focus="item.error=false"
                                                @blur="item.model.length<1 ? item.error=true : ''"
                                                :disabled="disabled"
                                         />
-                                    </div>
-                                    <div class="infor-right" v-if="!disabled || (largePaymentNum && disabled)">
-                                        <span v-show="item.error">！可空，最高输入12位</span>
                                     </div>
                                 </template>
                                 <template v-else>
@@ -222,9 +219,9 @@
                                         <span v-else>！请输入正确的{{item.name}}</span>
                                     </div>
                                 </template>
+                                <p class="the-bank" v-if="item.dom == 'bank-list3'">{{theBank}}</p>
                             </li>
                         </ul>
-                        <p class="the-bank">{{theBank}}</p>
                     </div>
                     <div class="contacts">
                         <h6>联系人信息</h6>
@@ -377,21 +374,18 @@
                                 </div>
                                 <div class="infor-right" v-show="iBank.address.error">！请选择开户地址</div>
                             </li>
-                            <li flex v-for="(item,index) in iBank.lists" :key="index" :class="item.dom">
+                            <li flex v-for="(item,index) in iBank.lists" :key="index" :class="{'big-spacing': ((item.dom == 'iBank-list3') && (iTheBank != '')), [item.dom]:true}">
                                 <template v-if="item.dom == 'iBank-list4'">
                                     <div class="infor-left no-required" v-if="!disabled || (largePaymentNum && disabled)">{{item.name}}</div>
                                     <div class="infor-center" v-if="!disabled || (largePaymentNum && disabled)">
                                         <input type="text"
-                                               :placeholder="'请输入'+item.name"
+                                               :placeholder="'请输入'+item.name+'(可空)'"
                                                v-model="item.model"
                                                :maxlength="item.maxlength"
                                                @focus="item.error=false"
                                                @blur="item.model.length<1 ? item.error=true : ''"
                                                :disabled="disabled"
                                         />
-                                    </div>
-                                    <div class="infor-right" v-if="!disabled || (largePaymentNum && disabled)">
-                                        <span v-show="item.error">！可空，最高输入12位</span>
                                     </div>
                                 </template>
                                 <template v-else>
@@ -424,9 +418,9 @@
                                         <span v-else>！请输入正确的{{item.name}}</span>
                                     </div>
                                 </template>
+                                <p class="the-bank" v-if="item.dom == 'iBank-list3'">{{iTheBank}}</p>
                             </li>
                         </ul>
-                        <p class="the-bank">{{iTheBank}}</p>
                     </div>
 
                 </div>
@@ -548,7 +542,6 @@
                         {
                             name:'开户行大额支付行号',
                             maxlength:12,
-                            error:false,
                             dom:'iBank-list4',
                             model:''
                         }
@@ -684,7 +677,6 @@
                         {
                             name:'开户行大额支付行号',
                             maxlength:12,
-                            error:false,
                             dom:'bank-list4',
                             model:''
                         }
