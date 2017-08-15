@@ -230,22 +230,6 @@
         components: { datepicker },
         computed: {},
         methods: {
-            //导出excell
-            outExcel(){
-                let sortCloumn = this.sortCloumn.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
-                $api.get('/count/exportExcelReport',{
-                    statisticsReportDateFrom:this.dateStart || null,
-                    statisticsReportDateTo:this.dateEnd || null,
-                    sortStyle:this.sortStyle,
-                    sortCloumn:sortCloumn
-
-                }).then(msg=>{
-                    console.log(msg)
-                    if(msg.code == 200){
-                        console.log(msg);
-                    }
-                });
-            },
             sortChange(sort,index,sortCloumn){
                 this.tabHead.forEach((val,inx)=>{
                     if(val.sortStyle){
@@ -264,6 +248,7 @@
                 });
             },
             change(index){
+                this.options.tooltip.valueSuffix = '';
                 if(index == this.tab){
                     return false;
                 }
@@ -366,9 +351,13 @@
                     if(msg.code == 200){
                         this.list[4].array = msg.data;
                         this.list[4].array.forEach(({days,conPercent},index) =>{
-                            this.arrayPush(days,conPercent,index);
+                            if(index%3==0){
+                                conPercent = 0.02;
+                            }
+                            this.arrayPush(days,this.accMul(conPercent,100),index);
                         });
                         this.options.series[0].name = '投资转化量';
+                        this.options.tooltip.valueSuffix = '%';
                     }
                 });
             },
@@ -416,6 +405,12 @@
                 this.options.xAxis.categories.push(x);
                 this.options.series[0].data.push(Number(count));
                 //console.log(count)
+            },
+            accMul(arg1,arg2){
+                let m=0,s1=arg1.toString(),s2=arg2.toString();
+                try{m+=s1.split(".")[1].length}catch(e){console.log()}
+                try{m+=s2.split(".")[1].length}catch(e){console.log()}
+                return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m);
             }
         },
         destroyed(){
