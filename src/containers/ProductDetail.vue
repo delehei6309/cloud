@@ -142,7 +142,7 @@
             <div class="main">
                 <ul>
                     <li v-for="(item,index) in productData.productAttachment" :key="index">
-                        <a :href="item.attachmentLink" target="_blank">{{item.attachmentName}}</a>
+                        <a @click.stop="linkAtta(item.attachmentName)">{{item.attachmentName}}</a>
                     </li>
                     <!-- <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li>
                     <li>托管机构： 平安银行股份有限公司深圳分行.pdf</li>
@@ -207,7 +207,7 @@
             <h2>渠道结算</h2>
             <div class="main main-bottom" flex="">
                <div class="div-name">比例：</div>
-               <div class="div-rate">--</div>
+               <div class="div-rate">{{productData.channel_charge_rate || '--'}}</div>
             </div>
         </div>
     </div>
@@ -261,7 +261,19 @@
                 return arr;
             }
         },
-        methods: {},
+        methods: {
+            linkAtta(attachmentName){
+                $api.post('/trade/getAccessFileUrl',{
+                    fileName:attachmentName
+                }).then(msg => {
+                if(msg.code == 200){
+                        window.open(msg.data,attachmentName);
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
+            }
+        },
         destroyed(){
 
         }
