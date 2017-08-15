@@ -3,9 +3,9 @@
         <div class="statistics-tab">
             <div class="statistics-tab-btn" flex="box:mean">
                 <button v-for="(item,index) in list" :key="index"
-                    :class="{'active':tab == index}"
-                    @click.stop="change(index)"
-                    v-if="index!=1">{{item.text}}</button>
+                    :class="{'active':tabName == item.name}"
+                    @click.stop="change(index,item.name)"
+                    v-if="item.name!='activeUser'">{{item.text}}</button>
             </div>
         </div>
         <div class="statistics-charts">
@@ -91,50 +91,57 @@
                 dateEndEx:'',
                 sortStyle:'',//排序：desc 降序，asc升序
                 sortCloumn:'',
-                tab:0,
-                //merchantNum:this.$route.query.merchantNum,//商户号
-                list:[
-                    {   
+                tabName:'',
+                list:{
+                    registerCount:{   
                         id:0,
+                        name:'countRegisterUserByMonth',
                         "text":'注册量',
                         array:[]
                     },
-                    {
+                    activeUser:{
                         id:1,
+                        name:'activeUser',
                         "text":'活跃用户',
                         array:[]
                     },
-                    {
+                    startCount:{
                         id:2,
+                        name:'startCountByMonth',
                         "text":'启动次数',
                         array:[]
                     },
-                    {
+                    totalCount:{
                         id:3,
+                        name:'countOpenAccountUserByMonth',
                         "text":'实名认证数',
                         array:[]
                     },
-                    {
+                    conPercent:{
                         id:4,
+                        name:'conPercentByMonth',
                         "text":'投资转化量',
                         array:[]
                     },
-                    {
+                    orderCount:{
                         id:5,
+                        name:'countOrderNumberByMonths',
                         "text":'订单笔数',
                         array:[]
                     },
-                    {
+                    sumPaidAmount:{
                         id:6,
+                        name:'countPaidAmountByMonths',
                         "text":'募集金额',
                         array:[]
                     },
-                    {
+                    userCount:{
                         id:7,
+                        name:'countProductExpiringUserByMonth',
                         "text":'产品到期用户数',
                         array:[]
                     }
-                ],
+                },
                 options:{
                     title: {
                         text: '',
@@ -224,12 +231,13 @@
         },
         created(){
             this.serverUrlOut = $api.serverUrl+'/count/exportExcelReport';
-            this.getRegisterCount();
+            this.change('registerCount','countRegisterUserByMonth');
             this.getTable();
         },
         components: { datepicker },
         computed: {},
         methods: {
+            //排序
             sortChange(sort,index,sortCloumn){
                 this.tabHead.forEach((val,inx)=>{
                     if(val.sortStyle){
@@ -242,43 +250,36 @@
                 this.pageNo = 1;
                 this.getTable();
             },
+            //分页切换
             changePage(){
                 this.$nextTick(()=>{
                     this.getTable();
                 });
             },
-            change(index){
-                this.options.tooltip.valueSuffix = '';
-                if(index == this.tab){
+            //切换button
+            change(key,name){
+                if(name == this.tabName){
                     return false;
                 }
-                this.tab = index;
+                this.tabName = name;
+                this.options.tooltip.valueSuffix = '';
                 this.options.xAxis.categories = [];
                 this.options.series[0].data = [];
-                switch(index){
-                    case 0:
-                        this.getRegisterCount();
-                    break;
-                    case 2:
-                        this.getStartCount();
-                    break;
-                    case 3:
-                        this.getTotalCount();
-                    break;
-                    case 4:
-                        this.getConPercent();
-                    break;
-                    case 5:
-                        this.getOrderCount();
-                    break;
-                    case 6:
-                        this.getSumPaidAmount();
-                    break;
-                    case 7:
-                        this.getUserCount();
-                    break;
+
+                this.options.series[0].name = this.list[key].text;
+                if(key == 'registerCount'){
+                    this.options.series[0].name = '新增用户';
                 }
+                $api.get('/count/'+name).then(msg=>{
+                    if(msg.code == 200){
+                        this.list[key].array = msg.data;
+                        this.list[key].array.forEach((obj,index) =>{
+                            this.arrayPush(obj);
+                        });
+                    }
+                });
             },
+            //查询
             search(){
                 this.sortCloumn = '';
                 this.sortStyle = '';
@@ -291,6 +292,22 @@
                 });
                 this.pageNo = 1;
                 this.getTable();
+            },
+            arrayPush(obj){
+                let days = obj.days;
+                let x = days.substr(5,5);
+                for(let key in obj){
+                    if(key != 'days'){
+                        let value = Number(obj[key]);
+                        //add '%'
+                        if(key == 'conPercent'){
+                            value = this.accMul(value,100);
+                            this.options.tooltip.valueSuffix = '%';
+                        }
+                        this.options.series[0].data.push(value);
+                    }
+                }
+                this.options.xAxis.categories.push(x);
             },
             getTable(){
                 let sortCloumn = this.sortCloumn.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
@@ -308,103 +325,6 @@
                         this.count = msg.data.count;
                     }
                 });
-            },
-            //总注册量
-            getRegisterCount(){
-                $api.get('/count/countRegisterUserByMonth').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[0].array = msg.data;
-                        this.list[0].array.forEach(({days,registerCount},index) =>{
-                            this.arrayPush(days,registerCount,index);
-                        });
-                        this.options.series[0].name = '新增用户';
-                    }
-                });
-            },
-            //启动次数
-            getStartCount(){
-                $api.get('/count/startCountByMonth').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[2].array = msg.data;
-                        this.list[2].array.forEach(({days,startCount},index) =>{
-                            this.arrayPush(days,startCount,index);
-                        });
-                        this.options.series[0].name = '启动次数';
-                    }
-                });
-            },
-            //实名认证数
-            getTotalCount(){
-                $api.get('/count/countOpenAccountUserByMonth').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[3].array = msg.data;
-                        this.list[3].array.forEach(({days,totalCount},index) =>{
-                            this.arrayPush(days,totalCount,index);
-                        });
-                        this.options.series[0].name = '实名认证数';
-                    }
-                });
-            },
-            //投资转化量
-            getConPercent(){
-                $api.get('/count/conPercentByMonth').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[4].array = msg.data;
-                        this.list[4].array.forEach(({days,conPercent},index) =>{
-                            if(index%3==0){
-                                conPercent = 0.02;
-                            }
-                            this.arrayPush(days,this.accMul(conPercent,100),index);
-                        });
-                        this.options.series[0].name = '投资转化量';
-                        this.options.tooltip.valueSuffix = '%';
-                    }
-                });
-            },
-            //订单笔数
-            getOrderCount(){
-                $api.get('/count/countOrderNumberByMonths').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[5].array = msg.data;
-                        this.list[5].array.forEach(({days,orderCount},index) =>{
-                            this.arrayPush(days,orderCount,index);
-                        });
-                        this.options.series[0].name = '订单笔数';
-                    }
-                });
-            },
-            //募集金额
-            getSumPaidAmount(){
-                $api.get('/count/countPaidAmountByMonths').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[6].array = msg.data;
-                        this.list[6].array.forEach(({days,sumPaidAmount},index) =>{
-                            this.arrayPush(days,sumPaidAmount,index);
-                        });
-                        this.options.series[0].name = '募集金额';
-                    }
-                });
-            },
-            //产品到期用户数
-            getUserCount(){
-                $api.get('/count/countProductExpiringUserByMonth').then(msg=>{
-                    if(msg.code == 200){
-                        this.list[7].array = msg.data;
-                        this.list[7].array.forEach(({days,userCount},index) =>{
-                            this.arrayPush(days,userCount,index);
-                        });
-                        this.options.series[0].name = '产品到期用户数';
-                    }
-                });
-            },
-            arrayPush(days,count,index){
-                days = days.substr(5,5);
-                //console.log(days)
-                let x = days;
-                //index%4 == 0 ? x = days : '';
-                this.options.xAxis.categories.push(x);
-                this.options.series[0].data.push(Number(count));
-                //console.log(count)
             },
             accMul(arg1,arg2){
                 let m=0,s1=arg1.toString(),s2=arg2.toString();
