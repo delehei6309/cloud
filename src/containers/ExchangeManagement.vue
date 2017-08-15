@@ -89,7 +89,7 @@
                 <span class="span-close" @click.stop="lookOverShow = false">×</span>
                 <h6>查看协议</h6>
                 <div class="content" flex="dir:top  box:mean" flex-box="1">
-                    <div flex="dir:top main:center"><a @click.stop="postPdf()">《认购协议》</a></div>
+                    <div flex="dir:top main:center"><a :href="agreementSrc" target="_blank">《认购协议》</a></div>
                     <!-- <div flex="dir:top main:center"><a href="">《转让协议》</a></div> -->
                 </div>
                 <div class="box-bottom"><b-btn class="btn" @click.stop="lookOverShow = false">关闭</b-btn></div>
@@ -170,7 +170,8 @@
                 },
                 currentPage: 1,
                 perPage: 10,
-                canClick:true
+                canClick:true,
+                fileName:''
             }
         },
         components: { datepicker },
@@ -192,26 +193,23 @@
             }
         },
         methods: {
-            lookOver(src){
-                this.agreementSrc = src;
-                this.lookOverShow = true;
-            },
-            postPdf(){
+            lookOver(fileName){
                 if(!this.canClick){
                     return false;
                 }
                 this.canClick = false;
                 $api.post('/trade/getAccessFileUrl',{
-                    fileName:this.agreementSrc
+                    fileName:fileName
                 }).then(msg => {
                     if(msg.code == 200){
                         this.canClick = true;
-                        window.open(msg.data,'协议');
+                        this.agreementSrc = msg.data;
                     }else{
                         Toast(msg.msg);
                         this.canClick = true;
                     }
                 });
+                this.lookOverShow = true;
             },
             change(){
                 setTimeout(()=>{
