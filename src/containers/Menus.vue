@@ -29,14 +29,14 @@
             </div>
             <router-view flex-box="1" class="content-view"></router-view>
         </div>
-        <cloud-footer></cloud-footer>
+        <index-footer></index-footer>
 
     </div>
 </template>
 
 <script>
     import CloudHeader from '../components/CloudHeader';
-    import CloudFooter from '../components/CloudFooter';
+    import IndexFooter from '../components/IndexFooter';
     import '../less/menus.less';
     import $api from '../tools/api';
     import {logout} from '../tools/operation';
@@ -118,7 +118,7 @@
         },
         components: {
             CloudHeader,
-            CloudFooter
+            IndexFooter
         },
         computed: {
             route: function () {
