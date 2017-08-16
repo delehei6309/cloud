@@ -2,7 +2,7 @@
     <div class="index-footer">
         <div class="footer-content" flex>
             <div class="footer-left" flex-box="1">
-                <div class="main-title">中冀汇通</div>
+                <div class="main-title">深圳买单</div>
                 <div class="sub-title">国内首家专业智能云服务</div>
                 <div class="copy-info">
                     Copyright@2017 all rights reserved 粤ICP备17086866号-1 深证买单互联网金融服务有限公司
