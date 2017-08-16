@@ -206,7 +206,7 @@
         <div class="content content6">
             <h2>渠道结算</h2>
             <div class="main main-bottom" flex="">
-               <div class="div-name">比例：</div>
+               <div class="div-name">年化比例：</div>
                <div class="div-rate">{{productData.channel_charge_rate | translatePate}}</div>
             </div>
         </div>
