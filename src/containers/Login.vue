@@ -205,11 +205,12 @@
                 }
                 this.verifyTimeLeft = 59;
                 this.timeCount();
-                this.verifyText = '重新发送';
+
                 $api.postSys('/a/sys/user/captcha/register', data)
                     .then(res => {
                         console.log(res);
                         if (res.code == 200) {
+                            this.verifyText = '重新发送';
                             this.errInfo = '';
                             return false;
                         }

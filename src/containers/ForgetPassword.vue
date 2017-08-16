@@ -32,6 +32,7 @@
 
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">设置新密码</label>
+                        <input type="hidden"  v-model.trim="password">
                         <input class="form-input" type="password" flex-box="0" maxlength="20"
                                v-model.trim="password" placeholder="请输入密码">
                         <span v-show="errPass" class="err-info" flex-box="1">{{errPass}}</span>
