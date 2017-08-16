@@ -51,7 +51,7 @@
                                 <td>{{item.registerCount}}</td>
                                 <td>{{item.startCount}}</td>
                                 <td>{{item.openAccountCount}}</td>
-                                <td>{{item.conPercent | translatePate}}</td>
+                                <td>{{item.conPercent+'%'}}</td>
                                 <td>{{item.orderCount}}</td>
                                 <td>{{item.sumPaidAmount | currencyFormat}}</td>
                                 <td>{{item.expUserQuantity}}</td>
