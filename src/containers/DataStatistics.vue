@@ -39,10 +39,7 @@
                     <table class="table b-table table-bordered">
                         <thead>
                             <tr>
-                                <th v-for="(item,index) in tabHead" :key="index"
-                                    :class="{'sorting':item.sortStyle,'sorting_desc':item.sortStyle=='desc','sorting_asc':item.sortStyle=='asc'}"
-                                    @click.stop="sortChange(item.sortStyle,index,item.value)"
-                                    >{{item.text}}</th>
+                                <th v-for="(item,index) in tabHead" :key="index">{{item.text}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,7 +48,7 @@
                                 <td>{{item.registerCount}}</td>
                                 <td>{{item.startCount}}</td>
                                 <td>{{item.openAccountCount}}</td>
-                                <td>{{item.conPercent+'%'}}</td>
+                                <td>{{item.conPercent}}</td>
                                 <td>{{item.orderCount}}</td>
                                 <td>{{item.sumPaidAmount | currencyFormat}}</td>
                                 <td>{{item.expUserQuantity}}</td>
@@ -314,8 +311,8 @@
                     statisticsReportDateTo:this.dateEnd || null,
                     pageSize:this.pageSize,
                     pageNo:this.pageNo,
-                    sortStyle:this.sortStyle,
-                    sortCloumn:sortCloumn
+                    //sortStyle:this.sortStyle,
+                    //sortCloumn:sortCloumn
 
                 }).then(msg=>{
                     if(msg.code == 200){
