@@ -50,7 +50,7 @@
                 //merchantNum:this.$route.query.merchantNum,
                 tab:0,
                 lists:null,
-                listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>','到期笔数<i>（今）</i>'],
+                listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>'],
                 options:{
                     title: {
                         text: '',
@@ -129,8 +129,8 @@
         created(){
             timeDeal();
             $api.get('/count/indexCount').then(msg=>{
-                console.log('msg---->',msg)
                 if(msg.code == 200){
+                    msg.data.splice(msg.data.length-1,1);
                     this.lists = msg.data;
                     if(this.lists.length>0){
                         this.setOption(this.tab);
