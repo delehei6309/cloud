@@ -1237,6 +1237,7 @@
                     parmData.compAddress = '';
                     parmData.legalPersonIdImgPath = '';
                     parmData.businessLicenceImgPath = '';
+                    parmData.orgCodeImgPath = '';
                     parmData.taxRegImgPath = '';
                     parmData.linkmanName = '';
                     parmData.linkmanPhone = '';
