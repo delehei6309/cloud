@@ -298,13 +298,11 @@
                 let x = days.substr(5,5);
                 for(let key in obj){
                     if(key != 'days'){
-                        let value = Number(obj[key]);
                         //add '%'
                         if(key == 'conPercent'){
-                            value = this.accMul(value,100);
                             this.options.tooltip.valueSuffix = '%';
                         }
-                        this.options.series[0].data.push(value);
+                        this.options.series[0].data.push(Number(obj[key]));
                     }
                 }
                 this.options.xAxis.categories.push(x);
