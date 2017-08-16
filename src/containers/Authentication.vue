@@ -52,8 +52,8 @@
                                         >
                                     </div>
                                     <div class="infor-right" v-show="item.error">
-                                        <span v-if="item.model.length<1">！统一社会信用代码不能为空</span>
-                                        <span v-else>！请输入正确的统一社会信用代码</span>
+                                        <span v-if="item.model.length<1">！统一社会信用代码或组织机构代码不能为空</span>
+                                        <span v-else>！请输入正确的统一社会信用代码或组织机构代码</span>
                                     </div>
                                 </template>
                                 <template v-else>

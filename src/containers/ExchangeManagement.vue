@@ -170,6 +170,8 @@
                 },
                 currentPage: 1,
                 perPage: 10,
+                canClick:true,
+                fileName:''
             }
         },
         components: { datepicker },
@@ -191,18 +193,23 @@
             }
         },
         methods: {
-            lookOver(src){
-                let fileName = '认购协议';
+            lookOver(fileName){
+                if(!this.canClick){
+                    return false;
+                }
+                this.canClick = false;
                 $api.post('/trade/getAccessFileUrl',{
                     fileName:fileName
                 }).then(msg => {
                     if(msg.code == 200){
+                        this.canClick = true;
                         this.agreementSrc = msg.data;
-                        this.lookOverShow = true;
                     }else{
                         Toast(msg.msg);
+                        this.canClick = true;
                     }
                 });
+                this.lookOverShow = true;
             },
             change(){
                 setTimeout(()=>{
