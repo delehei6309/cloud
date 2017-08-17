@@ -910,31 +910,29 @@
                 let bankCardNum = this.bank.lists[2].model.replace(/\s+/g, "");
                 if(bankCardNum.length<6){
                     this.theBank = '';
+                    return false;
                 }
-                if(bankCardNum.length == 6){
-                    $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
-                        if(msg.code == 200){
-                            this.theBank = msg.data.depositBank;
-                        }else{
-                            Toast(msg.msg);
-                        }
-                    });
-                }
+                $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
+                    if(msg.code == 200){
+                        this.theBank = msg.data.depositBank;
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             },
             iGainBank(){
                 let bankCardNum = this.iBank.lists[2].model.replace(/\s+/g, "");
                 if(bankCardNum.length<6){
                     this.iTheBank = '';
+                    return false;
                 }
-                if(bankCardNum.length == 6){
-                    $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
-                        if(msg.code == 200){
-                            this.iTheBank = msg.data.depositBank;
-                        }else{
-                            Toast(msg.msg);
-                        }
-                    });
-                }
+                $api.get('/user/depositBank/'+bankCardNum).then(msg => {//6225880100567339
+                    if(msg.code == 200){
+                        this.iTheBank = msg.data.depositBank;
+                    }else{
+                        Toast(msg.msg);
+                    }
+                });
             },
             errorhandle(error){
                 if(error.indexOf('TOO LARGER MAX') != -1){
