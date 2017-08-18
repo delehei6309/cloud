@@ -14,18 +14,3 @@ weixin-vue-test:
     - scp -r dist/* web@47.93.35.76:/home/web/webhive/nginx/cloud/dist
     - scp -r html/* web@47.93.35.76:/home/web/webhive/nginx/cloud
 
-weixin-vue-build:
-  cache:
-    untracked: true
-    paths:
-    - node_modules/
-  tags:
-    - weixin-jq-tag
-  script:
-     - echo 'start...'
-
-  only:
-    - build
-  after_script:
-    - scp -r dist/* web@47.93.35.76:/home/web/cloud/dist
-    - scp -r html/* web@47.93.35.76:/home/web/cloud
