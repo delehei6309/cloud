@@ -11,4 +11,4 @@ export const telNumber = '400-640-3606';
 
 export const sysDev = 'http://open-account-dev.zj-wm.cn:8686';
 export const sysTest = 'http://open-account-test.zj-wm.cn:8080';
-export const sysProduction = `${protocol}//open-account.zj-wm.cn`;
+export const sysProduction = `${protocol}//zj-cop-user.zj-wm.cn`;
