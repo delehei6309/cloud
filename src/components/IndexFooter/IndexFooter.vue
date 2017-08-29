@@ -3,7 +3,7 @@
         <div class="footer-content" flex>
             <div class="footer-left" flex-box="1">
                 <div class="main-title">深圳买单</div>
-                <div class="sub-title">国内首家专业开发金融云服务</div>
+                <div class="sub-title">国内首家专业开放金融云服务</div>
                 <div class="copy-info">
                     Copyright © 2017 all rights reserved  深圳买单互联网金融服务有限公司
                     <br>
