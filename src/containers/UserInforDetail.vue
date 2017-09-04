@@ -35,18 +35,23 @@
             <h2>实名认证</h2>
             <div class="content">
                 <ul class="left">
-                   <li class="auth-ul">
-                        <span class="title">姓名：</span>
-                        <span class="info">{{userData.investorRealName || '--'}}</span>
-                    </li>
-                    <li class="auth-ul">
-                        <span class="title">身份证号：</span>
-                        <span class="info">{{userData.investorIdCardNo || '--'}}</span>
-                    </li>
-                    <li class="auth-ul">
-                        <span class="title">认证时间：</span>
-                        <span class="info">{{userData.openAccountTime | timeFormat}}</span>
-                    </li>
+                    <template v-if="userData.userVerifyStatus < 1">
+                        <li><span class="title">未实名</span></li>
+                    </template>
+                    <template v-else>
+                        <li class="auth-ul">
+                            <span class="title">姓名：</span>
+                            <span class="info">{{userData.investorRealName || '--'}}</span>
+                        </li>
+                        <li class="auth-ul">
+                            <span class="title">身份证号：</span>
+                            <span class="info">{{userData.investorIdCardNo || '--'}}</span>
+                        </li>
+                        <li class="auth-ul">
+                            <span class="title">认证时间：</span>
+                            <span class="info">{{userData.openAccountTime | timeFormat}}</span>
+                        </li>
+                    </template>
                 </ul>
             </div>
         </div>
@@ -54,14 +59,19 @@
             <h2>银行卡</h2>
             <div class="content">
                 <ul class="left">
-                    <li class="auth-ul">
-                        <span class="title">银行卡号：</span>
-                        <span class="info">{{userData.bankUserCardNo || '--'}}</span>
-                    </li>
-                    <li class="auth-ul">
-                        <span class="title">开户行：</span>
-                        <span class="info">{{userData.depositBank || '--'}}</span>
-                    </li>
+                    <template v-if="userData.userVerifyStatus <= 2">
+                        <li><span class="title">未绑卡</span></li>
+                    </template>
+                    <template v-else>
+                        <li class="auth-ul">
+                            <span class="title">银行卡号：</span>
+                            <span class="info">{{userData.bankUserCardNo || '--'}}</span>
+                        </li>
+                        <li class="auth-ul">
+                            <span class="title">开户行：</span>
+                            <span class="info">{{userData.depositBank || '--'}}</span>
+                        </li>
+                    </template>
                 </ul>
             </div>
         </div>

@@ -134,6 +134,7 @@
                                                     @imagechanged = "imagechanged(item.status)"
                                                     @errorhandle ="errorhandle">
                                                 </vue-core-image-upload>
+                                                <div class="bin" v-if="item.progress == 100 && !disabled" @click="photoDelte(item)"></div>
                                             </div>
                                             <div>{{item.text}}</div>
                                         </div>
@@ -339,6 +340,7 @@
                                             </vue-core-image-upload>
                                         </div>
                                         <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传手持身份证正面照，大小不超过2M</div>
+                                        <div class="example"><img src="../images/code-img.jpg"></div>
                                     </div>
                                 </div>
                             </div>
@@ -555,7 +557,7 @@
                         loading:false,
                         fileTitle:'请选择上传图片',
                         dom:'iImg1',
-                        src:null
+                        src:''
                     }
                 },
                 iPhotoError1:false,
@@ -737,7 +739,7 @@
                             loading:false,
                             fileTitle:'请选择上传图片',
                             dom:'img2',
-                            src:null
+                            src:''
                         },
                         {
                             status:3,
@@ -746,7 +748,7 @@
                             loading:false,
                             fileTitle:'请选择上传图片',
                             dom:'img2',
-                            src:null
+                            src:''
                         },
                         {
                             status:4,
@@ -755,7 +757,7 @@
                             loading:false,
                             dom:'img2',
                             fileTitle:'请选择上传图片',
-                            src:null
+                            src:''
                         }
                     ],
                     linkIdCard:[
@@ -862,9 +864,13 @@
                     this.uploadPhotos.qualification[0].src = data.businessLicenceImgPath;
                     this.uploadPhotos.qualification[0].progress = 100;
                     this.uploadPhotos.qualification[1].src = data.orgCodeImgPath;
-                    this.uploadPhotos.qualification[1].progress = 100;
+                    if (this.uploadPhotos.qualification[1].src) {
+                        this.uploadPhotos.qualification[1].progress = 100;
+                    }
                     this.uploadPhotos.qualification[2].src = data.taxRegImgPath;
-                    this.uploadPhotos.qualification[2].progress = 100;
+                    if (this.uploadPhotos.qualification[2].src) {
+                        this.uploadPhotos.qualification[2].progress = 100;
+                    }
                     this.bank.type.selected = data.accountType || 0;
                     this.bank.address.province = data.depositBankProvince;
                     this.bank.address.city = data.depositBankCity;
@@ -1023,6 +1029,10 @@
                 this.photo(status).progress = 0;
                 this.data.parm = status;
                 this.setProcess(status);
+            },
+            photoDelte(item) {
+                item.progress = 0;
+                item.src = '';
             },
             submit(){
                 if(this.btnDisabled){
@@ -1259,7 +1269,7 @@
                         }
                     }else{
                         Toast(msg.msg);
-                        this.btnDisabled = false;
+                        this.btndisabled = false;
                     }
                 });
             },

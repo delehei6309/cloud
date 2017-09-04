@@ -8,10 +8,14 @@
                 <div flex="main:justify">
                     <div>
                         <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                        <b-form-input type="text" v-model="inputVal"></b-form-input>
+                        <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
                         <span>产品状态</span>
                         <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
+                        <span>上架状态</span>
+                        <b-form-select v-model="selectedProductOnStatus" :options="optionsProductOnStatus" size="sm"></b-form-select>
                     </div>
+                </div>
+                <div flex="main:justify">
                     <div class="input-wrap" flex>
                         <div class="date-text">创建时间：</div>
                         <div class="input-date"><datepicker language="ch" v-model="dateStart"></datepicker></div>
@@ -40,9 +44,13 @@
                         <template v-if="item.value == 3">已下架</template>
                     </template>
                     <template slot="productStatus" scope="item">
+                        <template v-if="item.value == 1">预热中</template>
                         <template v-if="item.value == 2">募集中</template>
                         <template v-if="item.value == 3">已售罄</template>
                         <template v-if="item.value == 4">已成立</template>
+                        <template v-if="item.value == 5">封闭期</template>
+                        <template v-if="item.value == 6">存续期</template>
+                        <template v-if="item.value == 7">已结束</template>
                         <template v-if="item.value == 8">已到期</template>
                         <template v-if="item.value == 9">已兑付</template>
                     </template>
@@ -81,23 +89,34 @@
                 dateStart:null,
                 dateEnd:null,
                 filter: "0.01",
-                selectedBase: 1,
-                selectedProductStatus: null,
+                selectedBase: '',
+                selectedProductStatus: '',
+                selectedProductOnStatus: '',
                 //selectedIsRecommend: null,
                 inputVal: '',
                 optionsBase: [
+                    {
+                        text: '全部',
+                        value: ''
+                    },
                     {
                         text: '产品编号',
                         value: 1
                     },{
                         text: '产品名称',
                         value: 2
-                    }
+                    }/*,{
+                        text: '上架',
+                        value: 3
+                    }*/
                 ],
                 optionsProductStatus:[
                     {
                         text: '全部',
-                        value: null,
+                        value: '',
+                    },{
+                        text: '预热中',
+                        value: 1,
                     },{
                         text: '募集中',
                         value: 2,
@@ -108,11 +127,35 @@
                         text: '已成立',
                         value: 4,
                     },{
+                        text: '封闭期',
+                        value: 5,
+                    },{
+                        text: '存续期',
+                        value: 6,
+                    },{
+                        text: '已结束',
+                        value: 7,
+                    },{
                         text: '已到期',
                         value: 8,
                     },{
                         text: '已兑付',
                         value: 9,
+                    }
+                ],
+                optionsProductOnStatus: [
+                    {
+                        value: '',
+                        text: '全部'
+                    },{
+                        value: 1,
+                        text: '未上架'
+                    },{
+                        value: 2,
+                        text: '已上架'
+                    },{
+                        value: 3,
+                        text: '已下架'
                     }
                 ],
                 /*optionsIsRecommend: [
@@ -178,6 +221,7 @@
                     pageNo:this.currentPage,
                     pageSize:this.perPage,
                     ProductStatus:this.selectedProductStatus,
+                    ProductOnStatus:this.selectedProductOnStatus,
                     productCode:this.productCode,
                     productAbbrName:this.productAbbrName,
                     productOpenTimeFrom:this.dateStart,

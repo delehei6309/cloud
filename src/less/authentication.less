@@ -147,7 +147,18 @@
                     height:100% !important;
                 }
             }
-
+            .bin {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                display: block;
+                width: 32px;
+                height: 32px;
+                background: url(../images/icon/bin.png);
+                background-size:  100% 100%;
+                cursor: pointer;
+                z-index: 999;
+            }
         }
         .uploading:after,.uploading:before{
             content: "";
@@ -295,6 +306,13 @@
                         border-radius: 4px;
                         .span-percent{
                             line-height: 130px;
+                        }
+                    }
+                    .example {
+                        height: 130px;
+                        max-width: 200px;
+                        img {
+                            height: 100%;
                         }
                     }
                 }

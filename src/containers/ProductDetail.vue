@@ -186,18 +186,14 @@
                     </li>
                     <li flex>
                         <span class="title" >放款状态：</span>
-                        <span class="info" v-if="productData.investTransactionStatus == 1">待审核</span>
-                        <span class="info" v-else-if="productData.investTransactionStatus == 2">审核通过</span>
-                        <span class="info" v-else-if="productData.investTransactionStatus == 3">已兑付</span>
-                        <span class="info" v-else-if="productData.investTransactionStatus == -1">审核失败</span>
+                        <span class="info" v-if="productData.investTransactionStatus >= 5 && productData.investTransactionStatus != 21">已放款</span>
+                        <span class="info" v-else-if="productData.investTransactionStatus < 5">未放款</span>
                         <span class="info" v-else>--</span>
                     </li>
                     <li flex>
                         <span class="title" >还款状态：</span>
-                        <span class="info" v-if="productData.paymentTransactionStatus == 1">待审核</span>
-                        <span class="info" v-else-if="productData.paymentTransactionStatus == 2">审核通过</span>
-                        <span class="info" v-else-if="productData.paymentTransactionStatus == 3">已兑付</span>
-                        <span class="info" v-else-if="productData.paymentTransactionStatus == -1">审核失败</span>
+                        <span class="info" v-if="productData.paymentTransactionStatus >= 9 && productData.paymentTransactionStatus != 21">已兑付</span>
+                        <span class="info" v-else-if="productData.paymentTransactionStatus < 9">未兑付</span>
                         <span class="info" v-else>--</span>
                     </li>
                 </ul>
