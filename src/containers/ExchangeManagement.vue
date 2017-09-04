@@ -42,9 +42,9 @@
                         <template slot="orderAmount" scope="item">
                             {{item.value | currencyFormat}}
                         </template>
-                        <template slot="marketingAmount" scope="item">
+                        <!-- <template slot="marketingAmount" scope="item">
                             {{item.value | currencyFormat}}
-                        </template>
+                        </template> -->
                         <template slot="paidAmount" scope="item">
                             {{item.value | currencyFormat}}
                         </template>
@@ -160,6 +160,7 @@
                     productPeriod: { label: '投资期限' },
                     productAnnualInterestRate: { label: '加息前年化收益率' },
                     orderAmount: { label: '投资金额（元）' },
+                    //marketingAmount: { label: '红包金额（元）' },
                     paidAmount: { label: '支付金额（元）' },
                     expectedProfitAmount: { label: '预计到期收益（元）' },
                     payedTime: { label: '支付时间' },

@@ -21,6 +21,7 @@
     import './cloud-header.less';
     import Toast from '../Toast';
     import $api from '../../tools/api';
+    import {logout} from '../../tools/operation';
     export default {
         name: 'cloud-header',
         data(){
@@ -28,7 +29,7 @@
                 userMobile: '18997296307',
             }
         },
-        props:['userInfo'],
+        props: ['userInfo'],
         created(){
         },
         computed: {
@@ -38,12 +39,12 @@
         },
         methods: {
             loginOut(){
-
                 $api.postSys('/a/logout').then(res => {
+                    logout();
                     if (res.code == 200) {
                         return false;
                     }
-                    Toast(res.msg);
+                    // Toast(res.msg);
                 })
             }
         },

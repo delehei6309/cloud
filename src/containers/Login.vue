@@ -103,7 +103,7 @@
                 </div>
 
                 <div class="login-footer">
-                    北京中冀汇通天下互联网科技有限公司提供服务
+                    深圳买单互联网金融服务有限公司提供服务
                 </div>
             </div>
         </div>
@@ -205,11 +205,12 @@
                 }
                 this.verifyTimeLeft = 59;
                 this.timeCount();
-                this.verifyText = '重新发送';
+
                 $api.postSys('/a/sys/user/captcha/register', data)
                     .then(res => {
                         console.log(res);
                         if (res.code == 200) {
+                            this.verifyText = '重新发送';
                             this.errInfo = '';
                             return false;
                         }

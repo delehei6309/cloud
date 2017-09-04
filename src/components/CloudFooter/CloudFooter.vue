@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">Copyright © 2017 all rights reserved 北京中冀汇通天下互联网科技有限公司版权所有</div>
+        <div class="footer-bottom">Copyright © 2017 all rights reserved 深圳买单互联网金融服务有限公司</div>
     </div>
 </template>
 
