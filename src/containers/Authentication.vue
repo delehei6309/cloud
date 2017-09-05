@@ -313,7 +313,7 @@
                             </li>
                             <div class="content-upload">
                                 <div class="upload">
-                                    <div class="idcard" flex :class="iUploadPhotos.idCard.dom">
+                                    <div class="idcard nobottom" flex :class="iUploadPhotos.idCard.dom">
                                         <div class="upload-text"><span v-if="!disabled">上传</span><span>手持身份证正面照</span></div>
                                         <div class="idcard-box upload-img-box" :class="{uploading:iUploadPhotos.idCard.progress<=0}">
                                             <span class="span-bg"
@@ -340,7 +340,12 @@
                                             </vue-core-image-upload>
                                         </div>
                                         <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传手持身份证正面照，大小不超过2M</div>
-                                        <div class="example"><img src="../images/code-img.jpg"></div>
+                                        <div class="example">
+                                            <div class="upload-img-box">
+                                                <img src="../images/idCard-example.png">
+                                            </div>
+                                            <p>示例</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

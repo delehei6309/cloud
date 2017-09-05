@@ -8,7 +8,7 @@
                 <div flex="main:justify">
                     <div>
                         <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                        <b-form-input type="text" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
+                        <b-form-input type="text" :readonly="!selectedBase" v-model="inputVal" placeholder="请输入产品信息"></b-form-input>
                         <span>产品状态</span>
                         <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                         <span>上架状态</span>
@@ -53,6 +53,7 @@
                         <template v-if="item.value == 7">已结束</template>
                         <template v-if="item.value == 8">已到期</template>
                         <template v-if="item.value == 9">已兑付</template>
+                        <template v-if="item.value == 9">已作废</template>
                     </template>
                     <template slot="createTime" scope="item">
                         {{item.value | timeFormat}}
@@ -141,6 +142,9 @@
                     },{
                         text: '已兑付',
                         value: 9,
+                    },{
+                        text: '已作废',
+                        value: 21,
                     }
                 ],
                 optionsProductOnStatus: [

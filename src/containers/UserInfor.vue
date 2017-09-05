@@ -8,7 +8,7 @@
             <div class="inquire">
                 <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
                 <b-form-input type="text" size="sm" v-model="inputVal"></b-form-input>
-                <span>开户进度</span>
+                <span>投资进度</span>
                 <b-form-select v-model="progressSelected" :options="progressOptions" size="sm"></b-form-select>
                 <b-btn class="btn" @click.native="query">查询</b-btn>
             </div>
@@ -84,18 +84,15 @@
                     },{
                         value: '5',
                         text: '已投资'
-                    },{
-                        value: '',
-                        text: '全部'
                     }
                 ],
-                progressSelected: '',
+                progressSelected: 0,
                 items: [],
                 fields: {
                     userId: { label: '用户ID' },
                     investorRealName:{label:'姓名'},
                     investorMobile: { label: '手机号' },
-                    userVerifyStatus: { label: '开户进度' },
+                    userVerifyStatus: { label: '投资进度' },
                     investorRiskScore: { label: '风险测评' },
                     registerTime: { label: '注册时间' },
                     userUuid: { label: '操作' },
