@@ -18,12 +18,14 @@
             <div class="table-wrap" flex-box="1">
                 <b-table :items="items" :fields="fields"  bordered>
                     <template slot="userVerifyStatus" scope="item">
-                        <template v-if="item.value == 0">已注册</template>
-                        <template v-if="item.value == 1">已实名</template>
-                        <template v-if="item.value == 2">已授权</template>
-                        <template v-if="item.value == 3">已绑卡</template>
-                        <template v-if="item.value == 4">已充值</template>
-                        <template v-if="item.value == 5">已投资</template>
+                        <template v-if="item.item.userTradeStatus == 1">已充值</template>
+                        <template v-if="item.item.userTradeStatus == 2">已投资</template>
+                        <template v-if="(item.item.userTradeStatus != 1) && (item.item.userTradeStatus != 2)">
+                            <template v-if="(item.value == 0) && (item.item.userTradeStatus<1)">已注册</template>
+                            <template v-if="(item.value == 1) && (item.item.userTradeStatus<1)">已实名</template>
+                            <template v-if="(item.value == 2) && (item.item.userTradeStatus<1)">已授权</template>
+                            <template v-if="((item.value == 3) || (item.value == 9)) && (item.item.userTradeStatus<1)">已绑卡</template>
+                        </template>
                     </template>
                     <template slot="investorRiskScore" scope="item">{{ item.value == 0 ? '未测评' : '已测评'}}</template>
                     <template slot="registerTime" scope="item">{{ item.value | timeFormat }}</template>

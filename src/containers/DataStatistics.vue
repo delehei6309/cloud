@@ -52,6 +52,7 @@
                                 <td>{{item.orderCount}}</td>
                                 <td>{{item.sumPaidAmount | currencyFormat}}</td>
                                 <td>{{item.expUserQuantity}}</td>
+                                <td>{{item.expirCount}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -137,6 +138,12 @@
                         name:'countProductExpiringUserByMonth',
                         "text":'产品到期用户数',
                         array:[]
+                    },
+                    countExpiring:{
+                        id:8,
+                        name:'countExpiringNumberByMonths',
+                        "text":'产品到期笔数',
+                        array:[]
                     }
                 },
                 options:{
@@ -188,7 +195,7 @@
                         text:'日期'
                     },
                     {
-                        value:'days',
+                        value:'registerCount',
                         text:'注册量'
                     },
                     {
@@ -219,6 +226,11 @@
                     {
                         value:'expUserQuantity',
                         text:'产品到期用户数',
+                        sortStyle:true
+                    },
+                    {
+                        value:'expirCount',
+                        text:'产品到期笔数',
                         sortStyle:true
                     }
                 ],

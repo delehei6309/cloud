@@ -50,7 +50,7 @@
                 //merchantNum:this.$route.query.merchantNum,
                 tab:0,
                 lists:null,
-                listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>'],
+                listText:['总注册量','下单笔数<i>（今）</i>','募集总额<i>（今）</i>','启动次数<i>（今）</i>'],
                 options:{
                     title: {
                         text: '',
@@ -130,7 +130,7 @@
             timeDeal();
             $api.get('/count/indexCount').then(msg=>{
                 if(msg.code == 200){
-                    msg.data.splice(msg.data.length-1,1);
+                    //msg.data.splice(msg.data.length-1,1);
                     this.lists = msg.data;
                     if(this.lists.length>0){
                         this.setOption(this.tab);
@@ -150,7 +150,6 @@
             setOption(tab){
                 let todayList = this.lists[tab].todayList;
                 let yesterdayList = this.lists[tab].yesterdayList;
-                //this.supplement(yesterdayList);
                 this.options.series[0].data = this.supplement('today',todayList);
                 this.options.series[1].data = this.supplement('yesterday',yesterdayList);
             },
@@ -175,7 +174,7 @@
 
                 }
                 arr.forEach(({hours,totalCount}) =>{
-                    thatArr[setNormal(hours)] = totalCount;
+                    thatArr[setNormal(hours)] = Number(totalCount);
                 });
                 return thatArr;
             }

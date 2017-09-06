@@ -16,6 +16,7 @@ import ProductDetail  from '../containers/ProductDetail';
 import ExchangeManagement  from '../containers/ExchangeManagement';
 import ForgetPassword from '../containers/ForgetPassword';
 import DataStatistics from '../containers/DataStatistics';
+import BillRecord from '../containers/BillRecord';
 const title = '开放平台';
 let routes = [
     {
@@ -118,6 +119,14 @@ let routes = [
             {
                 path:'/information',
                 component:Information,
+                meta: {
+                    title: title,
+                },
+            },
+            {
+                path:'bill-record',
+                name:'bill-record',
+                component:BillRecord,
                 meta: {
                     title: title,
                 },
