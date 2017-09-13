@@ -1,25 +1,27 @@
 <template>
-    <div class="user-infor exchange-manage">
+    <div class="user-infor bill-record">
         <div flex="dir:top" class="user-infor-box">
             <div flex-box="0">
                 <!--页面抬头-->
-                <div class="title">定期订单管理</div>
+                <div class="title">渠道结算记录</div>
                 <!--查询条件-->
                 <div class="inquire">
                     <div flex="main:justify">
+                        <div flex>
+                            <div>
+                                <b-form-select v-model="selectedYearFrom" :options="optionsYears" size="sm"></b-form-select>
+                                <b-form-select v-model="selectedMonthFrom" :options="optionsMonths" size="sm"></b-form-select>
+                            </div>
+                            <div class="space">到</div>
+                            <div>
+                                <b-form-select v-model="selectedYearTo" :options="optionsYears" size="sm"></b-form-select>
+                                <b-form-select v-model="selectedMonthTo" :options="optionsMonths" size="sm"></b-form-select>
+                            </div>
+                        </div>
                         <div>
-                            <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                            <b-form-input type="text" v-model="inputVal"></b-form-input>
-                            <span>状态</span>
-                            <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
+                            <b-btn class="btn" @click.native="query">查询</b-btn>
+                            <b-btn class="btn" @click.native="query">导出excel</b-btn>
                         </div>
-                        <div class="input-wrap" flex>
-                            <div class="date-text">创建时间：</div>
-                            <div class="input-date"><datepicker language="ch" v-model="dateStart"></datepicker></div>
-                            <div class="date-text">到</div>
-                            <div class="input-date"><datepicker language="ch" v-model="dateEnd"></datepicker></div>
-                        </div>
-                        <b-btn class="btn" @click.native="query">查询</b-btn>
                     </div>
                 </div>
             </div>
@@ -68,8 +70,8 @@
                             <template v-if="item.value == 5">已到期兑付</template>
                             <template v-if="item.value == 9">已撤消</template>
                         </template>
-                        <template slot="subcontractFilepath" scope="item">
-                            <template v-if="(item.item.orderStatus == 3) || (item.item.orderStatus == 4) || (item.item.orderStatus == 5)"><a class="look-over" @click.stop="lookOver(item.value)">查看协议</a></template>
+                        <template slot="operation" scope="item">
+                            <router-link :to="{path: 'bill-record-detail',query:{userUuid:item.value}}">详情</router-link>
                         </template>
                     </b-table>
                 </div>
@@ -112,61 +114,64 @@
                 agreementSrc:'',
                 dateStart:null,
                 dateEnd:null,
-                selectedBase: 1,
+                //selectedYearFrom: '2017',
+                //selectedYearTo: '2017',
+                /*selectedMonthFrom:1,
+                selectedMonthTo:1,*/
                 selectedProductStatus: null,
                 //selectedIsRecommend: 'all',
                 //belongMerchantNum:this.$route.query.belongMerchantNum,
                 inputVal: '',
-                optionsBase: [
+                optionsYears: [],
+                optionsMonths: [
                     {
-                        text: '产品名称',
-                        value: 1
-                    },{
-                        text: '订单编号',
-                        value: 2
-                    }
-                ],
-                optionsProductStatus: [
-                    {
-                        text: '全部',
-                        value: null,
-                    },{
-                        text: '待支付',
+                        text: '1月',
                         value: 1,
                     },{
-                        text: '已支付',
+                        text: '2月',
                         value: 2,
                     },{
-                        text: '计息中',
-                        value: 3,
+                        text: '3月',
+                        value: 2,
                     },{
-                        text: '已到期',
+                        text: '4月',
                         value: 4,
                     },{
-                        text: '已到期兑付',
+                        text: '5月',
                         value: 5,
                     },{
-                        text: '已撤消',
+                        text: '6月',
+                        value: 6,
+                    },{
+                        text: '7月',
+                        value: 7,
+                    },{
+                        text: '8月',
+                        value: 8,
+                    },{
+                        text: '9月',
                         value: 9,
+                    },{
+                        text: '10月',
+                        value: 10,
+                    },{
+                        text: '11月',
+                        value: 11,
+                    },{
+                        text: '12月',
+                        value: 12,
                     }
                 ],
                 items: [],
                 fields: {
-                    orderBillCode: { label: '订单号' },
-                    userPhone: { label: '用户名' },
-                    productAbbrName: { label: '产品名称' },
-                    productPeriod: { label: '投资期限' },
-                    productAnnualInterestRate: { label: '加息前年化收益率' },
-                    orderAmount: { label: '投资金额（元）' },
-                    //marketingAmount: { label: '红包金额（元）' },
-                    paidAmount: { label: '支付金额（元）' },
-                    expectedProfitAmount: { label: '预计到期收益（元）' },
-                    createTime: { label: '创建时间' },
-                    payedTime: { label: '支付时间' },
-                    transactionChannel: { label: '下单渠道' },
-                    organization: { label: '所属机构' },
-                    orderStatus: { label: '状态' },
-                    subcontractFilepath: { label: '操作' },
+                    orderBillCode: { label: '结算日期' },
+                    userPhone: { label: '结算单号' },
+                    productAbbrName: { label: '渠道商户号' },
+                    productPeriod: { label: 'APP名称' },
+                    productAnnualInterestRate: { label: '合计笔数' },
+                    orderAmount: { label: '合计返佣总额' },
+                    paidAmount: { label: '结算状态' },
+                    operation: { label: '操作' },
                 },
                 currentPage: 1,
                 perPage: 10,
@@ -177,6 +182,7 @@
         components: { datepicker },
         created(){
             this.get();
+            this.setTime();
         },
         computed: {
             orderBillCode:function(){
@@ -238,6 +244,29 @@
                         Toast(msg.msg);
                     }
                 });
+            },
+            setTime(){
+                let date = new Date();
+                let time1 = date.getFullYear();
+                let time0 = 2015;
+                let fun = (year0,year1)=>{
+                    if(year0<=year1){
+                        this.optionsYears.push({
+                            text: year1+'年',
+                            value: year1
+                        });
+                        year1 --;
+                        fun(year0,year1);
+                    }
+                    return null;
+                }
+                fun(time0,time1);
+                this.selectedYearFrom = this.optionsYears[this.optionsYears.length-1].value;
+                this.selectedYearTo = this.optionsYears[0].value;
+                this.selectedMonthFrom = this.optionsMonths[0].value;
+                let month = date.getMonth()+1;
+                console.log(month);
+                this.selectedMonthTo = month;
             }
         },
         destroyed(){}
