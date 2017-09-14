@@ -50,7 +50,6 @@
                         <template v-if="item.value == 4">已成立</template>
                         <template v-if="item.value == 5">已放款</template>
                         <template v-if="item.value == 6">计息中</template>
-                        <!-- <template v-if="item.value == 7">已结束</template> -->
                         <template v-if="item.value == 8">已到期</template>
                         <template v-if="item.value == 9">已兑付</template>
                         <template v-if="item.value == 21">已作废</template>
