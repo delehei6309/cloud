@@ -48,12 +48,12 @@
                         <template v-if="item.value == 2">募集中</template>
                         <template v-if="item.value == 3">已售罄</template>
                         <template v-if="item.value == 4">已成立</template>
-                        <template v-if="item.value == 5">封闭期</template>
-                        <template v-if="item.value == 6">存续期</template>
-                        <template v-if="item.value == 7">已结束</template>
+                        <template v-if="item.value == 5">已放款</template>
+                        <template v-if="item.value == 6">计息中</template>
+                        <!-- <template v-if="item.value == 7">已结束</template> -->
                         <template v-if="item.value == 8">已到期</template>
                         <template v-if="item.value == 9">已兑付</template>
-                        <template v-if="item.value == 9">已作废</template>
+                        <template v-if="item.value == 21">已作废</template>
                     </template>
                     <template slot="createTime" scope="item">
                         {{item.value | timeFormat}}
@@ -122,29 +122,26 @@
                         text: '募集中',
                         value: 2,
                     },{
+                        text: '已作废',
+                        value: 21,
+                    },{
                         text: '已售罄',
                         value: 3,
                     },{
                         text: '已成立',
                         value: 4,
                     },{
-                        text: '封闭期',
+                        text: '已放款',
                         value: 5,
                     },{
-                        text: '存续期',
+                        text: '计息中',
                         value: 6,
-                    },{
-                        text: '已结束',
-                        value: 7,
                     },{
                         text: '已到期',
                         value: 8,
                     },{
                         text: '已兑付',
                         value: 9,
-                    },{
-                        text: '已作废',
-                        value: 21,
                     }
                 ],
                 optionsProductOnStatus: [
