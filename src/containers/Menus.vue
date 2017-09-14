@@ -100,7 +100,7 @@
                 }
             ],
             allPath: ['/menus/data-statistics']
-        },
+        }/*,
         {
             path: '',
             text: '账单统计',
@@ -113,7 +113,7 @@
                 }
             ],
             allPath: ['/menus/bill-record','/menus/bill-record-detail']
-        }
+        }*/
     ]
     export default {
         name: 'menus',
