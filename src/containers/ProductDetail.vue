@@ -176,12 +176,12 @@
                         <span class="info"  v-else-if="productData.productStatus==2">募集中</span>
                         <span class="info"  v-else-if="productData.productStatus==3">已售罄</span>
                         <span class="info"  v-else-if="productData.productStatus==4">已成立</span>
-                        <span class="info"  v-else-if="productData.productStatus==5">封闭期</span>
-                        <span class="info"  v-else-if="productData.productStatus==6">存续期</span>
-                        <span class="info"  v-else-if="productData.productStatus==7">已结束</span>
+                        <span class="info"  v-else-if="productData.productStatus==5">已放款</span>
+                        <span class="info"  v-else-if="productData.productStatus==6">计息中</span>
                         <span class="info"  v-else-if="productData.productStatus==8">已到期</span>
                         <span class="info"  v-else-if="productData.productStatus==9">已兑付</span>
-                        <span class="info" v-else>--</span>
+                        <span class="info"  v-else-if="productData.productStatus==21">已作废</span>
+                        <span class="info"  v-else>--</span>
                     </li>
                     <li flex>
                         <span class="title" >推荐状态：</span>
