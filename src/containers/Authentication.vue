@@ -866,8 +866,12 @@
                     this.companyInfor[6].model = data.compAddress;
                     this.uploadPhotos.legalIdCard.src = data.legalPersonIdImgPath;
                     this.uploadPhotos.legalIdCard.progress = 100;
+
+
                     this.uploadPhotos.qualification[0].src = data.businessLicenceImgPath;
-                    this.uploadPhotos.qualification[0].progress = 100;
+                    if(this.uploadPhotos.qualification[0].src){
+                        this.uploadPhotos.qualification[0].progress = 100;
+                    }
                     this.uploadPhotos.qualification[1].src = data.orgCodeImgPath;
                     if (this.uploadPhotos.qualification[1].src) {
                         this.uploadPhotos.qualification[1].progress = 100;
