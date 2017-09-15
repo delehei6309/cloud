@@ -75,6 +75,7 @@
     import VueHighcharts from 'vue-highcharts';
     import datepicker from 'vue-date';
     import $api from '../tools/api';
+    import Toast from '../components/Toast';
     export default {
         name: 'data-statistics',
         data(){
@@ -285,6 +286,8 @@
                         this.list[key].array.forEach((obj,index) =>{
                             this.arrayPush(obj);
                         });
+                    }else{
+                        Toast(msg.msg);
                     }
                 });
             },
@@ -330,6 +333,8 @@
                     if(msg.code == 200){
                         this.items = msg.data.returnList;
                         this.count = msg.data.count;
+                    }else{
+                        Toast(msg.msg);
                     }
                 });
             },

@@ -42,6 +42,7 @@
     import VueHighcharts from 'vue-highcharts';
     import $api from '../tools/api';
     import {timeDeal} from '../tools/fun.js';
+    import Toast from '../components/Toast';
     Vue.use(VueHighcharts);
     export default {
         name: 'home',
@@ -135,6 +136,8 @@
                     if(this.lists.length>0){
                         this.setOption(this.tab);
                     }
+                }else{
+                    Toast(msg.msg);
                 }
             });
         },

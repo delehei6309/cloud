@@ -55,7 +55,7 @@
                 </ul>
             </div>
         </div>
-        <div class="user-info bankcar">
+        <div class="user-info authentication only-user bankcar">
             <h2>银行卡</h2>
             <div class="content">
                 <ul class="left">
