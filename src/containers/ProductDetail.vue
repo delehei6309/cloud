@@ -80,11 +80,11 @@
                         <span class="info"  v-else-if="productData.productStatus==2">募集中</span>
                         <span class="info"  v-else-if="productData.productStatus==3">已售罄</span>
                         <span class="info"  v-else-if="productData.productStatus==4">已成立</span>
-                        <span class="info"  v-else-if="productData.productStatus==5">封闭期</span>
-                        <span class="info"  v-else-if="productData.productStatus==6">存续期</span>
-                        <span class="info"  v-else-if="productData.productStatus==7">已结束</span>
+                        <span class="info"  v-else-if="productData.productStatus==5">已放款</span>
+                        <span class="info"  v-else-if="productData.productStatus==6">计息中</span>
                         <span class="info"  v-else-if="productData.productStatus==8">已到期</span>
                         <span class="info"  v-else-if="productData.productStatus==9">已兑付</span>
+                        <span class="info"  v-else-if="productData.productStatus==21">已作废</span>
                         <span class="info"  v-else>--</span>
                     </li>
                 </ul>
@@ -94,12 +94,21 @@
             <h2>项目周期</h2>
             <div class="main" flex>
                 <ul flex-box="1">
+                    <li>募集开始日期：{{productData.raiseStartDate || '--'}}</li>
+                </ul>
+                <ul flex-box="1">
+                    <li>募集结束日期：{{productData.raiseEndDate || '--'}}</li>
+                </ul>
+                <ul flex-box="1">
                     <li>发布日：{{productData.productPublishDate || '--'}}</li>
+                </ul>
+            </div>
+            <div class="main" flex>
+                <ul flex-box="1">
                     <li>预期收款日：{{productData.productPaymentDate || '--'}}</li>
                 </ul>
                 <ul flex-box="1">
                     <li>起息日：{{productData.productInterestDate || '--'}}</li>
-                    <li>成立日：{{productData.productEstablishmentDate || '--'}}</li>
                 </ul>
                 <ul flex-box="1">
                     <li>到期日：{{productData.productExpiringDate || '--'}}</li>
@@ -167,12 +176,12 @@
                         <span class="info"  v-else-if="productData.productStatus==2">募集中</span>
                         <span class="info"  v-else-if="productData.productStatus==3">已售罄</span>
                         <span class="info"  v-else-if="productData.productStatus==4">已成立</span>
-                        <span class="info"  v-else-if="productData.productStatus==5">封闭期</span>
-                        <span class="info"  v-else-if="productData.productStatus==6">存续期</span>
-                        <span class="info"  v-else-if="productData.productStatus==7">已结束</span>
+                        <span class="info"  v-else-if="productData.productStatus==5">已放款</span>
+                        <span class="info"  v-else-if="productData.productStatus==6">计息中</span>
                         <span class="info"  v-else-if="productData.productStatus==8">已到期</span>
                         <span class="info"  v-else-if="productData.productStatus==9">已兑付</span>
-                        <span class="info" v-else>--</span>
+                        <span class="info"  v-else-if="productData.productStatus==21">已作废</span>
+                        <span class="info"  v-else>--</span>
                     </li>
                     <li flex>
                         <span class="title" >推荐状态：</span>
@@ -186,14 +195,14 @@
                     </li>
                     <li flex>
                         <span class="title" >放款状态：</span>
-                        <span class="info" v-if="productData.investTransactionStatus >= 5 && productData.investTransactionStatus != 21">已放款</span>
-                        <span class="info" v-else-if="productData.investTransactionStatus < 5">未放款</span>
+                        <span class="info" v-if="productData.productStatus >= 5 && productData.productStatus != 21">已放款</span>
+                        <span class="info" v-else-if="productData.productStatus < 5">未放款</span>
                         <span class="info" v-else>--</span>
                     </li>
                     <li flex>
                         <span class="title" >还款状态：</span>
-                        <span class="info" v-if="productData.paymentTransactionStatus >= 9 && productData.paymentTransactionStatus != 21">已兑付</span>
-                        <span class="info" v-else-if="productData.paymentTransactionStatus < 9">未兑付</span>
+                        <span class="info" v-if="productData.productStatus >= 9 && productData.productStatus != 21">已兑付</span>
+                        <span class="info" v-else-if="productData.productStatus < 9">未兑付</span>
                         <span class="info" v-else>--</span>
                     </li>
                 </ul>

@@ -36,7 +36,7 @@
             <div class="content">
                 <ul class="left">
                     <template v-if="userData.userVerifyStatus < 1">
-                        <li><span class="title">未实名</span></li>
+                        <li class="auth-ul"><span class="title">未实名</span></li>
                     </template>
                     <template v-else>
                         <li class="auth-ul">
@@ -60,7 +60,7 @@
             <div class="content">
                 <ul class="left">
                     <template v-if="userData.userVerifyStatus <= 2">
-                        <li><span class="title">未绑卡</span></li>
+                        <li class="auth-ul"><span class="title">未绑卡</span></li>
                     </template>
                     <template v-else>
                         <li class="auth-ul">
