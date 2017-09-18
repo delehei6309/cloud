@@ -7,7 +7,8 @@
                     <div class="title text-center">忘记密码</div>
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">已注册的手机号</label>
-                        <input class="form-input" v-model.trim="username" maxlength="11"
+                        <input class="form-input" v-model.trim="username"
+                               maxlength="11" name="phone"
                                flex-box="0" placeholder="请输入手机号">
                         <span v-show="errNumber" class="err-info" flex-box="1">{{errNumber}}</span>
                     </div>
@@ -33,7 +34,8 @@
                     <div class="form-item" flex>
                         <label class="label" flex-box="0">设置新密码</label>
                         <input type="hidden"  v-model.trim="password">
-                        <input class="form-input" type="password" flex-box="0" maxlength="20"
+                        <input class="form-input" type="password" flex-box="0"
+                               maxlength="20" name="password"
                                v-model.trim="password" placeholder="请输入密码">
                         <span v-show="errPass" class="err-info" flex-box="1">{{errPass}}</span>
                     </div>

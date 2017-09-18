@@ -47,6 +47,12 @@ let get = (path, data = {}) => {
         withCredentials: true
     }).then(response => {
         if (response.status == 200) {
+            if(response.data.code == 401){
+                //Toast('登录超时，请重新登录！');
+                setTimeout(()=>{
+                    logout();
+                },3000);
+            }
             return response.data;
         }
         if (response.status == 302) {
@@ -94,6 +100,12 @@ let post = (path, data = {}) => {
         data: $query(data)
     }).then(response => {
         if (response.status == 200) {
+            if(response.data.code == 401){
+                //Toast('登录超时，请重新登录！');
+                setTimeout(()=>{
+                    logout();
+                },3000);
+            }
             return response.data;
         } else {
             return {};

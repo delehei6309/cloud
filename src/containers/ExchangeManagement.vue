@@ -9,7 +9,7 @@
                     <div flex="main:justify">
                         <div>
                             <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                            <b-form-input type="text" v-model="inputVal"></b-form-input>
+                            <b-form-input type="text" maxlength="100" v-model="inputVal"></b-form-input>
                             <span>状态</span>
                             <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
                         </div>
