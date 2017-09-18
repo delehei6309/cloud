@@ -99,7 +99,7 @@
                                         :url="`${serverUrl}/channel/file/upload`"
                                         @imageuploaded="imageuploaded"
                                         @imagechanged = "imagechanged(uploadPhotos.legalIdCard.status)"
-                                        @errorhandle ="errorhandle" >
+                                        @errorhandle ="errorhandle" flex="dir:top cross:center" >
                                     </vue-core-image-upload>
                                 </div>
                                 <div class="upload-error" v-show="legalIdCardError && photoError1">！请上传法人身份证照，大小不超过2M</div>
@@ -343,6 +343,10 @@
                                         <div class="example">
                                             <div class="upload-img-box">
                                                 <img src="../images/idCard-example.png">
+                                                <div class="img-tip">
+                                                    <p>手持身份证正面进行拍照，</p>
+                                                    <p>要求五官可见，证件信息清晰无遮挡</p>
+                                                </div>
                                             </div>
                                             <p>示例</p>
                                         </div>

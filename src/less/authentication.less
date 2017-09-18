@@ -159,6 +159,19 @@
                 cursor: pointer;
                 z-index: 999;
             }
+            .img-tip {
+                display: inline-block;
+                position: absolute;
+                right: 10px;
+                bottom: 20px;
+                font-size: 12px;
+                color: #000;
+                p {
+                    text-align: left;
+                    font-weight: bold;
+                    margin: 0;
+                }
+            }
         }
         .uploading:after,.uploading:before{
             content: "";
@@ -304,8 +317,8 @@
                         line-height: 132px;margin-left: 10px;
                     }
                     .idcard-box{
-                        width:220px;
-                        height:264px;
+                        width:240px;
+                        height:300px;
                         border-radius: 4px;
                         .span-percent{
                             line-height: 130px;
@@ -313,8 +326,8 @@
                     }
                     .example {
                         .upload-img-box {
-                            height: 264px;
-                            max-width: 264px;
+                            height: 300px;
+                            max-width: 300px;
                             margin-left: 30px;
                             img {
                                 height: 100%;
