@@ -12,7 +12,7 @@
                     <li v-for="(item,index) in lists" :key="index" :class="{active:tab==index}" @click.stop="change(index)">
                         <template v-if="item.name =='countRegisterUser'">
                             <div class="table-text" v-html="listText[index]"></div>
-                            <div class="table-data">{{item.today}}</div>
+                            <div class="table-data">{{item.count}}</div>
                         </template>
                         <template v-else>
                             <div class="table-text" v-html="listText[index]"></div>
