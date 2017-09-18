@@ -338,13 +338,17 @@
                                                 @imagechanged = "imagechanged(iUploadPhotos.idCard.status)"
                                                 @errorhandle ="errorhandle" >
                                             </vue-core-image-upload>
+                                            <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传手持身份证正面照<br>大小不超过2M</div>
                                         </div>
-                                        <div class="upload-error" v-show="idCardError && iPhotoError1">！请上传手持身份证正面照，大小不超过2M</div>
                                         <div class="example">
                                             <div class="upload-img-box">
                                                 <img src="../images/idCard-example.png">
+                                                <div class="img-tip">
+                                                    <div>手持身份证正面进行拍照，</div>
+                                                    <div>要求五官可见，证件信息清晰无遮挡</div>
+                                                </div>
                                             </div>
-                                            <p>示例</p>
+                                            <p style="text-align:center;margin: 10px 0 0 30px;">示例</p>
                                         </div>
                                     </div>
                                 </div>

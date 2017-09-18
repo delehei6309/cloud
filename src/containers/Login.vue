@@ -19,7 +19,7 @@
                         <label class="label" for="phone" flex-box="0" flex="cross:center">
                             <img src="../images/login/phone.png">
                         </label>
-                        <input flex-box="1" v-model.trim="username" maxlength="11"
+                        <input flex-box="1" v-model.trim="username" maxlength="11" name="phone"
                                id="phone" class="form-input" placeholder="手机号"/>
                     </div>
 
@@ -52,7 +52,8 @@
                         <label class="label" for="re-phone" flex-box="0" flex="cross:center">
                             <img src="../images/login/phone.png">
                         </label>
-                        <input flex-box="1" id="re-phone" v-model.trim="username" maxlength="11"
+                        <input flex-box="1" id="re-phone" v-model.trim="username"
+                               maxlength="11" name="phone"
                                class="form-input" placeholder="手机号"/>
                     </div>
                     <div flex v-show="imageCaptcha">
