@@ -28,7 +28,7 @@ let $query = (data) => {
     return str.join('&');
 };
 let get = (path, data = {}) => {
-    data.callSystemID = '1004';
+    data.callSystemID = '3102';
     data.t = new Date().getTime();
     let url = '';
     if (/http/.test(path)) {
@@ -47,6 +47,12 @@ let get = (path, data = {}) => {
         withCredentials: true
     }).then(response => {
         if (response.status == 200) {
+            if(response.data.code == 401){
+                //Toast('登录超时，请重新登录！');
+                setTimeout(()=>{
+                    logout();
+                },3000);
+            }
             return response.data;
         }
         if (response.status == 302) {
@@ -86,7 +92,7 @@ let post = (path, data = {}) => {
         },
         params: {
             t: new Date().getTime(),
-            callSystemID: '1004'
+            callSystemID: '3102'
 
         },
         withCredentials: true,
@@ -94,6 +100,12 @@ let post = (path, data = {}) => {
         data: $query(data)
     }).then(response => {
         if (response.status == 200) {
+            if(response.data.code == 401){
+                //Toast('登录超时，请重新登录！');
+                setTimeout(()=>{
+                    logout();
+                },3000);
+            }
             return response.data;
         } else {
             return {};

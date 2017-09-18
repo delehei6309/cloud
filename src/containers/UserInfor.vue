@@ -7,7 +7,9 @@
             <!--查询条件-->
             <div class="inquire">
                 <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                <b-form-input type="text" size="sm" v-model="inputVal"></b-form-input>
+                <b-form-input type="text" size="sm" placeholder="请输入用户信息" maxlength="100" v-model="inputVal"></b-form-input>
+                <span>投资进度</span>
+                <b-form-select v-model="progressSelected" :options="progressOptions" size="sm"></b-form-select>
                 <b-btn class="btn" @click.native="query">查询</b-btn>
             </div>
         </div>
@@ -15,7 +17,18 @@
             <!--显示列表-->
             <div class="table-wrap" flex-box="1">
                 <b-table :items="items" :fields="fields"  bordered>
-                    <template slot="userVerifyStatus" scope="item">{{ item.value == 9 ? '是' : '否' }}</template>
+                    <template slot="userVerifyStatus" scope="item">
+                        <template v-if="item.item.userTradeStatus == 1">已充值</template>
+                        <template v-if="item.item.userTradeStatus == 2">已投资</template>
+                        <template v-if="(item.item.userTradeStatus != 1) && (item.item.userTradeStatus != 2)">
+                            <template v-if="(item.value == 0) && (item.item.userTradeStatus<1)">已注册</template>
+                            <template v-if="(item.value == 1) && (item.item.userTradeStatus<1)">已实名</template>
+                            <template v-if="(item.value == 2) && (item.item.userTradeStatus<1)">已授权</template>
+                            <template v-if="((item.value == 3) || (item.value == 9)) && (item.item.userTradeStatus<1)">已绑卡</template>
+                        </template>
+                    </template>
+                    <template slot="investorRiskScore" scope="item">{{ item.value == 0 ? '未测评' : '已测评'}}</template>
+                    <template slot="registerTime" scope="item">{{ item.value | timeFormat }}</template>
                     <template slot="userUuid" scope="item">
                         <router-link :to="{path: 'user-infor-detail',query:{userUuid:item.value}}">详情</router-link>
                     </template>
@@ -54,12 +67,36 @@
                         value: 2
                     }
                 ],
+                progressOptions: [
+                    {
+                        value: '0',
+                        text: '已注册'
+                    },{
+                        value: '1',
+                        text: '已实名'
+                    },{
+                        value: '2',
+                        text: '已授权'
+                    },{
+                        value: '3',
+                        text: '已绑卡'
+                    },{
+                        value: '4',
+                        text: '已充值'
+                    },{
+                        value: '5',
+                        text: '已投资'
+                    }
+                ],
+                progressSelected: 0,
                 items: [],
                 fields: {
                     userId: { label: '用户ID' },
                     investorRealName:{label:'姓名'},
                     investorMobile: { label: '手机号' },
-                    userVerifyStatus: { label: '是否开户' },
+                    userVerifyStatus: { label: '投资进度' },
+                    investorRiskScore: { label: '风险测评' },
+                    registerTime: { label: '注册时间' },
                     userUuid: { label: '操作' },
                 },
                 currentPage: 1,
@@ -99,6 +136,7 @@
                     pageSize:this.perPage,
                     investorMobile:this.investorMobile,
                     userId:this.userId,
+                    userVerifyStatus:this.progressSelected,
                     //registerMerchantNum:this.registerMerchantNum
                 }
                 $api.get('/user/investor/list',parm).then(msg => {

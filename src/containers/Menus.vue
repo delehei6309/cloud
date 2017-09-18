@@ -100,7 +100,20 @@
                 }
             ],
             allPath: ['/menus/data-statistics']
-        }
+        }/*,
+        {
+            path: '',
+            text: '账单统计',
+            class: 'icon-bill-record',
+            show: true,
+            child: [
+                {
+                    path: '/menus/bill-record',
+                    text: '渠道结算记录'
+                }
+            ],
+            allPath: ['/menus/bill-record','/menus/bill-record-detail']
+        }*/
     ]
     export default {
         name: 'menus',

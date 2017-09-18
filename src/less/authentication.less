@@ -147,7 +147,18 @@
                     height:100% !important;
                 }
             }
-
+            .bin {
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                display: block;
+                width: 32px;
+                height: 32px;
+                background: url(../images/icon/bin.png);
+                background-size:  100% 100%;
+                cursor: pointer;
+                z-index: 999;
+            }
         }
         .uploading:after,.uploading:before{
             content: "";
@@ -286,15 +297,33 @@
                 }
                 .idcard{
                     margin-bottom: 40px;
+                    &.nobottom{
+                        margin-bottom: 0;
+                    }
                     .upload-error{
                         line-height: 132px;margin-left: 10px;
                     }
                     .idcard-box{
-                        width:235px;
-                        height:132px;
+                        width:220px;
+                        height:264px;
                         border-radius: 4px;
                         .span-percent{
                             line-height: 130px;
+                        }
+                    }
+                    .example {
+                        .upload-img-box {
+                            height: 264px;
+                            max-width: 264px;
+                            margin-left: 30px;
+                            img {
+                                height: 100%;
+                                width: auto;
+                            }
+                        }
+                        p {
+                            text-align: center;
+                            margin-top: 10px;
                         }
                     }
                 }

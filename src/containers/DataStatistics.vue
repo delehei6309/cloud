@@ -52,6 +52,7 @@
                                 <td>{{item.orderCount}}</td>
                                 <td>{{item.sumPaidAmount | currencyFormat}}</td>
                                 <td>{{item.expUserQuantity}}</td>
+                                <td>{{item.expirCount}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -74,6 +75,7 @@
     import VueHighcharts from 'vue-highcharts';
     import datepicker from 'vue-date';
     import $api from '../tools/api';
+    import Toast from '../components/Toast';
     export default {
         name: 'data-statistics',
         data(){
@@ -137,6 +139,12 @@
                         name:'countProductExpiringUserByMonth',
                         "text":'产品到期用户数',
                         array:[]
+                    },
+                    countExpiring:{
+                        id:8,
+                        name:'countExpiringNumberByMonths',
+                        "text":'产品到期笔数',
+                        array:[]
                     }
                 },
                 options:{
@@ -188,7 +196,7 @@
                         text:'日期'
                     },
                     {
-                        value:'days',
+                        value:'registerCount',
                         text:'注册量'
                     },
                     {
@@ -219,6 +227,11 @@
                     {
                         value:'expUserQuantity',
                         text:'产品到期用户数',
+                        sortStyle:true
+                    },
+                    {
+                        value:'expirCount',
+                        text:'产品到期笔数',
                         sortStyle:true
                     }
                 ],
@@ -273,6 +286,8 @@
                         this.list[key].array.forEach((obj,index) =>{
                             this.arrayPush(obj);
                         });
+                    }else{
+                        Toast(msg.msg);
                     }
                 });
             },
@@ -318,6 +333,8 @@
                     if(msg.code == 200){
                         this.items = msg.data.returnList;
                         this.count = msg.data.count;
+                    }else{
+                        Toast(msg.msg);
                     }
                 });
             },

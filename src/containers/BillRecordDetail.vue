@@ -1,28 +1,27 @@
 <template>
-    <div class="user-infor" flex="dir:top">
+    <div class="user-infor bill-record-detail" flex="dir:top">
         <div flex-box="0">
             <!--页面抬头-->
-            <div class="title">定期产品管理</div>
+            <div class="title">账单详情</div>
             <!--查询条件-->
             <div class="inquire">
                 <div flex="main:justify">
                     <div>
                         <b-form-select v-model="selectedBase" :options="optionsBase" size="sm"></b-form-select>
-                        <b-form-input type="text" :readonly="!selectedBase" v-model="inputVal" maxlength="100" placeholder="请输入产品信息"></b-form-input>
-                        <span>产品状态</span>
-                        <b-form-select v-model="selectedProductStatus" :options="optionsProductStatus" size="sm"></b-form-select>
-                        <span>上架状态</span>
-                        <b-form-select v-model="selectedProductOnStatus" :options="optionsProductOnStatus" size="sm"></b-form-select>
+                        <b-form-input type="text" :readonly="!selectedBase" v-model="inputVal" placeholder="请输入信息"></b-form-input>
                     </div>
-                </div>
-                <div flex="main:justify">
                     <div class="input-wrap" flex>
-                        <div class="date-text">创建时间：</div>
+                        <div class="date-text">
+                            <b-form-select v-model="selectedTime" :options="optionsTime" size="sm"></b-form-select>
+                        </div>
                         <div class="input-date"><datepicker language="ch" v-model="dateStart"></datepicker></div>
                         <div class="date-text">到</div>
                         <div class="input-date"><datepicker language="ch" v-model="dateEnd"></datepicker></div>
                     </div>
-                    <b-btn class="btn" @click.native="query">查询</b-btn>
+                    <div>
+                        <b-btn class="btn" @click.native="query">查询</b-btn>
+                        <b-btn class="btn" @click.native="query">导出excel</b-btn>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,11 +47,12 @@
                         <template v-if="item.value == 2">募集中</template>
                         <template v-if="item.value == 3">已售罄</template>
                         <template v-if="item.value == 4">已成立</template>
-                        <template v-if="item.value == 5">已放款</template>
-                        <template v-if="item.value == 6">计息中</template>
+                        <template v-if="item.value == 5">封闭期</template>
+                        <template v-if="item.value == 6">存续期</template>
+                        <template v-if="item.value == 7">已结束</template>
                         <template v-if="item.value == 8">已到期</template>
                         <template v-if="item.value == 9">已兑付</template>
-                        <template v-if="item.value == 21">已作废</template>
+                        <template v-if="item.value == 9">已作废</template>
                     </template>
                     <template slot="createTime" scope="item">
                         {{item.value | timeFormat}}
@@ -91,7 +91,7 @@
                 filter: "0.01",
                 selectedBase: '',
                 selectedProductStatus: '',
-                selectedProductOnStatus: '',
+                selectedTime: 1,
                 //selectedIsRecommend: null,
                 inputVal: '',
                 optionsBase: [
@@ -100,47 +100,23 @@
                         value: ''
                     },
                     {
-                        text: '产品编号',
+                        text: '产品名称',
                         value: 1
                     },{
-                        text: '产品名称',
+                        text: '产品订单号',
                         value: 2
                     }/*,{
                         text: '上架',
                         value: 3
                     }*/
                 ],
-                optionsProductStatus:[
+                optionsTime:[
                     {
-                        text: '全部',
-                        value: '',
+                        value:1,
+                        text:'订单创建时间'
                     },{
-                        text: '预热中',
-                        value: 1,
-                    },{
-                        text: '募集中',
-                        value: 2,
-                    },{
-                        text: '已作废',
-                        value: 21,
-                    },{
-                        text: '已售罄',
-                        value: 3,
-                    },{
-                        text: '已成立',
-                        value: 4,
-                    },{
-                        text: '已放款',
-                        value: 5,
-                    },{
-                        text: '计息中',
-                        value: 6,
-                    },{
-                        text: '已到期',
-                        value: 8,
-                    },{
-                        text: '已兑付',
-                        value: 9,
+                        value:2,
+                        text:'订单支付时间'
                     }
                 ],
                 optionsProductOnStatus: [
@@ -172,17 +148,18 @@
                 ],*/
                 items: [],
                 fields: {
-                    productCode: { label: '产品编号' },
-                    productAbbrName: { label: '产品简称' },
-                    productType: { label: '产品类型' },
-                    productScale: { label: '产品规模（元）' },
-                    annualInterestRate: { label: '预期年化收益率' },
-                    productPeriod: { label: '产品期限' },
-                    productOnStatus: { label: '上架状态' },
-                    productStatus: { label: '产品状态' },
-                    createTime: { label: '创建时间' },
-                    productAccumulation: { label: '已募集金额（元）' },
-                    productUuid: { label: '操作' },
+                    productCode: { label: '订单创建时间' },
+                    productAbbrName: { label: '定期订单号' },
+                    productType: { label: '产品ID' },
+                    productScale: { label: '产品名称' },
+                    annualInterestRate: { label: '用户名' },
+                    productPeriod: { label: '投资金额(元)' },
+                    productOnStatus: { label: '预期到期收益（元)' },
+                    productStatus: { label: '订单支付时间' },
+                    createTime: { label: '投资期限' },
+                    productAccumulation: { label: '渠道对应佣金年化比例' },
+                    productUuid: { label: '返佣金额（元）' },
+                    productUuids: { label: '结佣状态' },
                 },
                 currentPage: 1,
                 perPage:10,
