@@ -455,6 +455,7 @@
     import VueCoreImageUpload from 'vue-core-image-upload';
     import '../less/authentication.less';
     import '../less/submit-state.less';
+    import  {logout} from '../tools/operation';
     import {checkPhone,valiIdCard,isValidOrgCode,checkSocialCreditCode,checkMail,valiRealName,checkTencent} from '../tools/fun';
     import $api from '../tools/api';
     import Toast from '../components/Toast';
@@ -803,6 +804,7 @@
                 ajaxUrl:'/channel/insert',
                 btnDisabled:false,
                 largePaymentNum:'',
+                uploadStop:false
             }
         },
         created(){
@@ -968,6 +970,21 @@
                     this.photo(parm).src = src;
                     this.photo(parm).name = name;
                     this.photo(parm).loading = true;
+                }else if(res.code == 401){
+                    this.uploadStop = true;
+                    /*this.photo(parm).loading = false;
+                    this.photo(parm).progress = 0;*/
+                    Toast(res.msg);
+                    setTimeout(()=>{
+                        $api.postSys('/a/logout').then(res => {
+                            logout();
+                            if (res.code == 200) {
+                                return false;
+                            }
+                        });
+                    },3000);
+                }else{
+                    Toast(res.msg);
                 }
             },
             setProcess(status){
@@ -1014,6 +1031,10 @@
                         height = 100;
                         this.photo(status).fileTitle = '重新选择图片上传';
                         this.photo(status).progress = height;
+                        return
+                    }
+                    if(this.uploadStop){
+                        this.photo(status).progress = 0;
                         return
                     }
                     height += rate;

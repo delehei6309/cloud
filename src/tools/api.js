@@ -50,7 +50,13 @@ let get = (path, data = {}) => {
             if(response.data.code == 401){
                 //Toast('登录超时，请重新登录！');
                 setTimeout(()=>{
-                    logout();
+                    postSys('/a/logout').then(res => {
+                        logout();
+                        if (res.code == 200) {
+                            return false;
+                        }
+                        // Toast(res.msg);
+                    })
                 },3000);
             }
             return response.data;
