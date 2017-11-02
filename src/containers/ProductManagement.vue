@@ -34,7 +34,8 @@
                         <template v-if="item.value == 'FIXI'">固定收益类</template>
                     </template>
                     <template slot="productScale" scope="item">{{item.value | currencyFormat}}</template>
-                    <template slot="annualInterestRate" scope="item">{{item.value | translatePate}}</template>
+                    <template slot="increaseInterestRate" scope="item">{{item.value | translatePate}}</template>
+                    <template slot="annualInterestShow" scope="item">{{item.value | translatePate}}</template>
                     <template slot="productPeriod" scope="item">
                         <template>{{item.value}}</template><template v-if="item.item.productPeriodType == 'D'">天</template><template v-if="item.item.productPeriodType == 'W'">周</template><template v-if="item.item.productPeriodType == 'M'">月</template><template v-if="item.item.productPeriodType == 'Y'">天</template>
                     </template>
@@ -175,13 +176,14 @@
                     productCode: { label: '产品编号' },
                     productAbbrName: { label: '产品简称' },
                     productType: { label: '产品类型' },
-                    productScale: { label: '产品规模（元）' },
-                    annualInterestRate: { label: '预期年化收益率' },
+                    productScale: { label: '产品规模(元)' },
+                    increaseInterestRate: { label: '加息前预期年化收益率' },
+                    annualInterestShow: { label: '加息后预期年化收益率' },
                     productPeriod: { label: '产品期限' },
                     productOnStatus: { label: '上架状态' },
                     productStatus: { label: '产品状态' },
                     createTime: { label: '创建时间' },
-                    productAccumulation: { label: '已募集金额（元）' },
+                    productAccumulation: { label: '已募集金额(元)' },
                     productUuid: { label: '操作' },
                 },
                 currentPage: 1,
