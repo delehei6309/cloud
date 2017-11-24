@@ -5,7 +5,7 @@
 export let setTitle = (title) => {
     setTimeout(function () {
         //利用iframe的onload事件刷新页面
-        document.title = title || 'COP开放平台';
+        document.title = title || '标题';
         var iframe = document.createElement('iframe');
         iframe.style.visibility = 'hidden';
         iframe.style.width = '1px';
