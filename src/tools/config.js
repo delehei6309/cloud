@@ -2,11 +2,11 @@
  * Created by DELL on 2017/6/5.
  */
 let protocol = window.location.protocol;
-export const devUrl = 'http://10.10.10.69:6640';
-export const testUrl = `${protocol}//weixin-test.zj-hf.cn`;
-export const productionUrl = `${protocol}//zj-weixin.zj-hf.cn`;
-export const baofooCallUrlProduct = `${protocol}//callme.zj-hf.cn`;
+export const devUrl = 'xxxx';
+export const testUrl = `${protocol}//xxx.cn`;
+export const productionUrl = `${protocol}//xxx.cn`;
+export const baofooCallUrlProduct = `${protocol}//xxx.cn`;
 export const baofooCallUrlTest = testUrl;
-export const telNumber = '400-640-3606';
-export const nodeTestApi = `${protocol}//market-test.zj-hf.cn`;
-export const nodeProductionApi = `${protocol}//market.zj-hf.cn`;
+export const telNumber = '';
+export const nodeTestApi = `${protocol}//xxx.cn`;
+export const nodeProductionApi = `${protocol}//xxx.cn`;

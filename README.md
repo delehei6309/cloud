@@ -1,4 +1,4 @@
-# kingold_weixin
+# cloud
 
 > A Vue.js project
 
@@ -24,14 +24,14 @@ server{
       
        server_name  localhost;
 	    location / {
-			root /ZJ/web-kingold/html;
+			root /web/html;
             add_header Cache-Control 'no-store';
 			index  index.html index.htm;
 
 			try_files $uri $uri/ /index.html =404;
 		  }
 		   location ~* ^.+\.(css|js|txt|xml|swf|wav|png|jpg|json|woff|ttf)$ {  
-			root  /ZJ/web-kingold;
+			root  /web;
 			access_log   off;  
 			expires      30d;  
 		} 
@@ -69,9 +69,6 @@ server{
 
 * 使用变量，常用的字体颜色以及背景颜色变量存放于less/variables.less文件里，使用时只需引入该文件
 
-* 使用rem，设计稿基于iphone6 ，less/rem.less以针对不同机型做了适配，
-使用时将设计师标注的px数值除以20变算为rem数值，rem数值精确到0.05.
-* 使用padding或者margin来控制边距，通常为0.8rem,比如
 * 这样可以使.index占满宽度，并且边上由一定空隙
 ```less
 .index {
