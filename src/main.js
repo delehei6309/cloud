@@ -8,7 +8,6 @@ import './less/base.less';
 import App from './App';
 import router from './router';
 import * as filters from './filters';
-import store from './store';
 
 Object.keys(filters).forEach(key=>{
     Vue.filter(key, filters[key]);
@@ -17,7 +16,6 @@ Object.keys(filters).forEach(key=>{
 new Vue({
     el: '#app',
     router,
-    store,
     render: h => h(App)
 });
 

@@ -1,30 +1,10 @@
 <template>
     <div>
-        <cloud-header :userInfo="userInfo"></cloud-header>
+        <cloud-header></cloud-header>
         <div class="menu-warp" flex="main:justify">
             <div class="menus" flex-box="0">
-                <div class="menus-list" v-for="(item,index) in menus" :key="index">
-                    <div v-if="index != 0">
-                        <div class="menus-parent" @click.stop="item.show = !item.show"
-                             :class="[{'div-active':(divActiveIndex == index)},item.class]">{{item.text}}
-                        </div>
-                        <ul class="menus-ul animate" :style="{'height':item.show?item.child.length*32 + 'px' : 0}">
-                            <li v-for="(lis,i) in item.child" :key="i">
-                                <router-link class="menu" :to="{path:lis.path}"
-                                             active-class="menu-active"
-                                             replace>{{lis.text}}
-                                </router-link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-else>
-                        <div class="menus-item" :class="item.class">
-                            <router-link class="menu" :to="{path:item.path}"
-                                         active-class="menu-active"
-                                         replace>{{item.text}}
-                            </router-link>
-                        </div>
-                    </div>
+                <div class="menus-list" >
+                    菜单
                 </div>
             </div>
             <router-view flex-box="1" class="content-view"></router-view>
@@ -39,143 +19,21 @@
     import IndexFooter from '../components/IndexFooter';
     import '../less/menus.less';
     import $api from '../tools/api';
-    import {logout} from '../tools/operation';
-    let menus = [
-        {
-            path: '/menus/authentication',
-            class: 'icon-authentication',
-            text: '资质认证',
-            show: false,
-            child: [],
-            allPath: []
-        },
-        {
-            path: '',
-            class: 'icon-user',
-            text: '用户管理',
-            show: true,
-            child: [
-                {
-                    path: '/menus/user-infor',
-                    text: '用户信息'
-                }
-            ],
-            allPath: ['/menus/user-infor', '/menus/user-infor-detail']
-        },
-        {
-            path: '',
-            text: '产品管理',
-            class: 'icon-product',
-            show: true,
-            child: [
-                {
-                    path: '/menus/product-management',
-                    text: '定期产品管理'
-                }
-            ],
-            allPath: ['/menus/product-management', '/menus/product-detail']
-        },
-        {
-            path: '',
-            text: '交易管理',
-            class: 'icon-exchange',
-            show: true,
-            child: [
-                {
-                    path: '/menus/exchange-management',
-                    text: '定期订单管理'
-                }
-            ],
-            allPath: ['/menus/exchange-management']
-        },
-        {
-            path: '',
-            text: '数据统计',
-            class: 'icon-statistics',
-            show: true,
-            child: [
-                {
-                    path: '/menus/data-statistics',
-                    text: '整体概况'
-                }
-            ],
-            allPath: ['/menus/data-statistics']
-        }/*,
-        {
-            path: '',
-            text: '账单统计',
-            class: 'icon-bill-record',
-            show: true,
-            child: [
-                {
-                    path: '/menus/bill-record',
-                    text: '渠道结算记录'
-                }
-            ],
-            allPath: ['/menus/bill-record','/menus/bill-record-detail']
-        }*/
-    ]
     export default {
         name: 'menus',
         data(){
             return {
-                animateHeight: false,
-                userInfo: {},
-                menus: []
+                
             }
         },
-        created(){
-            this.getMenus();
-            this.getInfo();
-
-        },
+        created(){},
         components: {
             CloudHeader,
             IndexFooter
         },
         computed: {
-            route: function () {
-                return this.$route.path;
-            },
-            divActiveIndex: function () {
-                let index;
-                this.menus.forEach((item, i) => {
-                    item.allPath.forEach((m, n) => {
-                        if (m == this.route) {
-                            index = i;
-
-                        }
-                    })
-                })
-                return index;
-            }
         },
-        methods: {
-            getMenus(){
-                this.$store.dispatch('getUserInfo').then(res => {
-                    if (res.code == 200) {
-                        if (res.data.merchantNumStatus && res.data.merchantNumStatus == 1) {
-                            this.menus = menus;
-
-                        } else {
-                            this.$router.replace('/menus/authentication');
-                            this.menus = menus.slice(0, 1);
-                        }
-                    }
-                });
-            },
-            getInfo(){
-                return $api.getSys('/a/sys/user/current')
-                    .then(res => {
-                        if (res.code == 1220) {
-                            logout()
-                        }
-                        if (res.code == 200) {
-                            this.userInfo = res.data;
-                        }
-                    })
-            }
-        },
+        methods: {},
 
     }
 </script>
