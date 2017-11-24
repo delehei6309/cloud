@@ -1,4 +1,4 @@
-# kingold_weixin
+# cloud
 
 > A Vue.js project
 
@@ -24,14 +24,14 @@ server{
       
        server_name  localhost;
 	    location / {
-			root /ZJ/cloud/html;
+			root /web/html;
             add_header Cache-Control 'no-store';
 			index  index.html index.htm;
 
 			try_files $uri $uri/ /index.html =404;
 		  }
 		   location ~* ^.+\.(css|js|txt|xml|swf|wav|png|jpg|json|woff|ttf)$ {  
-			root  /ZJ/cloud;
+			root  /web;
 			access_log   off;  
 			expires      30d;  
 		} 
